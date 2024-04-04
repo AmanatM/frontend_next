@@ -1,7 +1,7 @@
 'use client'
 
 import { createBrowserClient } from '@supabase/ssr'
-import type { Database } from '@/types/supabase'
+import type { Database } from './database.types'
 import { useMemo } from 'react'
 import { SupabaseClient } from '@supabase/supabase-js'
 
