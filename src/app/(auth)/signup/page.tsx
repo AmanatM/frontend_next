@@ -9,6 +9,9 @@ import { Card } from '@/components/ui/card'
 import { useState } from 'react'
 import { PasswordInput } from '@/components/custom/password-input'
 import Link from 'next/link'
+import { toast } from '@/components/ui/use-toast'
+import { supabase } from '@/lib/supabase'
+import { useRouter } from 'next/navigation'
 
 const FormSchema = z
   .object({
@@ -30,6 +33,7 @@ const FormSchema = z
 
 export default function SignUp() {
   const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -42,8 +46,27 @@ export default function SignUp() {
 
   const handleSignUp = async (credentials: z.infer<typeof FormSchema>) => {
     setIsLoading(true)
+    console.log(credentials)
+    const signUpResult = await supabase.auth.signUp({
+      email: credentials.email,
+      password: credentials.password,
+    })
+    console.log({ signUpResult })
+    if (signUpResult.error) {
+      setIsLoading(false)
 
-    console.log('handle login')
+      return toast({
+        title: 'Error',
+        description: signUpResult.error.message,
+        variant: 'destructive',
+      })
+    }
+    setIsLoading(false)
+    toast({
+      title: 'Success',
+      description: 'Sign up successful',
+    })
+    router.push('/')
   }
 
   return (
