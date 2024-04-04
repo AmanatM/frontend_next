@@ -1,11 +1,11 @@
 'use client'
 import { Button } from '@/components/custom/button'
-import { useTailwindBreakpoint } from '@/hooks/useTailwindBreakpoint'
+import { useIsMobileBreakpoint } from '@/hooks/useIsMobileBreakpoint'
 import { cn } from '@/lib/utils'
 import { Settings, ChevronLeft, List, ChevronRight, Save } from 'lucide-react'
 
 export function BottomToolbar({ handleSaveCode }: { handleSaveCode: () => void }) {
-  const { isMobileBreakpoint } = useTailwindBreakpoint()
+  const isMobileBreakpoint = useIsMobileBreakpoint()
   return (
     <div
       className={cn(

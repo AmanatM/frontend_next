@@ -1,9 +1,9 @@
 'use client'
 import { ResizableHandle } from '@/components/ui/resizable'
-import { useTailwindBreakpoint } from '@/hooks/useTailwindBreakpoint'
+import { useIsMobileBreakpoint } from '@/hooks/useIsMobileBreakpoint'
 
 export function ResizeHandle() {
-  const { isMobileBreakpoint } = useTailwindBreakpoint()
+  const isMobileBreakpoint = useIsMobileBreakpoint()
   return (
     <ResizableHandle
       disabled={isMobileBreakpoint}

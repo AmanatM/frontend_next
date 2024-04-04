@@ -13,7 +13,6 @@ import { AlertDialogTrigger } from '@/components/ui/alert-dialog'
 import { useState } from 'react'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { ResizablePanel } from '@/components/ui/resizable'
-import { useTailwindBreakpoint } from '@/hooks/useTailwindBreakpoint'
 
 type EditorCardProps = {
   files: QuestionFile[] | undefined
@@ -32,20 +31,14 @@ export function ResizablePanelEditor({
   minSize,
   defaultSize,
 }: EditorCardProps) {
-  const { theme } = useTheme()
-  const { isMobileBreakpoint } = useTailwindBreakpoint()
+  const { resolvedTheme } = useTheme()
 
   const [isFullScreen, setIsFullScreen] = useState(false)
-
   return (
     <ResizablePanel
       minSize={minSize}
       defaultSize={defaultSize}
-      className={cn(
-        'inset-0',
-        isMobileBreakpoint ? '!overflow-visible !flex-none' : '',
-        isFullScreen ? 'absolute z-20 ' : '',
-      )}
+      className={cn('inset-0 md:overflow-auto md:flex-auto', isFullScreen ? 'absolute z-20 ' : '')}
     >
       <Card className="h-full overflow-clip relative flex flex-col">
         <div className="h-12 flex items-center justify-between py-0 px-2 ">
@@ -98,7 +91,7 @@ export function ResizablePanelEditor({
 
         <div className="h-full">
           <Editor
-            theme={theme === 'dark' ? 'vs-dark' : 'vs-light'}
+            theme={resolvedTheme === 'dark' ? 'vs-dark' : 'vs-light'}
             options={{
               minimap: { enabled: false },
               fontFamily: 'Menlo, Monaco, "Courier New", monospace',

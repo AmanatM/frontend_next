@@ -28,7 +28,7 @@ import {
 import { useHotkeys } from 'react-hotkeys-hook'
 import { TabsContent } from '@/components/ui/tabs'
 import { useToast } from '@/components/ui/use-toast'
-import { useTailwindBreakpoint } from '@/hooks/useTailwindBreakpoint'
+import { useIsMobileBreakpoint } from '@/hooks/useIsMobileBreakpoint'
 import { cn } from '@/lib/utils'
 import { ResizablePanelTabs } from './_components/ResizablePanelTabs'
 import { ResizeHandle } from './_components/ResizableHandleCustom'
@@ -74,7 +74,7 @@ const browserTabs = [
 export default function CodingQuestion({ params }: { params: { questionId: string } }) {
   const { toast } = useToast()
   const supabase = useSupabaseBrowser()
-  const { isMobileBreakpoint } = useTailwindBreakpoint()
+  const isMobileBreakpoint = useIsMobileBreakpoint()
 
   const { data: coding_question, isLoading, isError } = useQuery(getQuestionById(supabase, params.questionId))
 
@@ -177,10 +177,7 @@ export default function CodingQuestion({ params }: { params: { questionId: strin
   }
 
   return (
-    <main
-      id="content"
-      className={cn('flex size-full pt-3 px-3 overflow-scroll', isMobileBreakpoint ? 'flex-row' : 'flex-col')}
-    >
+    <main id="content" className={cn('flex size-full pt-3 px-3 overflow-scroll md:flex-col')}>
       <AlertDialog>
         <ResizablePanelGroup direction={isMobileBreakpoint ? 'vertical' : 'horizontal'} className="relative">
           {/* Description */}

@@ -6,7 +6,6 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { ResizablePanel } from '@/components/ui/resizable'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { useTailwindBreakpoint } from '@/hooks/useTailwindBreakpoint'
 import { cn } from '@/lib/utils'
 
 import { Ellipsis, LucideIcon, Maximize, Minimize, PanelLeftClose } from 'lucide-react'
@@ -27,18 +26,13 @@ type ResizablePanelTabsProps = {
 }
 
 export function ResizablePanelTabs({ children, tabs, defaultValue, minSize, defaultSize }: ResizablePanelTabsProps) {
-  const { isMobileBreakpoint } = useTailwindBreakpoint()
   const [isFullScreen, setIsFullScreen] = useState(false)
 
   return (
     <ResizablePanel
       minSize={minSize}
       defaultSize={defaultSize}
-      className={cn(
-        'inset-0',
-        isMobileBreakpoint ? '!overflow-visible !flex-none' : '',
-        isFullScreen ? 'absolute z-20 ' : '',
-      )}
+      className={cn('inset-0 md:overflow-auto md:flex-auto', isFullScreen ? 'absolute z-20 ' : '')}
     >
       <Tabs defaultValue={defaultValue} asChild>
         <Card className="h-full overflow-clip flex flex-col">
