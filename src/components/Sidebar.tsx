@@ -4,6 +4,7 @@ import { buttonVariants } from './custom/button'
 import Link from 'next/link'
 import { side_nav_links } from '@/config/side_nav_links'
 import { usePathname } from 'next/navigation'
+import { UrlObject } from 'url'
 
 interface SidebarProps {
   className?: string
@@ -22,7 +23,7 @@ function Sidebar({ className }: SidebarProps) {
 
           <nav className="grid gap-1 px-2">
             {side_nav_links.map((link, index) => {
-              const isActive = pathname === link.url
+              const isActive = (link.url as UrlObject).pathname === pathname
 
               return (
                 <Link

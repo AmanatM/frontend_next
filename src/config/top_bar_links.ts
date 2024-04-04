@@ -1,19 +1,21 @@
-interface MenuLinks {
+import { UrlObject } from "url"
+
+type MenuLinks = {
   title: string
-  url: string
+  url: UrlObject
 }
 
 export const top_menu_links: MenuLinks[] = [
   {
     title: 'Home',
-    url: '/',
+    url: { pathname: '/'},
   },
   {
     title: 'Coding',
-    url: '/coding',
+    url: { pathname: '/coding'},
   },
   {
     title: 'Tutorials',
-    url: '/tutorials',
+    url: { pathname: '/tutorials'},
   },
 ]

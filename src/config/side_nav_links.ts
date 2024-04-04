@@ -1,35 +1,36 @@
 import { Home, LucideIcon, UserIcon, CodeXml, NotebookPen, Target } from 'lucide-react'
+import { UrlObject } from 'url'
 
-interface INavLinks {
+type INavLinks = {
   title: string
-  url: string
+  url: UrlObject
   icon: LucideIcon
 }
 
 export const side_nav_links: INavLinks[] = [
   {
     title: 'Home',
-    url: '/',
+    url: { pathname: '/'},
     icon: Home,
   },
   {
     title: 'Coding',
-    url: '/coding',
+    url: { pathname: '/coding'},
     icon: CodeXml,
   },
   {
     title: 'Tutorials',
-    url: '/tutorials',
+    url: { pathname: '/tutorials'},
     icon: NotebookPen,
   },
   {
     title: 'Topics',
-    url: '/topics',
+    url: { pathname: '/topics'},
     icon: Target,
   },
   {
     title: 'Profile',
-    url: '/profile',
+    url: { pathname: '/profile'},
     icon: UserIcon,
   },
 ]

@@ -15,7 +15,7 @@ export type Database = {
           created_at: string | null
           id: string
           language: string | null
-          name: string | null
+          name: string
           question_id: string | null
         }
         Insert: {
@@ -23,7 +23,7 @@ export type Database = {
           created_at?: string | null
           id?: string
           language?: string | null
-          name?: string | null
+          name: string
           question_id?: string | null
         }
         Update: {
@@ -31,7 +31,7 @@ export type Database = {
           created_at?: string | null
           id?: string
           language?: string | null
-          name?: string | null
+          name?: string
           question_id?: string | null
         }
         Relationships: [
@@ -46,31 +46,31 @@ export type Database = {
       }
       coding_questions: {
         Row: {
-          created_at: string | null
-          description: string | null
+          created_at: string
+          description: string
           difficulty: string | null
           id: string
           solution: string | null
-          title: string | null
-          with_browser: boolean | null
+          title: string
+          with_browser: boolean
         }
         Insert: {
-          created_at?: string | null
-          description?: string | null
+          created_at?: string
+          description: string
           difficulty?: string | null
           id?: string
           solution?: string | null
-          title?: string | null
-          with_browser?: boolean | null
+          title: string
+          with_browser?: boolean
         }
         Update: {
-          created_at?: string | null
-          description?: string | null
+          created_at?: string
+          description?: string
           difficulty?: string | null
           id?: string
           solution?: string | null
-          title?: string | null
-          with_browser?: boolean | null
+          title?: string
+          with_browser?: boolean
         }
         Relationships: []
       }
