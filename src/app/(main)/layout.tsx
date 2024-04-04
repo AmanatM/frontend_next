@@ -1,7 +1,6 @@
 import { MenuTopBar } from '@/components/Header'
 import Sidebar from '@/components/Sidebar'
-import { createClient } from '@/utils/supa-server-actions'
-import { cookies } from 'next/headers'
+import { createClient } from '@/supabase-utils/supabase-server'
 import { redirect } from 'next/navigation'
 
 export default async function MainLayout({
@@ -9,8 +8,7 @@ export default async function MainLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const cookieStore = cookies()
-  const supabase = createClient(cookieStore)
+  const supabase = createClient()
 
   const { data, error } = await supabase.auth.getUser()
   if (error || !data?.user) {

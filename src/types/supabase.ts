@@ -9,6 +9,71 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      coding_question_files: {
+        Row: {
+          content: string | null
+          created_at: string | null
+          id: string
+          language: string | null
+          name: string | null
+          question_id: string | null
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string | null
+          id?: string
+          language?: string | null
+          name?: string | null
+          question_id?: string | null
+        }
+        Update: {
+          content?: string | null
+          created_at?: string | null
+          id?: string
+          language?: string | null
+          name?: string | null
+          question_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_coding_question_files_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "coding_questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      coding_questions: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          difficulty: string | null
+          id: string
+          solution: string | null
+          title: string | null
+          with_browser: boolean | null
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          difficulty?: string | null
+          id?: string
+          solution?: string | null
+          title?: string | null
+          with_browser?: boolean | null
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          difficulty?: string | null
+          id?: string
+          solution?: string | null
+          title?: string | null
+          with_browser?: boolean | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string

@@ -1,9 +1,11 @@
-import { createBrowserClient } from '@supabase/ssr'
-import type { Database } from '@/lib/supabase'
-import type { TypedSupabaseClient } from '@/utils/typed-supabase-client'
-import { useMemo } from 'react'
+'use client'
 
-let client: TypedSupabaseClient | undefined
+import { createBrowserClient } from '@supabase/ssr'
+import type { Database } from '@/types/supabase'
+import { useMemo } from 'react'
+import { SupabaseClient } from '@supabase/supabase-js'
+
+let client: SupabaseClient<Database> | undefined
 
 function getSupabaseBrowserClient() {
   if (client) {
@@ -12,7 +14,7 @@ function getSupabaseBrowserClient() {
 
   client = createBrowserClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
   )
 
   return client
