@@ -6,12 +6,13 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Card } from '@/components/ui/card'
-import { useState } from 'react'
+import { useTransition } from 'react'
 import { PasswordInput } from '@/components/custom/password-input'
 import Link from 'next/link'
 import { toast } from '@/components/ui/use-toast'
-import { useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
+import { redirect, useRouter } from 'next/navigation'
+import { loginWithEmailAndPassword } from '../actions'
+import { AuthTokenResponse } from '@supabase/supabase-js'
 
 const FormSchema = z.object({
   email: z.string().min(1, { message: 'Please enter your email' }).email({ message: 'Invalid email address' }),
@@ -26,7 +27,7 @@ const FormSchema = z.object({
 })
 
 export default function Login() {
-  const [isLoading, setIsLoading] = useState(false)
+  const [isPending, startTransition] = useTransition()
   const router = useRouter()
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -37,29 +38,23 @@ export default function Login() {
     },
   })
 
-  const handleSignIn = async (credentials: z.infer<typeof FormSchema>) => {
-    setIsLoading(true)
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: credentials.email,
-      password: credentials.password,
-    })
-    console.log(data)
-    if (error) {
-      setIsLoading(false)
+  function handleSignIn(data: z.infer<typeof FormSchema>) {
+    startTransition(async () => {
+      const { error } = JSON.parse(await loginWithEmailAndPassword(data)) as AuthTokenResponse
 
-      return toast({
-        title: 'Error',
-        description: error.message,
-        variant: 'destructive',
-      })
-    }
-    setIsLoading(false)
-    toast({
-      title: 'Success',
-      description: 'Sign in successful',
+      if (error) {
+        toast({
+          title: 'Failed to login',
+          variant: 'destructive',
+          description: error.message,
+        })
+      } else {
+        toast({
+          title: 'Successfully login 🎉',
+        })
+        redirect('/')
+      }
     })
-
-    router.push('/')
   }
 
   return (
@@ -104,7 +99,7 @@ export default function Login() {
                 </FormItem>
               )}
             />
-            <Button loading={isLoading} type="submit">
+            <Button loading={isPending} type="submit">
               Login
             </Button>
           </form>

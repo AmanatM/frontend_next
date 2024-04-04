@@ -10,8 +10,8 @@ import { useState } from 'react'
 import { PasswordInput } from '@/components/custom/password-input'
 import Link from 'next/link'
 import { toast } from '@/components/ui/use-toast'
-import { supabase } from '@/lib/supabase'
-import { useRouter } from 'next/navigation'
+import { redirect } from 'next/navigation'
+import { signUpWithEmailAndPassword } from '../actions'
 
 const FormSchema = z
   .object({
@@ -33,7 +33,6 @@ const FormSchema = z
 
 export default function SignUp() {
   const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -46,27 +45,24 @@ export default function SignUp() {
 
   const handleSignUp = async (credentials: z.infer<typeof FormSchema>) => {
     setIsLoading(true)
-    console.log(credentials)
-    const signUpResult = await supabase.auth.signUp({
-      email: credentials.email,
-      password: credentials.password,
-    })
-    console.log({ signUpResult })
-    if (signUpResult.error) {
+
+    const { error } = JSON.parse(await signUpWithEmailAndPassword(credentials))
+
+    if (error) {
+      setIsLoading(false)
+      toast({
+        title: 'Failed to create account',
+        variant: 'destructive',
+        description: error.message,
+      })
+    } else {
       setIsLoading(false)
 
-      return toast({
-        title: 'Error',
-        description: signUpResult.error.message,
-        variant: 'destructive',
+      toast({
+        title: 'Successfully created account 🎉',
       })
+      redirect('/')
     }
-    setIsLoading(false)
-    toast({
-      title: 'Success',
-      description: 'Sign up successful',
-    })
-    router.push('/')
   }
 
   return (

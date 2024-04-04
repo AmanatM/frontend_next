@@ -12,14 +12,14 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { UserRound } from 'lucide-react'
 import Link from 'next/link'
-import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import { toast } from './ui/use-toast'
+import { logout } from '@/app/(auth)/actions'
 
 export function UserNav() {
   const router = useRouter()
   const handleLogout = async () => {
-    await supabase.auth.signOut()
+    await logout()
     toast({ title: 'Logged out', description: 'You have been logged out' })
     router.push('/login')
   }
