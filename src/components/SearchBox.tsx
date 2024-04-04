@@ -1,3 +1,4 @@
+'use client'
 import * as React from 'react'
 
 import { cn } from '@/lib/utils'
@@ -67,10 +68,10 @@ export function SearchBox() {
           <CommandGroup heading="Links">
             {side_nav_links.map(navItem => (
               <CommandItem
-                key={navItem.url}
+                key={navItem.title}
                 value={navItem.title}
                 onSelect={() => {
-                  runCommand(() => router.push(navItem.url))
+                  runCommand(() => router.push(navItem.url.pathname as any))
                 }}
               >
                 <navItem.icon className="mr-2 h-4 w-4" />
