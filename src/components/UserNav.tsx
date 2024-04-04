@@ -47,7 +47,7 @@ export function UserNav() {
             <Link href="/profile">Profile</Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
-            <Link href="/profile/appearance">Appearance</Link>
+            <Link href="/profile">Appearance</Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
