@@ -21,6 +21,10 @@ export default function Coding() {
         <Button className="gap-x-2" leftIcon={<Dock size={17} />} asChild>
           <Link href={'/coding/e36d78a8-dbcd-4fdd-9627-f0b7368476cb'}>Creating a navbar</Link>
         </Button>
+
+        <Button className="gap-x-2" leftIcon={<Dock size={17} />} asChild>
+          <Link href={'/coding/sandpack'}>Sandpack</Link>
+        </Button>
       </div>
       <Separator />
       <div className="space-y-3">

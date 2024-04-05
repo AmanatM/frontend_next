@@ -2,9 +2,11 @@ import type { Metadata, Viewport } from 'next'
 
 import { Inter } from 'next/font/google'
 import '@/styles/globals.css'
+
 import { ThemeProvider } from '@/providers/theme-provider'
 import { Toaster } from '@/components/ui/toaster'
 import { ReactQueryClientProvider } from '@/providers/query-provider'
+import { SandpackCSS } from '@/components/sandpack-styles'
 
 const inter = Inter({ subsets: ['latin'] })
 

@@ -10,6 +10,8 @@
     "typegen": "supabase gen types typescript --project-id \"dmoybqscixrzkyjnhtrj\" --schema public > src/supabase-utils/database.types.ts"
   },
   "dependencies": {
+    "@codesandbox/sandpack-react": "^2.13.7",
+    "@codesandbox/sandpack-themes": "^2.0.21",
     "@hookform/resolvers": "^3.3.4",
     "@monaco-editor/react": "^4.6.0",
     "@radix-ui/react-alert-dialog": "^1.0.5",

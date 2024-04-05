@@ -19,7 +19,7 @@ type tabs = {
 
 type ResizablePanelTabsProps = {
   children: React.ReactNode
-  tabs: tabs[]
+  tabs?: tabs[]
   defaultValue: string
   minSize?: number
   defaultSize?: number
@@ -27,6 +27,7 @@ type ResizablePanelTabsProps = {
 
 export function ResizablePanelTabs({ children, tabs, defaultValue, minSize, defaultSize }: ResizablePanelTabsProps) {
   const [isFullScreen, setIsFullScreen] = useState(false)
+  const tabsLayout = tabs !== undefined && tabs !== null
 
   return (
     <ResizablePanel
@@ -36,20 +37,29 @@ export function ResizablePanelTabs({ children, tabs, defaultValue, minSize, defa
     >
       <Tabs defaultValue={defaultValue} asChild>
         <Card className="h-full overflow-clip flex flex-col">
-          <div className="h-10 flex flex-none items-center justify-between py-0 px-2">
-            <ScrollArea className="whitespace-nowrap">
-              <TabsList className=" bg-inherit w-max">
-                {tabs.map(tab => (
-                  <TabsTrigger key={tab.value} value={tab.value} className="!bg-transparent !shadow-none space-x-2">
-                    {tab.icon && <>{tab.icon}</>}
-                    <TypographySmall className="font-normal">{tab.label}</TypographySmall>
-                  </TabsTrigger>
-                ))}
-              </TabsList>
-              <ScrollBar orientation="horizontal" className="h-1.5" />
-            </ScrollArea>
+          <div
+            className={cn('h-10 relative flex flex-none items-center justify-between py-0 px-2', !tabsLayout && 'h-0')}
+          >
+            {tabsLayout && (
+              <ScrollArea className="whitespace-nowrap">
+                <TabsList className=" bg-inherit w-max">
+                  {tabs?.map(tab => (
+                    <TabsTrigger key={tab.value} value={tab.value} className="!bg-transparent !shadow-none space-x-2">
+                      {tab.icon && <>{tab.icon}</>}
+                      <TypographySmall className="font-normal">{tab.label}</TypographySmall>
+                    </TabsTrigger>
+                  ))}
+                </TabsList>
+                <ScrollBar orientation="horizontal" className="h-1.5" />
+              </ScrollArea>
+            )}
 
-            <div className="flex flex-none space-x-1">
+            <div
+              className={cn(
+                'flex flex-none space-x-1 z-10 transition-none',
+                !tabsLayout && 'absolute top-[2px] right-[10px]',
+              )}
+            >
               <DropdownMenu>
                 {!isFullScreen ? (
                   <DropdownMenuTrigger asChild>
