@@ -1,12 +1,5 @@
 'use client'
-import {
-  SandpackCodeEditor,
-  SandpackLayout,
-  SandpackPreview,
-  SandpackProvider,
-  SandpackConsole,
-  SandpackTheme,
-} from '@codesandbox/sandpack-react'
+import { SandpackPreview, SandpackProvider, SandpackConsole } from '@codesandbox/sandpack-react'
 import { cn } from '@/lib/utils'
 import { ResizablePanelGroup } from '@/components/ui/resizable'
 import { useIsMobileBreakpoint } from '@/hooks/useIsMobileBreakpoint'
@@ -17,9 +10,7 @@ import { ResizeHandle } from '../[questionId]/_components/ResizableHandleCustom'
 import { ResizablePanelTabs } from '../[questionId]/_components/ResizablePanelTabs'
 import { BottomToolbar } from './_components/BottomToolBar'
 import { browserTabs, descriptionTabs } from './utils/tabs-data'
-import { mockFiles } from './utils/mockFiles'
 import { useTheme } from 'next-themes'
-import { useSandpack } from '@codesandbox/sandpack-react'
 import { MonacoEditor } from './_components/MonacoEditor'
 
 // const SimpleCodeViewer = () => {
@@ -30,30 +21,15 @@ import { MonacoEditor } from './_components/MonacoEditor'
 //   return <pre>{code}</pre>
 // }
 
-const files = {
-  '/App.js': `
-import React from 'react';
-function App() {
-  const [count, setCount] = React.useState(0);
-  
-  return (
-    <button onClick={() => setCount(count + 1)}>
-      Count: {count}
-    </button>
-  );
-}
-export default App;
-  `,
-}
-
 export default function Example() {
   const isMobileBreakpoint = useIsMobileBreakpoint()
-  // const { theme } = useTheme()
-  // const globalTheme = theme === 'system' ? 'auto' : theme
+  const { resolvedTheme } = useTheme()
+
   return (
     <main id="content" className={cn('flex size-full pt-3 px-3 overflow-scroll md:flex-col')}>
       <SandpackProvider
         template="static"
+        theme={resolvedTheme === 'dark' ? 'dark' : 'light'}
         className={'!size-full'}
         files={{
           '/index.html': '<div id="root"><h1>Hello title mitle</h1></div>',
@@ -83,7 +59,8 @@ export default function Example() {
           {/* Editor Panel*/}
           <ResizablePanelTabs defaultSize={40} minSize={15} defaultValue="editor">
             <TabsContent value="editor" className="p-0 size-full">
-              <SandpackCodeEditor className="size-full" />
+              {/* <SandpackCodeEditor className="size-full" /> */}
+              <MonacoEditor />
             </TabsContent>
           </ResizablePanelTabs>
 

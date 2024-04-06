@@ -31,6 +31,9 @@ export default function RootLayout({
 }>) {
   return (
     <ReactQueryClientProvider>
+      <head>
+        <SandpackCSS />
+      </head>
       <html lang="en" suppressHydrationWarning>
         <body className={inter.className}>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
