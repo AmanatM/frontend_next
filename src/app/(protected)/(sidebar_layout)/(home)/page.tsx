@@ -12,8 +12,8 @@ export default function Home() {
   return (
     <DashboardContainer className="space-y-8">
       <div className="space-y-0.5">
-        <TypographyH3>Home</TypographyH3>
-        <TypographyMuted>Overview page</TypographyMuted>
+        <TypographyH3>Updated Home</TypographyH3>
+        <TypographyMuted>Updated page</TypographyMuted>
       </div>
       <ProgressSimple />
       <div className="space-y-3">
