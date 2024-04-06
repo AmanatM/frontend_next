@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typegen": "supabase gen types typescript --project-id \"dmoybqscixrzkyjnhtrj\" --schema public > src/supabase-utils/database.types.ts"
+    "typegen": "supabase gen types typescript --linked --schema=public > src/supabase-utils/database.types.ts"
   },
   "dependencies": {
     "@codesandbox/sandpack-react": "^2.13.7",

@@ -6,6 +6,13 @@ import rehypeRaw from 'rehype-raw'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { vscDarkPlus } from 'react-syntax-highlighter/dist/cjs/styles/prism'
 
+/**
+ * Renders markdown content using the Markdown component.
+ *
+ * @param props - The component props.
+ * @param props.children - The markdown content to render.
+ * @returns The rendered markdown.
+ */
 export function MarkdownRenderer(props: { children: string | null | undefined }) {
   return (
     <Markdown

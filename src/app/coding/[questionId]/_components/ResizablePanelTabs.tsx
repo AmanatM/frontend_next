@@ -33,7 +33,7 @@ export function ResizablePanelTabs({ children, tabs, defaultValue, minSize, defa
     <ResizablePanel
       minSize={minSize}
       defaultSize={defaultSize}
-      className={cn('inset-0 md:overflow-auto md:flex-auto', isFullScreen ? 'absolute z-20 ' : '')}
+      className={cn('inset-0 overflow-hidden md:flex-auto', isFullScreen ? 'absolute z-20 ' : '')}
     >
       <Tabs defaultValue={defaultValue} asChild>
         <Card className="h-full overflow-clip flex flex-col">
