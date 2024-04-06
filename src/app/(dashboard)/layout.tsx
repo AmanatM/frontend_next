@@ -7,16 +7,14 @@ export default async function SidebarLayout({
   children: React.ReactNode
 }>) {
   return (
-    <div className="relative h-full bg-background">
-      <MenuTopBar />
-
-      <div className="flex flex-row pt-14">
+    <>
+      <div className="flex flex-row">
         <Sidebar />
 
         <main id="content" className="grow">
           {children}
         </main>
       </div>
-    </div>
+    </>
   )
 }

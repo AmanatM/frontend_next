@@ -52,7 +52,7 @@ export default function Login() {
         toast({
           title: 'Successfully login 🎉',
         })
-        redirect('/')
+        router.push('/')
       }
     })
   }

@@ -37,6 +37,7 @@ export const TypographySmall = React.forwardRef<HTMLDivElement, React.HTMLAttrib
 )
 TypographySmall.displayName = 'TypographySmall'
 
+/** P tag with `text-sm text-muted-foreground` tailwind classes */
 export const TypographyMuted = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
     <p ref={ref} className={cn('text-sm text-muted-foreground', className)} {...props} />
