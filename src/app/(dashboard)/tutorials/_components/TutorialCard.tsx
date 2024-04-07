@@ -1,40 +1,71 @@
-import { AlignHorizontalSpaceAround, WandSparkles } from 'lucide-react'
+import {
+  AlignHorizontalSpaceAround,
+  ChevronDownIcon,
+  CircleIcon,
+  EllipsisVertical,
+  PlusIcon,
+  StarIcon,
+  WandSparkles,
+} from 'lucide-react'
 import { TypographyMuted } from '../../../../components/typography'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../../../../components/ui/card'
 import { Badge } from '../../../../components/ui/badge'
 import { Tutorial } from '@/mockData/mock_tutorials'
 import Link from 'next/link'
+import { Button } from '@/components/custom/button'
+import { Separator } from '@/components/ui/separator'
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 
 function TutorialCard({ description, title, interactive, id, tags }: Tutorial) {
   return (
     <Link href={`/tutorials/${id}`}>
       <Card>
-        <CardHeader>
-          <div className="flex items-center space-x-4">
-            <div className="flex-shrink-0 w-8 h-8 rounded-xl overflow-hidden">
-              <AlignHorizontalSpaceAround className="w-full h-full" />
-            </div>
-            <div className="grid gap-0.5">
-              <CardTitle className="text-base">{title}</CardTitle>
-              <CardDescription className="text-sm">{description}</CardDescription>
-            </div>
+        <CardHeader className="grid grid-cols-[1fr_40px] items-start gap-4 space-y-0">
+          <div className="space-y-1">
+            <CardTitle>How to center a div in CSS</CardTitle>
+            <CardDescription>
+              Beautifully designed components that you can copy and paste into your apps. Accessible. Customizable. Open
+              Source.
+            </CardDescription>
           </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="px-2 shadow-none  space-x-1 rounded-md text-secondary-foreground">
+                <EllipsisVertical className="h-4 w-4 text-secondary-foreground" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" alignOffset={-5} className="w-[200px]" forceMount>
+              <DropdownMenuLabel>Suggested Lists</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuCheckboxItem checked>Future Ideas</DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem>My Stack</DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem>Inspiration</DropdownMenuCheckboxItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <PlusIcon className="mr-2 h-4 w-4" /> Create List
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </CardHeader>
-        <CardContent className="px-4 pb-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              {tags.map(tag => (
-                <Badge key={tag} variant="outline">
-                  {tag}
-                </Badge>
-              ))}
+        <CardContent>
+          <div className="flex space-x-4 text-sm text-muted-foreground">
+            <div className="flex items-center">
+              <CircleIcon className="mr-1 h-3 w-3 fill-sky-400 text-sky-400" />
+              CSS
             </div>
-            {interactive && (
-              <div className="flex items-center space-x-1">
-                <WandSparkles className="w-4 h-4 text-muted-foreground" />
-                <TypographyMuted>Interactive</TypographyMuted>
-              </div>
-            )}
+            <div className="flex items-center">
+              <StarIcon className="mr-1 h-3 w-3" />
+              20k
+            </div>
+            <div>Updated April 2023</div>
           </div>
         </CardContent>
       </Card>

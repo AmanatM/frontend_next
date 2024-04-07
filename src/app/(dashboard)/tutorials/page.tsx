@@ -11,7 +11,7 @@ export default function Tutorials() {
         <TypographyH3>Tutorials</TypographyH3>
         <TypographyMuted>Interactive tutorials</TypographyMuted>
       </div>
-      <div className="grid gap-4 lg:grid-cols-2">
+      <div className="grid gap-6 lg:grid-cols-2">
         {mockTutorials.map(tutorial => (
           <TutorialCard key={tutorial.id} {...tutorial} />
         ))}

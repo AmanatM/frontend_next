@@ -54,7 +54,7 @@ export default function SignUp() {
     } else {
       setIsLoading(false)
 
-      toast('Successfully created account 🎉')
+      toast.success('Successfully created account 🎉')
       redirect('/')
     }
   }

@@ -45,7 +45,7 @@ export default function Login() {
       if (error) {
         toast.error(error.message)
       } else {
-        toast('Successfully login 🎉')
+        toast.success('Successfully login 🎉')
         router.push('/')
       }
     })
