@@ -9,7 +9,7 @@ import { Card } from '@/components/ui/card'
 import { useState } from 'react'
 import { PasswordInput } from '@/components/custom/password-input'
 import Link from 'next/link'
-import { toast } from '@/components/ui/use-toast'
+import { toast } from 'sonner'
 import { redirect } from 'next/navigation'
 import { signUpWithEmailAndPassword } from '../actions'
 
@@ -50,17 +50,11 @@ export default function SignUp() {
 
     if (error) {
       setIsLoading(false)
-      toast({
-        title: 'Failed to create account',
-        variant: 'destructive',
-        description: error.message,
-      })
+      toast.error('Failed to create account')
     } else {
       setIsLoading(false)
 
-      toast({
-        title: 'Successfully created account 🎉',
-      })
+      toast('Successfully created account 🎉')
       redirect('/')
     }
   }

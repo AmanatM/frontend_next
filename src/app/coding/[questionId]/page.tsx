@@ -13,7 +13,6 @@ import { browserTabs, descriptionTabs } from './utils/tabs-data'
 import { useTheme } from 'next-themes'
 import { MonacoEditor } from './_components/MonacoEditor'
 import { useEffect, useState } from 'react'
-import useSupabaseBrowser from '@/supabase-utils/supabase-client'
 import { getCodingQuestionById } from '@/mockData/mock_codingQuestions'
 
 type FilesObject = {

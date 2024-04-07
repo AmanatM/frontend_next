@@ -9,10 +9,10 @@ import { Card } from '@/components/ui/card'
 import { useTransition } from 'react'
 import { PasswordInput } from '@/components/custom/password-input'
 import Link from 'next/link'
-import { toast } from '@/components/ui/use-toast'
 import { redirect, useRouter } from 'next/navigation'
 import { loginWithEmailAndPassword } from '../actions'
 import { AuthTokenResponse } from '@supabase/supabase-js'
+import { toast } from 'sonner'
 
 const FormSchema = z.object({
   email: z.string().min(1, { message: 'Please enter your email' }).email({ message: 'Invalid email address' }),
@@ -43,15 +43,9 @@ export default function Login() {
       const { error } = JSON.parse(await loginWithEmailAndPassword(data)) as AuthTokenResponse
 
       if (error) {
-        toast({
-          title: 'Failed to login',
-          variant: 'destructive',
-          description: error.message,
-        })
+        toast.error(error.message)
       } else {
-        toast({
-          title: 'Successfully login 🎉',
-        })
+        toast('Successfully login 🎉')
         router.push('/')
       }
     })

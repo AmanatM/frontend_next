@@ -11,10 +11,6 @@ export default async function Home() {
         <TypographyMuted>Updated page</TypographyMuted>
       </div>
       <ProgressSimple />
-      <ProgressSimple />
-      <ProgressSimple />
-      <ProgressSimple />
-      <ProgressSimple />
     </DashboardContainer>
   )
 }

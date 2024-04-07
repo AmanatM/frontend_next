@@ -13,14 +13,19 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { UserRound } from 'lucide-react'
 import Link from 'next/link'
-import { toast } from './ui/use-toast'
+import { toast } from 'sonner'
 import { logout } from '@/app/(auth)/actions'
 import { User } from '@supabase/supabase-js'
 
 export function UserNav({ user }: { user: User | null }) {
   const handleLogout = async () => {
-    await logout()
-    toast({ title: 'Logged out', description: 'You have been logged out' })
+    toast.promise(logout(), {
+      loading: 'Logging out...',
+      success: data => {
+        return `Signed out successfully`
+      },
+      error: 'Something went wrong',
+    })
   }
 
   if (!user)

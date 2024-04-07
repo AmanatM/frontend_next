@@ -4,10 +4,10 @@ import { Inter } from 'next/font/google'
 import '@/styles/globals.css'
 
 import { ThemeProvider } from '@/providers/theme-provider'
-import { Toaster } from '@/components/ui/toaster'
+import { Toaster } from '@/components/ui/sonner'
 import { ReactQueryClientProvider } from '@/providers/query-provider'
 import { SandpackCSS } from '@/components/sandpack-styles'
-import { MenuTopBar } from '@/components/Header'
+import { MenuTopBar } from '@/components/Header/Header'
 import { cn } from '@/lib/utils'
 
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'

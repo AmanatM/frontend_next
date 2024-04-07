@@ -2,8 +2,8 @@
 import { side_nav_links } from '@/config/side_nav_links'
 import { cn } from '@/lib/utils'
 import { Menu } from 'lucide-react'
-import { Button, buttonVariants } from './ui/button'
-import { Sheet, SheetContent, SheetTrigger } from './ui/sheet'
+import { Button, buttonVariants } from '../ui/button'
+import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet'
 import { useState } from 'react'
 import Link from 'next/link'
 

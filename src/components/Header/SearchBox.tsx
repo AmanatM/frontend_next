@@ -11,7 +11,7 @@ import {
   CommandList,
   CommandSeparator,
 } from '@/components/ui/command'
-import { Button } from './ui/button'
+import { Button } from '../ui/button'
 import { useEffect, useState } from 'react'
 import { side_nav_links } from '@/config/side_nav_links'
 import { useRouter } from 'next/navigation'

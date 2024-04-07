@@ -1,7 +1,7 @@
 import { AlignHorizontalSpaceAround, WandSparkles } from 'lucide-react'
-import { TypographyMuted } from './typography'
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from './ui/card'
-import { Badge } from './ui/badge'
+import { TypographyMuted } from '../../../../components/typography'
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../../../../components/ui/card'
+import { Badge } from '../../../../components/ui/badge'
 import { Tutorial } from '@/mockData/mock_tutorials'
 import Link from 'next/link'
 
