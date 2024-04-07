@@ -19,7 +19,7 @@ export function MenuTopBar() {
   }
 
   return (
-    <header className="h-14 fixed z-50 top-0 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <header className="h-14 sticky z-50 top-0 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container px-4 md:px-8 flex h-full max-w-screen-2xl items-center">
         <div className="mr-4 flex text-sm">
           <Link href="/" className="mr-10 flex items-center space-x-2">

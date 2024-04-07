@@ -42,7 +42,7 @@ export default function RootLayout({
         <ReactQueryClientProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
             <MenuTopBar />
-            <div className="pt-14 min-h-dvh">{children}</div>
+            <div className="grow">{children}</div>
             <Toaster />
           </ThemeProvider>
         </ReactQueryClientProvider>
