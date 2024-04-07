@@ -10,6 +10,8 @@ import { SandpackCSS } from '@/components/sandpack-styles'
 import { MenuTopBar } from '@/components/Header'
 import { cn } from '@/lib/utils'
 
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -32,19 +34,19 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <ReactQueryClientProvider>
+    <html lang="en" suppressHydrationWarning>
       <head>
         <SandpackCSS />
       </head>
-      <html lang="en" suppressHydrationWarning>
-        <body className={inter.className}>
+      <body className={inter.className}>
+        <ReactQueryClientProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
             <MenuTopBar />
             <div className="pt-14 min-h-dvh">{children}</div>
             <Toaster />
           </ThemeProvider>
-        </body>
-      </html>
-    </ReactQueryClientProvider>
+        </ReactQueryClientProvider>
+      </body>
+    </html>
   )
 }

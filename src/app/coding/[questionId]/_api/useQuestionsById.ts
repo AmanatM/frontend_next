@@ -1,7 +1,7 @@
-import {  TypedSupabaseClient } from "@/supabase-utils/types";
+import { CodingQuestion, TypedSupabaseClient } from '@/supabase-utils/types'
+import { QueryKey, UseQueryOptions } from '@tanstack/react-query'
 
-
-export function getQuestionById (client: TypedSupabaseClient, questionId: string){
+export function getQuestionById(client: TypedSupabaseClient, questionId: string) {
   return client
     .from('coding_questions')
     .select(
@@ -13,5 +13,3 @@ export function getQuestionById (client: TypedSupabaseClient, questionId: string
     .throwOnError()
     .single()
 }
-
-

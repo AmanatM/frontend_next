@@ -18,8 +18,6 @@ function getSupabaseBrowserClient() {
   return client
 }
 
-function useSupabaseBrowser() {
+export default function useSupabaseBrowser() {
   return useMemo(getSupabaseBrowserClient, [])
 }
-
-export default useSupabaseBrowser
