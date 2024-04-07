@@ -14,12 +14,14 @@ import { UserRound } from 'lucide-react'
 import Link from 'next/link'
 import { toast } from './ui/use-toast'
 import { logout } from '@/app/(auth)/actions'
+import { createClientServer } from '@/supabase-utils/supabase-server'
 
-export function UserNav() {
+export async function UserNav() {
   const handleLogout = async () => {
     await logout()
     toast({ title: 'Logged out', description: 'You have been logged out' })
   }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

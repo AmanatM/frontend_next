@@ -9,6 +9,39 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      _prisma_migrations: {
+        Row: {
+          applied_steps_count: number
+          checksum: string
+          finished_at: string | null
+          id: string
+          logs: string | null
+          migration_name: string
+          rolled_back_at: string | null
+          started_at: string
+        }
+        Insert: {
+          applied_steps_count?: number
+          checksum: string
+          finished_at?: string | null
+          id: string
+          logs?: string | null
+          migration_name: string
+          rolled_back_at?: string | null
+          started_at?: string
+        }
+        Update: {
+          applied_steps_count?: number
+          checksum?: string
+          finished_at?: string | null
+          id?: string
+          logs?: string | null
+          migration_name?: string
+          rolled_back_at?: string | null
+          started_at?: string
+        }
+        Relationships: []
+      }
       coding_question_files: {
         Row: {
           content: string | null
@@ -99,6 +132,24 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      tutorials: {
+        Row: {
+          created_at: string
+          id: string
+          title: string | null
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          title?: string | null
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          title?: string | null
+        }
+        Relationships: []
       }
     }
     Views: {

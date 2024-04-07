@@ -58,7 +58,7 @@ export default function Login() {
   }
 
   return (
-    <div className="mx-auto flex justify-center items-center h-screen">
+    <div className="mx-auto flex justify-center items-center h-dvh">
       {' '}
       {/* Adjusted h-lvh to h-screen for simplicity */}
       <Card className="p-6 max-w-full w-[500px]">
