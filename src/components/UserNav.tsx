@@ -1,3 +1,4 @@
+'use client'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
@@ -14,14 +15,20 @@ import { UserRound } from 'lucide-react'
 import Link from 'next/link'
 import { toast } from './ui/use-toast'
 import { logout } from '@/app/(auth)/actions'
-import { createClientServer } from '@/supabase-utils/supabase-server'
+import { User } from '@supabase/supabase-js'
 
-export async function UserNav() {
+export function UserNav({ user }: { user: User | null }) {
   const handleLogout = async () => {
     await logout()
     toast({ title: 'Logged out', description: 'You have been logged out' })
   }
 
+  if (!user)
+    return (
+      <Button variant="outline" asChild>
+        <Link href="/login">Login</Link>
+      </Button>
+    )
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -37,7 +44,7 @@ export async function UserNav() {
       <DropdownMenuContent className="w-56" align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-light leading-none">example@email.com</p>
+            <p className="text-sm font-light leading-none">{user.email}</p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
