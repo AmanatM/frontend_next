@@ -13,9 +13,8 @@ import { browserTabs, descriptionTabs } from './utils/tabs-data'
 import { useTheme } from 'next-themes'
 import { MonacoEditor } from './_components/MonacoEditor'
 import { useEffect, useState } from 'react'
-import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
-import { getQuestionById } from './_api/useQuestionsById'
 import useSupabaseBrowser from '@/supabase-utils/supabase-client'
+import { getCodingQuestionById } from '@/mockData/mock_codingQuestions'
 
 type FilesObject = {
   [key: string]: {
@@ -26,14 +25,13 @@ type FilesObject = {
 export default function Example({ params }: { params: { questionId: string } }) {
   const isMobileBreakpoint = useIsMobileBreakpoint()
   const [isMounted, setIsMounted] = useState(false)
-  const supabase = useSupabaseBrowser()
 
   const { resolvedTheme } = useTheme()
   useEffect(() => {
     setIsMounted(true)
   }, [])
 
-  const { data: coding_question, isLoading, isError } = useQuery(getQuestionById(supabase, params.questionId))
+  const coding_question = getCodingQuestionById(params.questionId)
 
   const filesObject = coding_question?.coding_question_files.reduce((obj: FilesObject, file) => {
     if (file.path !== null && file.content !== null) {
@@ -42,7 +40,8 @@ export default function Example({ params }: { params: { questionId: string } }) 
     return obj
   }, {})
 
-  if (isLoading) return <div>Loading...</div>
+  if (!coding_question) return null
+
   return (
     <main id="content" className={cn('flex size-full pt-3 px-3 overflow-scroll flex-col !h-[calc(100dvh-3.5rem)]')}>
       {}

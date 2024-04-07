@@ -15,15 +15,15 @@ export default function Coding() {
       <div className="space-y-3">
         <TypographyH4>1. User interface layout: </TypographyH4>
         <Button className="gap-x-2 mr-2" leftIcon={<Dock size={17} />} asChild>
-          <Link href={'/coding/1f0721e3-3569-498d-a071-0e697e0e6ccf'}>Styling Text with css</Link>
+          <Link href={'/coding/1'}>Styling Text with css</Link>
         </Button>
 
         <Button className="gap-x-2" leftIcon={<Dock size={17} />} asChild>
-          <Link href={'/coding/e36d78a8-dbcd-4fdd-9627-f0b7368476cb'}>Creating a navbar</Link>
+          <Link href={'/coding/2'}>Creating a navbar</Link>
         </Button>
 
         <Button className="gap-x-2" leftIcon={<Dock size={17} />} asChild>
-          <Link href={'/coding/sandpack'}>Sandpack</Link>
+          <Link href={'/coding/9283'}>Sandpack</Link>
         </Button>
       </div>
       <Separator />
