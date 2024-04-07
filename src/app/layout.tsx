@@ -43,7 +43,7 @@ export default function RootLayout({
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
             <MenuTopBar />
             <div className="grow">{children}</div>
-            <Toaster />
+            <Toaster richColors />
           </ThemeProvider>
         </ReactQueryClientProvider>
       </body>
