@@ -9,10 +9,12 @@ import { Card } from '@/components/ui/card'
 import { useTransition } from 'react'
 import { PasswordInput } from '@/components/custom/password-input'
 import Link from 'next/link'
-import { redirect, useRouter } from 'next/navigation'
+import { useParams, useRouter, useSearchParams } from 'next/navigation'
 import { loginWithEmailAndPassword } from '../actions'
 import { AuthTokenResponse } from '@supabase/supabase-js'
 import { toast } from 'sonner'
+import { UrlObject } from 'url'
+import { Route } from 'next'
 
 const FormSchema = z.object({
   email: z.string().min(1, { message: 'Please enter your email' }).email({ message: 'Invalid email address' }),
@@ -29,6 +31,7 @@ const FormSchema = z.object({
 export default function Login() {
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
+  const searchParams = useSearchParams()
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -46,7 +49,9 @@ export default function Login() {
         toast.error(error.message)
       } else {
         toast.success('Successfully login 🎉')
-        router.push('/')
+        const redirectUrl = searchParams.get('redirectTo') || '/'
+
+        router.replace(redirectUrl as Route)
       }
     })
   }

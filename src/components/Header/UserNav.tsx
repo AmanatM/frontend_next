@@ -16,8 +16,13 @@ import Link from 'next/link'
 import { toast } from 'sonner'
 import { logout } from '@/app/(auth)/actions'
 import { User } from '@supabase/supabase-js'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 export function UserNav({ user }: { user: User | null }) {
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
   const handleLogout = async () => {
     toast.promise(logout(), {
       loading: 'Logging out...',
@@ -28,10 +33,14 @@ export function UserNav({ user }: { user: User | null }) {
     })
   }
 
+  const redirectToLogin = () => {
+    router.push(`/login?redirectTo=${pathname}`)
+  }
+
   if (!user)
     return (
-      <Button variant="outline" asChild>
-        <Link href="/login">Login</Link>
+      <Button variant="outline" onClick={redirectToLogin}>
+        Login
       </Button>
     )
   return (
