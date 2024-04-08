@@ -6,11 +6,11 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Card } from '@/components/ui/card'
-import { useTransition } from 'react'
+import { useState, useTransition } from 'react'
 import { PasswordInput } from '@/components/custom/password-input'
 import Link from 'next/link'
 import { useParams, useRouter, useSearchParams } from 'next/navigation'
-import { loginWithEmailAndPassword } from '../actions'
+import { loginWithEmailAndPassword, signUpWithEmailAndPassword } from '../actions'
 import { AuthTokenResponse } from '@supabase/supabase-js'
 import { toast } from 'sonner'
 import { UrlObject } from 'url'
@@ -29,9 +29,12 @@ const FormSchema = z.object({
 })
 
 export default function Login() {
+  const [isSignUp, setIsSignUp] = useState(false)
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
   const searchParams = useSearchParams()
+
+  const redirectUrl = searchParams.get('redirectTo') || '/'
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -41,17 +44,24 @@ export default function Login() {
     },
   })
 
-  function handleSignIn(data: z.infer<typeof FormSchema>) {
+  const handleAuth = async (credentials: z.infer<typeof FormSchema>) => {
     startTransition(async () => {
-      const { error } = JSON.parse(await loginWithEmailAndPassword(data)) as AuthTokenResponse
-
-      if (error) {
-        toast.error(error.message)
+      if (isSignUp) {
+        const { error } = JSON.parse(await signUpWithEmailAndPassword(credentials))
+        if (error) {
+          toast.error('Failed to create account')
+        } else {
+          toast.success('Successfully created account 🎉')
+          router.replace(redirectUrl as Route)
+        }
       } else {
-        toast.success('Successfully login 🎉')
-        const redirectUrl = searchParams.get('redirectTo') || '/'
-
-        router.replace(redirectUrl as Route)
+        const { error } = JSON.parse(await loginWithEmailAndPassword(credentials)) as AuthTokenResponse
+        if (error) {
+          toast.error(error.message)
+        } else {
+          toast.success('Signed in')
+          router.replace(redirectUrl as Route)
+        }
       }
     })
   }
@@ -61,17 +71,14 @@ export default function Login() {
       {' '}
       {/* Adjusted h-lvh to h-screen for simplicity */}
       <Card className="p-6 max-w-full w-[500px]">
-        <div className="flex flex-col space-y-2 text-left">
+        <div className="flex flex-col space-y-2 text-left mb-4">
           <Link href="/" className="text-2xl font-semibold tracking-tight">
-            Login{/* Adjusted usage of Link */}
+            {isSignUp ? 'Create Account' : 'Login'}
           </Link>
-          <p className="text-sm text-muted-foreground">
-            Enter your email and password below <br />
-            to log into your account
-          </p>
+          <p className="text-sm text-muted-foreground">Enter your email and password below</p>
         </div>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleSignIn)} className="grid space-y-6">
+          <form onSubmit={form.handleSubmit(handleAuth)} className="grid space-y-6">
             <FormField
               control={form.control}
               name="email"
@@ -99,16 +106,25 @@ export default function Login() {
               )}
             />
             <Button loading={isPending} type="submit">
-              Login
+              {isSignUp ? 'Create Account' : 'Login'}
             </Button>
           </form>
         </Form>
-        <p className="mt-4 px-8 text-center text-sm text-muted-foreground">
-          Don&apos;t have an account?{' '}
-          <Link className="underline" href="/signup">
-            Create Account
-          </Link>
-        </p>
+        {isSignUp ? (
+          <p className="mt-4 px-8 text-center text-sm text-muted-foreground">
+            Already have account?{' '}
+            <span className="underline cursor-pointer" onClick={() => setIsSignUp(false)}>
+              Login
+            </span>
+          </p>
+        ) : (
+          <p className="mt-4 px-8 text-center text-sm text-muted-foreground">
+            Don&apos;t have an account?{' '}
+            <span className="underline cursor-pointer" onClick={() => setIsSignUp(true)}>
+              Create Account
+            </span>
+          </p>
+        )}
       </Card>
     </div>
   )

@@ -19,5 +19,4 @@ export async function signUpWithEmailAndPassword(data: { email: string; password
 export async function logout() {
   const supabase = await createClientServer()
   await supabase.auth.signOut()
-  // redirect('/auth')
 }
