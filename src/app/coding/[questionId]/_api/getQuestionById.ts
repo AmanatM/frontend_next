@@ -5,11 +5,9 @@ export function getQuestionById(client: TypedSupabaseClient, questionId: string)
   return client
     .from('coding_questions')
     .select(
-      ` *,
-      coding_question_files(*)
-    `,
+      `*,
+       coding_question_files(*)`,
     )
-    .eq('id', questionId) // Use .eq for exact match instead of .match
-    .throwOnError()
+    .eq('id', questionId)
     .single()
 }

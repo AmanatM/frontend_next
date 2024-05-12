@@ -15,9 +15,13 @@ export default function Coding() {
         <TypographyH3>Coding Questions</TypographyH3>
         <TypographyMuted>Two layout options</TypographyMuted>
       </div>
-      <div>
+      <div className="space-y-3">
         <Button asChild size="lg" variant={'default'}>
-          <Link href="/coding/1">Example coding question</Link>
+          <Link href="/coding/e36d78a8-dbcd-4fdd-9627-f0b7368476cb">Example coding question 1</Link>
+        </Button>
+        <Separator />
+        <Button asChild size="lg" variant={'default'}>
+          <Link href="/coding/1f0721e3-3569-498d-a071-0e697e0e6ccf">Example coding question 2</Link>
         </Button>
       </div>
       <div className="hidden">

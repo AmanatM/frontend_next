@@ -42,7 +42,7 @@ export function ResizablePanelTabs({ children, tabs, defaultValue, minSize, defa
           >
             {tabsLayout && (
               <ScrollArea className="whitespace-nowrap">
-                <TabsList className=" bg-inherit w-max">
+                <TabsList className="bg-inherit w-max">
                   {tabs?.map(tab => (
                     <TabsTrigger key={tab.value} value={tab.value} className="!bg-transparent !shadow-none space-x-2">
                       {tab.icon && <>{tab.icon}</>}

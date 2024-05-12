@@ -1,5 +1,5 @@
 'use client'
-import { SandpackPreview, SandpackProvider, SandpackConsole } from '@codesandbox/sandpack-react'
+import { SandpackPreview, SandpackProvider, SandpackConsole, SandpackFileExplorer } from '@codesandbox/sandpack-react'
 import { cn } from '@/lib/utils'
 import { ResizablePanelGroup } from '@/components/ui/resizable'
 import { useIsMobileBreakpoint } from '@/hooks/useIsMobileBreakpoint'
@@ -13,7 +13,11 @@ import { browserTabs, descriptionTabs } from './utils/tabs-data'
 import { useTheme } from 'next-themes'
 import { MonacoEditor } from './_components/MonacoEditor'
 import { useEffect, useState } from 'react'
-import { getCodingQuestionById } from '@/mockData/mock_codingQuestions'
+import { PanelTop } from 'lucide-react'
+import useSupabaseBrowser from '@/supabase-utils/supabase-client'
+import { set } from 'react-hook-form'
+import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
+import { getQuestionById } from './_api/getQuestionById'
 
 type FilesObject = {
   [key: string]: {
@@ -22,15 +26,23 @@ type FilesObject = {
 }
 
 export default function Example({ params }: { params: { questionId: string } }) {
+  const { resolvedTheme } = useTheme()
+  const supabase = useSupabaseBrowser()
+
   const isMobileBreakpoint = useIsMobileBreakpoint()
   const [isMounted, setIsMounted] = useState(false)
-
-  const { resolvedTheme } = useTheme()
   useEffect(() => {
     setIsMounted(true)
   }, [])
 
-  const coding_question = getCodingQuestionById(params.questionId)
+  const {
+    data: coding_question,
+    isLoading,
+    isError,
+    error,
+  } = useQuery(getQuestionById(supabase, params.questionId), {
+    retry: 1,
+  })
 
   const filesObject = coding_question?.coding_question_files.reduce((obj: FilesObject, file) => {
     if (file.path !== null && file.content !== null) {
@@ -39,11 +51,33 @@ export default function Example({ params }: { params: { questionId: string } }) 
     return obj
   }, {})
 
-  if (!coding_question) return null
+  if (isLoading)
+    return (
+      <main
+        id="content"
+        className={cn(
+          'flex size-full justify-center items-center space-y-3 pt-3 px-3 overflow-scroll flex-col !h-[calc(100dvh-3.5rem)]',
+        )}
+      >
+        <TypographyH4>Loading...</TypographyH4>
+      </main>
+    )
+
+  if (isError || !coding_question)
+    return (
+      <main
+        id="content"
+        className={cn(
+          'flex size-full justify-center items-center space-y-3 pt-3 px-3 overflow-scroll flex-col !h-[calc(100dvh-3.5rem)]',
+        )}
+      >
+        <TypographyH4>Something Went Wrong</TypographyH4>
+        <TypographyP className="text-center">{error?.message}</TypographyP>
+      </main>
+    )
 
   return (
     <main id="content" className={cn('flex size-full pt-3 px-3 overflow-scroll flex-col !h-[calc(100dvh-3.5rem)]')}>
-      {}
       <SandpackProvider
         template="static"
         theme={isMounted && resolvedTheme === 'dark' ? 'dark' : 'light'}
@@ -83,17 +117,20 @@ export default function Example({ params }: { params: { questionId: string } }) 
 
           <ResizeHandle />
           {/* Preview Panel*/}
-          <ResizablePanelTabs defaultSize={30} minSize={15} defaultValue="browser" tabs={browserTabs}>
+          <ResizablePanelTabs
+            defaultSize={30}
+            minSize={15}
+            defaultValue="browser"
+            tabs={[
+              {
+                value: 'browser',
+                label: 'Browser',
+                icon: <PanelTop size={15} />,
+              },
+            ]}
+          >
             <TabsContent value="browser" className="p-0 size-full">
-              <SandpackPreview
-                showNavigator
-                showRefreshButton={true}
-                showOpenInCodeSandbox={false}
-                className={'size-full'}
-              />
-            </TabsContent>
-            <TabsContent value="console" className="p-0 size-full">
-              <SandpackConsole />
+              <SandpackPreview showNavigator={true} showOpenInCodeSandbox={false} className={'size-full'} />
             </TabsContent>
           </ResizablePanelTabs>
         </ResizablePanelGroup>

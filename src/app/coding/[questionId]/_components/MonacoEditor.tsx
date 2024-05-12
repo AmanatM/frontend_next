@@ -15,7 +15,6 @@ export function MonacoEditor() {
   return (
     <SandpackStack className="size-full">
       <FileTabs />
-
       <div className="size-full">
         <Editor
           width="100%"
