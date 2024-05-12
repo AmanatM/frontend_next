@@ -29,13 +29,23 @@ export function ResizablePanelTabs({ children, tabs, defaultValue, minSize, defa
   const [isFullScreen, setIsFullScreen] = useState(false)
   const tabsLayout = tabs !== undefined && tabs !== null
 
+  const [activeTab, setActiveTab] = useState(defaultValue)
+
   return (
     <ResizablePanel
       minSize={minSize}
       defaultSize={defaultSize}
       className={cn('inset-0 overflow-hidden md:flex-auto', isFullScreen ? 'absolute z-20 ' : '')}
     >
-      <Tabs defaultValue={defaultValue} asChild>
+      <Tabs
+        defaultValue={defaultValue}
+        asChild
+        value={activeTab}
+        onValueChange={value => {
+          console.log(value)
+          setActiveTab(value)
+        }}
+      >
         <Card className="h-full overflow-clip flex flex-col">
           <div
             className={cn('h-10 relative flex flex-none items-center justify-between py-0 px-2', !tabsLayout && 'h-0')}

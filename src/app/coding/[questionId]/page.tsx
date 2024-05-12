@@ -19,6 +19,7 @@ import { BottomToolbar } from './_components/BottomToolBar'
 import { browserTabs, descriptionTabs } from './utils/tabs-data'
 import { useTheme } from 'next-themes'
 import { MonacoEditor } from './_components/MonacoEditor'
+import { useHotkeys } from 'react-hotkeys-hook'
 import { useEffect, useState } from 'react'
 import { PanelTop } from 'lucide-react'
 import useSupabaseBrowser from '@/supabase-utils/supabase-client'
@@ -26,6 +27,7 @@ import { set } from 'react-hook-form'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import { getQuestionById } from './_api/getQuestionById'
 import { SandpackTemplate } from '@/supabase-utils/types'
+import { toast } from 'sonner'
 
 type FilesObject = {
   [key: string]: {
@@ -54,6 +56,16 @@ export default function Example({ params }: { params: { questionId: string } }) 
     }
     return obj
   }, {})
+
+  // Save code shortcut(cmd+s)
+  useHotkeys(
+    'meta+s',
+    event => {
+      event.preventDefault()
+      toast.success('Code Saved')
+    },
+    { enableOnFormTags: true },
+  )
 
   if (isLoading)
     return (
@@ -130,9 +142,9 @@ export default function Example({ params }: { params: { questionId: string } }) 
                 className={'size-full'}
               />
             </TabsContent>
-            {/* <TabsContent value="console" className="p-0 size-full">
-              <SandpackConsole className={'size-full'} standalone={true} />
-            </TabsContent> */}
+            <TabsContent value="console" className="p-0 size-full">
+              <SandpackConsole className={'size-full'} standalone={false} />
+            </TabsContent>
           </ResizablePanelTabs>
         </ResizablePanelGroup>
       </SandpackProvider>
