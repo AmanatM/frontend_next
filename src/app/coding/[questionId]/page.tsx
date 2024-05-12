@@ -1,12 +1,5 @@
 'use client'
-import {
-  SandpackPreview,
-  SandpackProvider,
-  SandpackConsole,
-  SandpackFileExplorer,
-  SandpackCodeEditor,
-  SandpackThemeProp,
-} from '@codesandbox/sandpack-react'
+import { SandpackPreview, SandpackProvider, SandpackConsole, SandpackThemeProp } from '@codesandbox/sandpack-react'
 import { cn } from '@/lib/utils'
 import { ResizablePanelGroup } from '@/components/ui/resizable'
 import { useIsMobileBreakpoint } from '@/hooks/useIsMobileBreakpoint'
@@ -19,67 +12,34 @@ import { BottomToolbar } from './_components/BottomToolBar'
 import { browserTabs, descriptionTabs } from './utils/tabs-data'
 import { useTheme } from 'next-themes'
 import { MonacoEditor } from './_components/MonacoEditor'
-import { useHotkeys } from 'react-hotkeys-hook'
-import { useEffect, useState } from 'react'
-import { PanelTop } from 'lucide-react'
 import useSupabaseBrowser from '@/supabase-utils/supabase-client'
-import { set } from 'react-hook-form'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import { getQuestionById } from './_api/getQuestionById'
-import { SandpackTemplate } from '@/supabase-utils/types'
-import { toast } from 'sonner'
 
 type FilesObject = {
   [key: string]: {
     code: string
+    id: string
+    path: string
   }
 }
-
-export default function Example({ params }: { params: { questionId: string } }) {
+export default function CodingQuestion({ params }: { params: { questionId: string } }) {
   const { resolvedTheme } = useTheme()
   const supabase = useSupabaseBrowser()
   const isMobileBreakpoint = useIsMobileBreakpoint()
 
-  const {
-    data: coding_question,
-    isLoading,
-    isError,
-    error,
-  } = useQuery(getQuestionById(supabase, params.questionId), {
-    retry: 1,
-    staleTime: 0,
-  })
+  const { data: coding_question, isLoading, isError, error } = useQuery(getQuestionById(supabase, params.questionId))
+  const coding_question_files = coding_question?.coding_question_files
 
-  const filesObject = coding_question?.coding_question_files.reduce((obj: FilesObject, file) => {
+  const filesObject = coding_question_files?.reduce((obj: FilesObject, file) => {
     if (file.path !== null && file.content !== null) {
-      obj[file.path] = { code: file.content }
+      obj[file.path] = { code: file.content, id: file.id, path: file.path }
     }
     return obj
   }, {})
 
-  // Save code shortcut(cmd+s)
-  useHotkeys(
-    'meta+s',
-    event => {
-      event.preventDefault()
-      toast.success('Code Saved')
-    },
-    { enableOnFormTags: true },
-  )
-
-  if (isLoading)
-    return (
-      <main
-        id="content"
-        className={cn(
-          'flex size-full justify-center items-center space-y-3 pt-3 px-3 overflow-scroll flex-col !h-[calc(100dvh-3.5rem)]',
-        )}
-      >
-        <TypographyH4>Loading...</TypographyH4>
-      </main>
-    )
-
-  if (isError || !coding_question)
+  if (isLoading) return null
+  if (isError || !coding_question || isLoading)
     return (
       <main
         id="content"
@@ -147,9 +107,9 @@ export default function Example({ params }: { params: { questionId: string } }) 
             </TabsContent>
           </ResizablePanelTabs>
         </ResizablePanelGroup>
-      </SandpackProvider>
 
-      <BottomToolbar handleSaveCode={() => console.log('save')} />
+        <BottomToolbar supabase={supabase} filesObject={filesObject} />
+      </SandpackProvider>
     </main>
   )
 }

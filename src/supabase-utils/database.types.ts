@@ -48,7 +48,6 @@ export type Database = {
           created_at: string | null
           id: string
           language: string | null
-          name: string
           path: string | null
           question_id: string | null
         }
@@ -57,7 +56,6 @@ export type Database = {
           created_at?: string | null
           id?: string
           language?: string | null
-          name: string
           path?: string | null
           question_id?: string | null
         }
@@ -66,7 +64,6 @@ export type Database = {
           created_at?: string | null
           id?: string
           language?: string | null
-          name?: string
           path?: string | null
           question_id?: string | null
         }
@@ -131,6 +128,42 @@ export type Database = {
         }
         Relationships: []
       }
+      user_saved_coding_question_files: {
+        Row: {
+          content: string | null
+          created_at: string
+          id: string
+          user_id: string | null
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string
+          id: string
+          user_id?: string | null
+        }
+        Update: {
+          content?: string | null
+          created_at?: string
+          id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_saved_coding_question_files_coding_question_file_id_fkey"
+            columns: ["id"]
+            isOneToOne: true
+            referencedRelation: "coding_question_files"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_saved_coding_question_files_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       users: {
         Row: {
           created_at: string
@@ -165,7 +198,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      sandpackTemplates: "static" | "react"
+      sandpackTemplates: "static" | "vite-react"
       user_roles: "admin"
     }
     CompositeTypes: {

@@ -2,10 +2,70 @@
 import { Button } from '@/components/custom/button'
 import { useIsMobileBreakpoint } from '@/hooks/useIsMobileBreakpoint'
 import { cn } from '@/lib/utils'
+import { useActiveCode, useSandpack } from '@codesandbox/sandpack-react'
 import { Settings, ChevronLeft, List, ChevronRight, Save } from 'lucide-react'
+import { useHotkeys } from 'react-hotkeys-hook'
+import { toast } from 'sonner'
+import { TypedSupabaseClient } from '@/supabase-utils/types'
+import { useRouter, usePathname } from 'next/navigation'
+import { saveCodingQuestionFile } from '../_api/saveCodingFiles'
 
-export function BottomToolbar({ handleSaveCode }: { handleSaveCode: () => void }) {
+type FilesObject = {
+  [key: string]: {
+    code: string
+    id: string
+    path: string
+  }
+}
+export function BottomToolbar({
+  supabase,
+  filesObject,
+}: {
+  supabase: TypedSupabaseClient
+  filesObject: FilesObject | undefined
+}) {
   const isMobileBreakpoint = useIsMobileBreakpoint()
+  const router = useRouter()
+  const pathname = usePathname()
+
+  // Save code function
+  const { sandpack } = useSandpack()
+  const { files, activeFile } = sandpack
+  const { code } = useActiveCode()
+
+  const handleSaveCode = async () => {
+    const { data: user, error: userError } = await supabase.auth.getUser()
+    if (userError) {
+      toast.error('Please login to save code', {
+        action: { label: 'Login', onClick: () => router.push(`/login?redirectTo=${pathname}`) },
+      })
+      return
+    }
+
+    if (!filesObject) return
+
+    const filesArray = Object.values(filesObject).map(file => ({
+      content: files[file.path].code, // Fix: Use file.code instead of file
+      id: file.id,
+      user_id: user.user.id,
+    }))
+
+    toast.promise(saveCodingQuestionFile(supabase, filesArray), {
+      loading: 'Logging out...',
+      success: 'Code saved successfully',
+      error: error => `${error.message}`,
+    })
+  }
+
+  // Save code shortcut(cmd+s)
+  useHotkeys(
+    'meta+s',
+    event => {
+      event.preventDefault()
+      handleSaveCode()
+    },
+    { enableOnFormTags: true },
+  )
   return (
     <div
       className={cn(

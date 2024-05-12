@@ -32,7 +32,7 @@ export async function MenuTopBar() {
           <SearchBox user={user} />
           <ThemeSwitch />
           <UserNav user={user} />
-          <MobileMenu />
+          <MobileMenu user={user} />
         </div>
       </div>
     </header>

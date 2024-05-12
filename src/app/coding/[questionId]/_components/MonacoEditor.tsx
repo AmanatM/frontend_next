@@ -10,9 +10,10 @@ import { useEffect } from 'react'
  * @returns The rendered Monaco Editor component.
  */
 export function MonacoEditor() {
+  const { resolvedTheme } = useTheme()
+
   const { code, updateCode } = useActiveCode()
   const { sandpack } = useSandpack()
-  const { resolvedTheme } = useTheme()
 
   const fileExtenstion = sandpack.activeFile.split('.').pop()
   const resolvedLanguage = fileExtenstion === 'jsx' ? 'javascript' : fileExtenstion
@@ -28,7 +29,7 @@ export function MonacoEditor() {
           language={resolvedLanguage}
           theme={resolvedTheme === 'dark' ? 'vs-dark' : 'vs-light'}
           path={sandpack.activeFile}
-          defaultValue={code}
+          value={code}
           onChange={value => updateCode(value || '')}
           options={{
             minimap: { enabled: false },

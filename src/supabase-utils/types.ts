@@ -8,11 +8,12 @@ export type QuestionFile = Database['public']['Tables']['coding_question_files']
 export type CodingQuestion = Database['public']['Tables']['coding_questions']['Row'] & {
   coding_question_files: QuestionFile[]
 }
-
 export type QuestionsSearchResults = {
   id: string
   title: string
 }
+
+export type SavedCodingQuestionFile = Database['public']['Tables']['user_saved_coding_question_files']['Row']
 
 export type SandpackTemplate =
   | 'angular-cli'

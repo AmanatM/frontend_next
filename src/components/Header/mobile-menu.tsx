@@ -6,8 +6,9 @@ import { Button, buttonVariants } from '../ui/button'
 import { Sheet, SheetContent, SheetTrigger } from '../ui/sheet'
 import { useState } from 'react'
 import Link from 'next/link'
+import { User } from '@supabase/supabase-js'
 
-export function MobileMenu() {
+export function MobileMenu({ user }: { user: User | null }) {
   const [navOpened, setNavOpened] = useState(false)
 
   const toggleNav = () => {
@@ -28,7 +29,11 @@ export function MobileMenu() {
               key={index}
               href={link.url} // Convert UrlObject to string
               onClick={toggleNav}
-              className={cn(buttonVariants({ variant: 'ghost', size: 'lg' }), 'w-full justify-start px-2')}
+              className={cn(
+                buttonVariants({ variant: 'ghost', size: 'lg' }),
+                'w-full justify-start px-2',
+                link.private && !user && 'hidden',
+              )}
             >
               <link.icon className="mr-2 h-5 w-5" />
 
