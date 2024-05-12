@@ -6,11 +6,11 @@ export const browserTabs = [
     label: 'Browser',
     icon: <PanelTop size={15} />,
   },
-  {
-    value: 'console',
-    label: 'Console',
-    icon: <SquareChevronRight size={15} />,
-  },
+  // {
+  //   value: 'console',
+  //   label: 'Console',
+  //   icon: <SquareChevronRight size={15} />,
+  // },
 ]
 
 export const descriptionTabs = [

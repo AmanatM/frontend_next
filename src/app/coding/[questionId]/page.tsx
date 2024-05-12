@@ -5,6 +5,7 @@ import {
   SandpackConsole,
   SandpackFileExplorer,
   SandpackCodeEditor,
+  SandpackThemeProp,
 } from '@codesandbox/sandpack-react'
 import { cn } from '@/lib/utils'
 import { ResizablePanelGroup } from '@/components/ui/resizable'
@@ -35,12 +36,7 @@ type FilesObject = {
 export default function Example({ params }: { params: { questionId: string } }) {
   const { resolvedTheme } = useTheme()
   const supabase = useSupabaseBrowser()
-
   const isMobileBreakpoint = useIsMobileBreakpoint()
-  const [isMounted, setIsMounted] = useState(false)
-  useEffect(() => {
-    setIsMounted(true)
-  }, [])
 
   const {
     data: coding_question,
@@ -88,7 +84,7 @@ export default function Example({ params }: { params: { questionId: string } }) 
     <main id="content" className={cn('flex size-full pt-3 px-3 overflow-scroll flex-col !h-[calc(100dvh-3.5rem)]')}>
       <SandpackProvider
         template={coding_question?.sandpack_template}
-        theme={isMounted && resolvedTheme === 'dark' ? 'dark' : 'dark'}
+        theme={resolvedTheme === undefined ? 'auto' : (resolvedTheme as SandpackThemeProp)}
         className={'!size-full !overflow-hidden'}
         files={filesObject}
       >
@@ -125,26 +121,18 @@ export default function Example({ params }: { params: { questionId: string } }) 
 
           <ResizeHandle />
           {/* Preview Panel*/}
-          <ResizablePanelTabs
-            defaultSize={30}
-            minSize={15}
-            defaultValue="browser"
-            tabs={[
-              {
-                value: 'browser',
-                label: 'Browser',
-                icon: <PanelTop size={15} />,
-              },
-            ]}
-          >
+          <ResizablePanelTabs defaultSize={30} minSize={15} defaultValue="browser" tabs={browserTabs}>
             <TabsContent value="browser" className="p-0 size-full">
               <SandpackPreview
                 showSandpackErrorOverlay={true}
                 showNavigator={true}
-                showOpenInCodeSandbox={true}
+                showOpenInCodeSandbox={false}
                 className={'size-full'}
               />
             </TabsContent>
+            {/* <TabsContent value="console" className="p-0 size-full">
+              <SandpackConsole className={'size-full'} standalone={true} />
+            </TabsContent> */}
           </ResizablePanelTabs>
         </ResizablePanelGroup>
       </SandpackProvider>

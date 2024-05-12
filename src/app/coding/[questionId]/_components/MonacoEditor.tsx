@@ -1,7 +1,8 @@
 'use client'
-import Editor from '@monaco-editor/react'
+import Editor, { useMonaco } from '@monaco-editor/react'
 import { useActiveCode, SandpackStack, FileTabs, useSandpack, SandpackFileExplorer } from '@codesandbox/sandpack-react'
 import { useTheme } from 'next-themes'
+import { useEffect } from 'react'
 
 /**
  * Renders a Monaco Editor component.
