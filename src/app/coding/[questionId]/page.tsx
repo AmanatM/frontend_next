@@ -38,8 +38,7 @@ export default function CodingQuestion({ params }: { params: { questionId: strin
     return obj
   }, {})
 
-  if (isLoading) return null
-  if (isError || !coding_question || isLoading)
+  if (isError || !coding_question || isLoading) {
     return (
       <main
         id="content"
@@ -47,17 +46,19 @@ export default function CodingQuestion({ params }: { params: { questionId: strin
           'flex size-full justify-center items-center space-y-3 pt-3 px-3 overflow-scroll flex-col !h-[calc(100dvh-3.5rem)]',
         )}
       >
-        <TypographyH4>Something Went Wrong</TypographyH4>
-        <TypographyP className="text-center">{error?.message}</TypographyP>
+        {isLoading && !coding_question && <TypographyH4>Loading...</TypographyH4>}
+        {isError && <TypographyH4>Something went wrong</TypographyH4>}
+        {isError && <TypographyP className="text-center">{error?.message}</TypographyP>}
       </main>
     )
+  }
 
   return (
     <main id="content" className={cn('flex size-full pt-3 px-3 overflow-scroll flex-col !h-[calc(100dvh-3.5rem)]')}>
       <SandpackProvider
         template={coding_question?.sandpack_template}
         theme={resolvedTheme === undefined ? 'auto' : (resolvedTheme as SandpackThemeProp)}
-        className={'!size-full !overflow-hidden'}
+        className={'!size-full !overflow-hidden !flex !flex-col'}
         files={filesObject}
       >
         <ResizablePanelGroup
