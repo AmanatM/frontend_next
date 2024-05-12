@@ -11,6 +11,7 @@ import { MenuTopBar } from '@/components/Header/Header'
 import { cn } from '@/lib/utils'
 
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import Head from 'next/head'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -35,9 +36,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
+      <Head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+
         <SandpackCSS />
-      </head>
+      </Head>
       <body className={inter.className}>
         <ReactQueryClientProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>

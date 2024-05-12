@@ -14,9 +14,8 @@ export function MonacoEditor() {
   const { resolvedTheme } = useTheme()
 
   const fileExtenstion = sandpack.activeFile.split('.').pop()
-  const resolvedLanguage = fileExtenstion === 'js' ? 'javascript' : fileExtenstion
+  const resolvedLanguage = fileExtenstion === 'jsx' ? 'javascript' : fileExtenstion
 
-  console.log(sandpack.error)
   return (
     <SandpackStack className="size-full">
       {/* <SandpackFileExplorer /> */}

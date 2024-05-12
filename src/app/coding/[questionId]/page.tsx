@@ -59,8 +59,6 @@ export default function Example({ params }: { params: { questionId: string } }) 
     return obj
   }, {})
 
-  console.log(filesObject)
-
   if (isLoading)
     return (
       <main
