@@ -86,6 +86,7 @@ export type Database = {
           description: string
           difficulty: string | null
           id: string
+          sandpack_template: Database["public"]["Enums"]["sandpackTemplates"]
           solution: string | null
           title: string
           with_browser: boolean
@@ -95,6 +96,7 @@ export type Database = {
           description: string
           difficulty?: string | null
           id?: string
+          sandpack_template?: Database["public"]["Enums"]["sandpackTemplates"]
           solution?: string | null
           title: string
           with_browser?: boolean
@@ -104,6 +106,7 @@ export type Database = {
           description?: string
           difficulty?: string | null
           id?: string
+          sandpack_template?: Database["public"]["Enums"]["sandpackTemplates"]
           solution?: string | null
           title?: string
           with_browser?: boolean
@@ -162,6 +165,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
+      sandpackTemplates: "static" | "react"
       user_roles: "admin"
     }
     CompositeTypes: {

@@ -9,8 +9,19 @@ export type CodingQuestion = Database['public']['Tables']['coding_questions']['R
   coding_question_files: QuestionFile[]
 }
 
-
 export type QuestionsSearchResults = {
   id: string
   title: string
 }
+
+export type SandpackTemplate =
+  | 'angular-cli'
+  | 'create-react-app'
+  | 'create-react-app-typescript'
+  | 'svelte'
+  | 'parcel'
+  | 'vue-cli'
+  | 'static'
+  | 'solid'
+  | 'nextjs'
+  | 'node'

@@ -12,14 +12,20 @@ export function MonacoEditor() {
   const { code, updateCode } = useActiveCode()
   const { sandpack } = useSandpack()
   const { resolvedTheme } = useTheme()
+
+  const fileExtenstion = sandpack.activeFile.split('.').pop()
+  const resolvedLanguage = fileExtenstion === 'js' ? 'javascript' : fileExtenstion
+
+  console.log(sandpack.error)
   return (
     <SandpackStack className="size-full">
+      {/* <SandpackFileExplorer /> */}
       <FileTabs />
       <div className="size-full">
         <Editor
           width="100%"
           height="100%"
-          language={sandpack.activeFile.split('.').pop()}
+          language={resolvedLanguage}
           theme={resolvedTheme === 'dark' ? 'vs-dark' : 'vs-light'}
           path={sandpack.activeFile}
           defaultValue={code}

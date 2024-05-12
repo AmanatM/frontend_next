@@ -23,7 +23,13 @@ export default function Coding() {
         <Button asChild size="lg" variant={'default'}>
           <Link href="/coding/1f0721e3-3569-498d-a071-0e697e0e6ccf">Example coding question 2</Link>
         </Button>
+        <Separator />
+
+        <Button asChild size="lg" variant={'default'}>
+          <Link href="/coding/03b3a5ab-da32-4a4e-8d06-2bdadcc59dd3">Example React question</Link>
+        </Button>
       </div>
+
       <div className="hidden">
         <div className="space-y-3">
           <div className="flex space-x-3">

@@ -1,5 +1,11 @@
 'use client'
-import { SandpackPreview, SandpackProvider, SandpackConsole, SandpackFileExplorer } from '@codesandbox/sandpack-react'
+import {
+  SandpackPreview,
+  SandpackProvider,
+  SandpackConsole,
+  SandpackFileExplorer,
+  SandpackCodeEditor,
+} from '@codesandbox/sandpack-react'
 import { cn } from '@/lib/utils'
 import { ResizablePanelGroup } from '@/components/ui/resizable'
 import { useIsMobileBreakpoint } from '@/hooks/useIsMobileBreakpoint'
@@ -18,6 +24,7 @@ import useSupabaseBrowser from '@/supabase-utils/supabase-client'
 import { set } from 'react-hook-form'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import { getQuestionById } from './_api/getQuestionById'
+import { SandpackTemplate } from '@/supabase-utils/types'
 
 type FilesObject = {
   [key: string]: {
@@ -42,6 +49,7 @@ export default function Example({ params }: { params: { questionId: string } }) 
     error,
   } = useQuery(getQuestionById(supabase, params.questionId), {
     retry: 1,
+    staleTime: 0,
   })
 
   const filesObject = coding_question?.coding_question_files.reduce((obj: FilesObject, file) => {
@@ -50,6 +58,8 @@ export default function Example({ params }: { params: { questionId: string } }) 
     }
     return obj
   }, {})
+
+  console.log(filesObject)
 
   if (isLoading)
     return (
@@ -79,8 +89,8 @@ export default function Example({ params }: { params: { questionId: string } }) 
   return (
     <main id="content" className={cn('flex size-full pt-3 px-3 overflow-scroll flex-col !h-[calc(100dvh-3.5rem)]')}>
       <SandpackProvider
-        template="static"
-        theme={isMounted && resolvedTheme === 'dark' ? 'dark' : 'light'}
+        template={coding_question?.sandpack_template}
+        theme={isMounted && resolvedTheme === 'dark' ? 'dark' : 'dark'}
         className={'!size-full !overflow-hidden'}
         files={filesObject}
       >
@@ -130,7 +140,12 @@ export default function Example({ params }: { params: { questionId: string } }) 
             ]}
           >
             <TabsContent value="browser" className="p-0 size-full">
-              <SandpackPreview showNavigator={true} showOpenInCodeSandbox={false} className={'size-full'} />
+              <SandpackPreview
+                showSandpackErrorOverlay={true}
+                showNavigator={true}
+                showOpenInCodeSandbox={true}
+                className={'size-full'}
+              />
             </TabsContent>
           </ResizablePanelTabs>
         </ResizablePanelGroup>
