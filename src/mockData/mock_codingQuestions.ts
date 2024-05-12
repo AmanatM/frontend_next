@@ -21,7 +21,7 @@ type CodingQuestion = {
 }
 
 export function getCodingQuestionById(id: string) {
-  return mock_codingQuestions.find(q => q.id === id)
+  return mock_codingQuestions[0]
 }
 
 export const mock_codingQuestions: CodingQuestion[] = [

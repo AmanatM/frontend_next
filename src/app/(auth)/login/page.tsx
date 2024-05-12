@@ -57,7 +57,7 @@ export default function Login() {
       } else {
         const { error } = JSON.parse(await loginWithEmailAndPassword(credentials)) as AuthTokenResponse
         if (error) {
-          toast.error(error.message)
+          toast.error('Failed to sign in')
         } else {
           toast.success('Signed in')
           router.replace(redirectUrl as Route)

@@ -15,8 +15,9 @@ import { Button } from '../ui/button'
 import { useEffect, useState } from 'react'
 import { side_nav_links } from '@/config/side_nav_links'
 import { useRouter } from 'next/navigation'
+import { User } from '@supabase/supabase-js'
 
-export function SearchBox() {
+export function SearchBox({ user }: { user: User | null }) {
   const [open, setOpen] = useState(false)
   const router = useRouter()
 
@@ -68,6 +69,7 @@ export function SearchBox() {
           <CommandGroup heading="Links">
             {side_nav_links.map(navItem => (
               <CommandItem
+                className={cn(navItem.private && !user && 'hidden')}
                 key={navItem.title}
                 value={navItem.title}
                 onSelect={() => {

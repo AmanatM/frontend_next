@@ -29,7 +29,7 @@ export async function MenuTopBar() {
           </nav>
         </div>
         <div className="ml-auto flex items-center space-x-4">
-          <SearchBox />
+          <SearchBox user={user} />
           <ThemeSwitch />
           <UserNav user={user} />
           <MobileMenu />

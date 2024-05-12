@@ -5,13 +5,17 @@ import Link from 'next/link'
 import { side_nav_links } from '@/config/side_nav_links'
 import { usePathname } from 'next/navigation'
 import { UrlObject } from 'url'
+import { User } from '@supabase/supabase-js'
 
 interface SidebarProps {
   className?: string
+  user: User | null
 }
 
-function Sidebar({ className }: SidebarProps) {
+function Sidebar({ className, user }: SidebarProps) {
   const pathname = usePathname()
+  const is_logged_in = user !== null
+
   return (
     <aside
       className={cn('hidden md:flex shrink-0 md:w-64 pt-4 border-r  sticky top-14 h-[calc(100vh-3.5rem)]', className)}
@@ -33,6 +37,7 @@ function Sidebar({ className }: SidebarProps) {
                     buttonVariants({ variant: 'ghost', size: 'lg' }),
                     'justify-start px-2',
                     isActive && 'bg-muted hover:bg-muted',
+                    link.private && !is_logged_in && 'hidden',
                   )}
                 >
                   <link.icon className="mr-2 h-4 w-4" />

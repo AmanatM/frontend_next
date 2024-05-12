@@ -15,7 +15,12 @@ export default function Coding() {
         <TypographyH3>Coding Questions</TypographyH3>
         <TypographyMuted>Two layout options</TypographyMuted>
       </div>
-      <div className="">
+      <div>
+        <Button asChild size="lg" variant={'default'}>
+          <Link href="/coding/1">Example coding question</Link>
+        </Button>
+      </div>
+      <div className="hidden">
         <div className="space-y-3">
           <div className="flex space-x-3">
             <Toggle variant={'outline'} className="space-x-2">
