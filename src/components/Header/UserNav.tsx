@@ -21,7 +21,6 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 export function UserNav({ user }: { user: User | null }) {
   const router = useRouter()
   const pathname = usePathname()
-  const searchParams = useSearchParams()
 
   const handleLogout = async () => {
     toast.promise(logout(), {

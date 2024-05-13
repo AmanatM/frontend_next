@@ -8,9 +8,7 @@ import { Toaster } from '@/components/ui/sonner'
 import { ReactQueryClientProvider } from '@/providers/query-provider'
 import { SandpackCSS } from '@/components/sandpack-styles'
 import { MenuTopBar } from '@/components/Header/Header'
-import { cn } from '@/lib/utils'
 
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import Head from 'next/head'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -46,7 +44,15 @@ export default function RootLayout({
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
             <MenuTopBar />
             <div className="grow">{children}</div>
-            <Toaster richColors visibleToasts={3} />
+            <Toaster
+              richColors
+              visibleToasts={3}
+              toastOptions={{
+                style: {
+                  bottom: '30px',
+                },
+              }}
+            />
           </ThemeProvider>
         </ReactQueryClientProvider>
       </body>

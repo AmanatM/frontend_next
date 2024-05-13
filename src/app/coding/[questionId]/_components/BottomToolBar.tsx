@@ -30,8 +30,7 @@ export function BottomToolbar({
 
   // Save code function
   const { sandpack } = useSandpack()
-  const { files, activeFile } = sandpack
-  const { code } = useActiveCode()
+  const { files } = sandpack
 
   const handleSaveCode = async () => {
     const { data: user, error: userError } = await supabase.auth.getUser()
@@ -69,12 +68,12 @@ export function BottomToolbar({
   return (
     <div
       className={cn(
-        'flex flex-wrap items-center justify-between gap-2 px-3 py-3 bg-background',
+        'flex flex-wrap items-center justify-between gap-2 px-3 py-3 bg-background dark:text-white',
         isMobileBreakpoint ? 'fixed bottom-0 left-0 right-0' : '',
       )}
     >
       <div className="flex">
-        <Button variant="outline" size="icon">
+        <Button variant="outline" size="icon" className={cn(isMobileBreakpoint && 'hidden')}>
           <Settings size={17} />
         </Button>
       </div>
@@ -91,7 +90,12 @@ export function BottomToolbar({
         </Button>
       </div>
       <div className="flex">
-        <Button variant={'secondary'} size={'sm'} className="flex align-center space-x-2" onClick={handleSaveCode}>
+        <Button
+          variant={'secondary'}
+          size={'sm'}
+          className={cn('flex align-center space-x-2', isMobileBreakpoint && 'hidden')}
+          onClick={handleSaveCode}
+        >
           <Save size={15} />
           <div>Save</div>
         </Button>

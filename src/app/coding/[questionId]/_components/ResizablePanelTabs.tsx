@@ -6,6 +6,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { ResizablePanel } from '@/components/ui/resizable'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { useIsMobileBreakpoint } from '@/hooks/useIsMobileBreakpoint'
 import { cn } from '@/lib/utils'
 
 import { Ellipsis, LucideIcon, Maximize, Minimize, PanelLeftClose } from 'lucide-react'
@@ -23,26 +24,35 @@ type ResizablePanelTabsProps = {
   defaultValue: string
   minSize?: number
   defaultSize?: number
+  setDefaultSize: (size: number[]) => void
+  extraClassName?: string
 }
 
-export function ResizablePanelTabs({ children, tabs, defaultValue, minSize, defaultSize }: ResizablePanelTabsProps) {
+export function ResizablePanelTabs({
+  children,
+  tabs,
+  defaultValue,
+  minSize,
+  defaultSize,
+  setDefaultSize,
+  extraClassName,
+}: ResizablePanelTabsProps) {
   const [isFullScreen, setIsFullScreen] = useState(false)
   const tabsLayout = tabs !== undefined && tabs !== null
+  const isMobileBreakpoint = useIsMobileBreakpoint()
 
   const [activeTab, setActiveTab] = useState(defaultValue)
-
   return (
     <ResizablePanel
       minSize={minSize}
       defaultSize={defaultSize}
-      className={cn('inset-0 overflow-hidden md:flex-auto', isFullScreen ? 'absolute z-20 ' : '')}
+      className={cn('inset-0 overflow-hidden md:flex-auto', isFullScreen ? 'absolute z-20 ' : '', extraClassName)}
     >
       <Tabs
         defaultValue={defaultValue}
         asChild
         value={activeTab}
         onValueChange={value => {
-          console.log(value)
           setActiveTab(value)
         }}
       >
