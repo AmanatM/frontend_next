@@ -4,7 +4,6 @@ import { cn } from '@/lib/utils'
 import { ResizablePanelGroup } from '@/components/ui/resizable'
 import { useIsMobileBreakpoint } from '@/hooks/useIsMobileBreakpoint'
 import { TypographyH4, TypographyP } from '@/components/typography'
-import { TabsContent } from '@radix-ui/react-tabs'
 import { MarkdownRenderer } from './_components/markdown'
 import { ResizeHandle } from './_components/ResizableHandleCustom'
 import { ResizablePanelTabs } from './_components/ResizablePanelTabs'
@@ -20,6 +19,7 @@ import { toast } from 'sonner'
 import { useIsMobileAgent } from '@/hooks/useUserAgent'
 import InfoPopUp from '@/components/InfoPopUp'
 import { useGetCurrentUrl } from '@/hooks/useGetCurrentUrl'
+import { CustomTabsContent } from './_components/CustomTabComponents'
 
 type FilesObject = {
   [key: string]: {
@@ -90,7 +90,6 @@ export default function CodingQuestion({ params }: { params: { questionId: strin
           direction={isMobileBreakpoint ? 'vertical' : 'horizontal'}
           className="relative size-full grow"
           onResize={() => {
-            console.log('layout')
             if (isMobileBreakpoint) {
               setDefaultSize([100, 100, 100])
             } else {
@@ -107,19 +106,19 @@ export default function CodingQuestion({ params }: { params: { questionId: strin
             tabs={descriptionTabs}
             extraClassName={isMobileBreakpoint ? '!flex-none h-full' : ''}
           >
-            <TabsContent value="description" className="p-4 space-y-4 justify-center">
+            <CustomTabsContent value="description" className="p-4 space-y-4 justify-center">
               <TypographyH4>{coding_question?.title}</TypographyH4>
               <article className={'prose dark:prose-invert prose-pre:p-0'}>
                 <MarkdownRenderer>{coding_question?.description}</MarkdownRenderer>
               </article>
-            </TabsContent>
-            <TabsContent value="solution" className="p-4">
+            </CustomTabsContent>
+            <CustomTabsContent value="solution" className="p-4">
               <TypographyH4>Solution</TypographyH4>
               <TypographyP>Content</TypographyP>
-            </TabsContent>
-            <TabsContent value="saved_code" className="p-4">
+            </CustomTabsContent>
+            <CustomTabsContent value="saved_code" className="p-4">
               <TypographyH4>Saved Code</TypographyH4>
-            </TabsContent>
+            </CustomTabsContent>
           </ResizablePanelTabs>
 
           <ResizeHandle />
@@ -131,10 +130,10 @@ export default function CodingQuestion({ params }: { params: { questionId: strin
             minSize={15}
             defaultValue="editor"
           >
-            <TabsContent value="editor" className="p-0 size-full">
+            <CustomTabsContent value="editor" className="p-0 size-full">
               {/* <SandpackCodeEditor className="size-full" /> */}
               <MonacoEditor />
-            </TabsContent>
+            </CustomTabsContent>
           </ResizablePanelTabs>
 
           <ResizeHandle />
@@ -146,17 +145,17 @@ export default function CodingQuestion({ params }: { params: { questionId: strin
             defaultValue="browser"
             tabs={browserTabs}
           >
-            <TabsContent value="browser" className="p-0 size-full">
+            <CustomTabsContent value="browser" className="p-0 size-full">
               <SandpackPreview
                 showSandpackErrorOverlay={true}
                 showNavigator={true}
                 showOpenInCodeSandbox={false}
                 className={'size-full'}
               />
-            </TabsContent>
-            <TabsContent value="console" className="p-0 size-full">
+            </CustomTabsContent>
+            <CustomTabsContent value="console" className="p-0 size-full">
               <SandpackConsole className={'size-full'} standalone={false} />
-            </TabsContent>
+            </CustomTabsContent>
           </ResizablePanelTabs>
         </ResizablePanelGroup>
 

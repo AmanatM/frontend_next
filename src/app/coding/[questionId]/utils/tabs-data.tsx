@@ -1,4 +1,17 @@
-import { Database, FileText, Lightbulb, PanelTop, SquareChevronRight } from 'lucide-react'
+import { Database, FileText, Lightbulb, LucideIcon, PanelTop, SquareChevronRight } from 'lucide-react'
+
+export type TabProps = {
+  value: string
+  label: string
+  icon?: JSX.Element | LucideIcon | null
+}
+
+export type CustomTabsContentProps = {
+  value: string
+  children: React.ReactNode
+  className?: string
+  isActiveTab?: boolean
+}
 
 export const browserTabs = [
   {

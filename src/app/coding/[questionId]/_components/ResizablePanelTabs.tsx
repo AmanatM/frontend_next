@@ -1,26 +1,22 @@
 'use client'
 import { Button } from '@/components/custom/button'
-import { TypographySmall } from '@/components/typography'
 import { Card } from '@/components/ui/card'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { ResizablePanel } from '@/components/ui/resizable'
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { useIsMobileBreakpoint } from '@/hooks/useIsMobileBreakpoint'
+import { Tabs, TabsList } from '@/components/ui/tabs'
 import { cn } from '@/lib/utils'
 
-import { Ellipsis, LucideIcon, Maximize, Minimize, PanelLeftClose } from 'lucide-react'
+import { Ellipsis, Maximize, Minimize, PanelLeftClose } from 'lucide-react'
+import React from 'react'
 import { useState } from 'react'
 
-type tabs = {
-  value: string
-  label: string
-  icon?: JSX.Element | LucideIcon | null
-}
+import { TabTriggerCustom } from './CustomTabComponents'
+import { CustomTabsContentProps, TabProps } from '../utils/tabs-data'
 
 type ResizablePanelTabsProps = {
   children: React.ReactNode
-  tabs?: tabs[]
+  tabs?: TabProps[]
   defaultValue: string
   minSize?: number
   defaultSize?: number
@@ -39,23 +35,19 @@ export function ResizablePanelTabs({
 }: ResizablePanelTabsProps) {
   const [isFullScreen, setIsFullScreen] = useState(false)
   const tabsLayout = tabs !== undefined && tabs !== null
-  const isMobileBreakpoint = useIsMobileBreakpoint()
 
-  const [activeTab, setActiveTab] = useState(defaultValue)
+  const [activeTab, setActiveTab] = useState(defaultValue + '_tab')
+
+  const handleTabChange = (newTab: string) => {
+    setActiveTab(newTab + '_tab') // Ensure consistency in tab state.
+  }
   return (
     <ResizablePanel
       minSize={minSize}
       defaultSize={defaultSize}
       className={cn('inset-0 overflow-hidden md:flex-auto', isFullScreen ? 'absolute z-20 ' : '', extraClassName)}
     >
-      <Tabs
-        defaultValue={defaultValue}
-        asChild
-        value={activeTab}
-        onValueChange={value => {
-          setActiveTab(value)
-        }}
-      >
+      <Tabs defaultValue={defaultValue + '_tab'} asChild onValueChange={handleTabChange}>
         <Card className="h-full overflow-clip flex flex-col">
           <div
             className={cn('h-10 relative flex flex-none items-center justify-between py-0 px-2', !tabsLayout && 'h-0')}
@@ -64,10 +56,12 @@ export function ResizablePanelTabs({
               <ScrollArea className="whitespace-nowrap">
                 <TabsList className="bg-inherit w-max">
                   {tabs?.map(tab => (
-                    <TabsTrigger key={tab.value} value={tab.value} className="!bg-transparent !shadow-none space-x-2">
-                      {tab.icon && <>{tab.icon}</>}
-                      <TypographySmall className="font-normal">{tab.label}</TypographySmall>
-                    </TabsTrigger>
+                    <TabTriggerCustom
+                      key={tab.value}
+                      tab={tab}
+                      handleTabChange={handleTabChange}
+                      activeTab={activeTab}
+                    ></TabTriggerCustom>
                   ))}
                 </TabsList>
                 <ScrollBar orientation="horizontal" className="h-1.5" />
@@ -106,7 +100,17 @@ export function ResizablePanelTabs({
             </div>
           </div>
 
-          <div className="h-full overflow-scroll">{children}</div>
+          <div className="h-full overflow-scroll">
+            {React.Children.map(children, child => {
+              if (React.isValidElement<CustomTabsContentProps>(child)) {
+                // Ensure child is a valid React element and expects ChildProps
+                return React.cloneElement(child, {
+                  isActiveTab: activeTab === child.props.value + '_tab',
+                })
+              }
+              return child
+            })}
+          </div>
         </Card>
       </Tabs>
     </ResizablePanel>
