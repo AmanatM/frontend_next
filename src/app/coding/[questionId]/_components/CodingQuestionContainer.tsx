@@ -12,8 +12,6 @@ import { toast } from 'sonner'
 import { useIsMobileAgent } from '@/hooks/useUserAgent'
 import InfoPopUp from '@/components/InfoPopUp'
 import { useGetCurrentUrl } from '@/hooks/useGetCurrentUrl'
-import { useQuery } from '@tanstack/react-query'
-import { getQuestionById } from '../_api/questionQuries'
 import { MarkdownRenderer } from '@/components/markdown'
 import { descriptionTabs, browserTabs } from '../utils/tabs-data'
 import { BottomToolbar } from './BottomToolBar'
@@ -23,6 +21,8 @@ import { ResizeHandle } from './ResizableHandleCustom'
 import { ResizablePanelTabs } from './ResizablePanelTabs'
 import SavedCode from './SavedCode'
 import { User } from '@supabase/auth-js/dist/module/lib/types'
+import { CodingQuestion } from '@/supabase-utils/types'
+import { Skeleton } from '@/components/ui/skeleton'
 
 type FilesObject = {
   [key: string]: {
@@ -35,9 +35,10 @@ type FilesObject = {
 type CodingQuestionProps = {
   idFromParams: string
   user: User | null
+  coding_question: CodingQuestion
 }
 
-export default function CodingQuestionContainer({ idFromParams, user }: CodingQuestionProps) {
+export default function CodingQuestionContainer({ idFromParams, user, coding_question }: CodingQuestionProps) {
   const { resolvedTheme } = useTheme()
   const supabase = useSupabaseBrowser()
   const isMobileBreakpoint = useIsMobileBreakpoint()
@@ -45,24 +46,27 @@ export default function CodingQuestionContainer({ idFromParams, user }: CodingQu
   const currentUrl = useGetCurrentUrl()
 
   const [defaultSize, setDefaultSize] = useState<number[]>([30, 40, 30])
-
   const [popupOpen, setPopupOpen] = useState(false)
+  const [isMounted, setIsMounted] = useState(false)
+  const [currentTheme, setCurrentTheme] = useState<'light' | 'dark' | undefined>(undefined)
+
+  useEffect(() => {
+    setIsMounted(true)
+  }, [])
+
+  useEffect(() => {
+    if (resolvedTheme === 'dark') {
+      setCurrentTheme('dark')
+    } else if (resolvedTheme === 'light') {
+      setCurrentTheme('light')
+    } else {
+      setCurrentTheme(undefined)
+    }
+  }, [resolvedTheme])
 
   useEffect(() => {
     setPopupOpen(isMobileAgent)
   }, [isMobileAgent])
-
-  const {
-    data: coding_question,
-    error,
-    isError,
-    isLoading,
-  } = useQuery({
-    queryKey: ['coding_question', idFromParams],
-    queryFn: async () => getQuestionById(supabase, idFromParams),
-    enabled: !!idFromParams,
-    refetchOnWindowFocus: false,
-  })
 
   const filesObject = useMemo(() => {
     return coding_question?.coding_question_files.reduce((obj: FilesObject, file) => {
@@ -72,21 +76,6 @@ export default function CodingQuestionContainer({ idFromParams, user }: CodingQu
       return obj
     }, {})
   }, [coding_question?.coding_question_files])
-
-  if (isError || !coding_question || isLoading) {
-    return (
-      <main
-        id="content"
-        className={cn(
-          'flex size-full justify-center items-center space-y-3 pt-3 px-3 overflow-scroll flex-col !h-[calc(100dvh-3.5rem)]',
-        )}
-      >
-        {isLoading && !coding_question && <TypographyH4>Loading...</TypographyH4>}
-        {isError && <TypographyH4>Something went wrong</TypographyH4>}
-        {isError && <TypographyP className="text-center">{error?.message}</TypographyP>}
-      </main>
-    )
-  }
 
   async function copyUrlAndClose() {
     try {
@@ -101,7 +90,7 @@ export default function CodingQuestionContainer({ idFromParams, user }: CodingQu
     <main id="content" className={cn('flex size-full pt-3 px-3 overflow-scroll flex-col !h-[calc(100dvh-3.5rem)]')}>
       <SandpackProvider
         template={coding_question?.sandpack_template}
-        theme={resolvedTheme === undefined ? 'auto' : (resolvedTheme as SandpackThemeProp)}
+        theme={currentTheme === undefined ? 'auto' : (currentTheme as SandpackThemeProp)}
         className={'!size-full !overflow-hidden !flex !flex-col'}
         files={filesObject}
         options={{
@@ -154,7 +143,7 @@ export default function CodingQuestionContainer({ idFromParams, user }: CodingQu
           >
             <CustomTabsContent value="editor" className="p-0 size-full">
               {/* <SandpackCodeEditor className="size-full" /> */}
-              <MonacoEditor />
+              <MonacoEditor currentTheme={currentTheme} />
             </CustomTabsContent>
           </ResizablePanelTabs>
 

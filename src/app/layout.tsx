@@ -5,13 +5,10 @@ import '@/styles/globals.css'
 
 import { ThemeProvider } from '@/providers/theme-provider'
 import { Toaster } from '@/components/ui/sonner'
-import { ReactQueryClientProvider } from '@/providers/query-provider'
 import { SandpackCSS } from '@/components/sandpack-styles'
 import { MenuTopBar } from '@/components/Header/Header'
 
-import Head from 'next/head'
 import Providers from '@/providers/Providers'
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -36,14 +33,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <Head>
+      <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
-
         <SandpackCSS />
-      </Head>
+      </head>
       <body className={inter.className}>
         <Providers>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
             <MenuTopBar />
             <div className="grow">{children}</div>
             <Toaster

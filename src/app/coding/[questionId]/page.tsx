@@ -1,21 +1,34 @@
 import { createClientServer } from '@/supabase-utils/supabase-server'
 import CodingQuestionContainer from './_components/CodingQuestionContainer'
+import { TypedSupabaseClient } from '@/supabase-utils/types'
+import { Suspense } from 'react'
+import Loading from './loading'
 
-export default async function CodingQuestion({ params }: { params: { questionId: string } }) {
-  const supabase = createClientServer()
-  const user = (await supabase.auth.getUser()).data.user
-
-  const questionId = params.questionId
-
-  const { data, error } = await supabase
+async function getCodingQuestionById({ questionId, client }: { questionId: string; client: TypedSupabaseClient }) {
+  const { data: codingQuestion, error } = await client
     .from('coding_questions')
     .select(`*,coding_question_files(*)`)
     .eq('id', questionId)
     .single()
 
+  if (error) {
+    throw new Error(error.message)
+  }
+  return codingQuestion
+}
+
+export default async function CodingQuestion({ params }: { params: { questionId: string } }) {
+  const supabase = createClientServer()
+  const user = (await supabase.auth.getUser()).data.user
+  const questionId = params.questionId
+
+  const codingQuestion = await getCodingQuestionById({ questionId, client: supabase })
+
   return (
     <>
-      <CodingQuestionContainer idFromParams={questionId} user={user} />
+      <Suspense fallback={<Loading />}>
+        <CodingQuestionContainer idFromParams={questionId} user={user} coding_question={codingQuestion} />
+      </Suspense>
     </>
   )
 }
