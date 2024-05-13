@@ -10,6 +10,8 @@ import { SandpackCSS } from '@/components/sandpack-styles'
 import { MenuTopBar } from '@/components/Header/Header'
 
 import Head from 'next/head'
+import Providers from '@/providers/Providers'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -40,7 +42,7 @@ export default function RootLayout({
         <SandpackCSS />
       </Head>
       <body className={inter.className}>
-        <ReactQueryClientProvider>
+        <Providers>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
             <MenuTopBar />
             <div className="grow">{children}</div>
@@ -54,7 +56,7 @@ export default function RootLayout({
               }}
             />
           </ThemeProvider>
-        </ReactQueryClientProvider>
+        </Providers>
       </body>
     </html>
   )

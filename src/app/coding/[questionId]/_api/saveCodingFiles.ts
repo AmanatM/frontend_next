@@ -1,4 +1,4 @@
-import { QuestionFile, TypedSupabaseClient } from '@/supabase-utils/types'
+import { TypedSupabaseClient } from '@/supabase-utils/types'
 
 type saveCodingQuestionFile = {
   id: string
