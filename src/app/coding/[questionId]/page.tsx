@@ -1,5 +1,11 @@
 'use client'
-import { SandpackPreview, SandpackProvider, SandpackConsole, SandpackThemeProp } from '@codesandbox/sandpack-react'
+import {
+  SandpackPreview,
+  SandpackProvider,
+  SandpackConsole,
+  SandpackThemeProp,
+  SandpackCodeEditor,
+} from '@codesandbox/sandpack-react'
 import { cn } from '@/lib/utils'
 import { ResizablePanelGroup } from '@/components/ui/resizable'
 import { useIsMobileBreakpoint } from '@/hooks/useIsMobileBreakpoint'
@@ -14,12 +20,13 @@ import { MonacoEditor } from './_components/MonacoEditor'
 import useSupabaseBrowser from '@/supabase-utils/supabase-client'
 import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import { getQuestionById } from './_api/getQuestionById'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { useIsMobileAgent } from '@/hooks/useUserAgent'
 import InfoPopUp from '@/components/InfoPopUp'
 import { useGetCurrentUrl } from '@/hooks/useGetCurrentUrl'
 import { CustomTabsContent } from './_components/CustomTabComponents'
+import { SandpackPreviewClient } from './_components/SandpackPreview'
 
 type FilesObject = {
   [key: string]: {
@@ -54,6 +61,8 @@ export default function CodingQuestion({ params }: { params: { questionId: strin
     return obj
   }, {})
 
+  const observerRootRef = useRef(null)
+
   if (isError || !coding_question || isLoading) {
     return (
       <main
@@ -79,12 +88,23 @@ export default function CodingQuestion({ params }: { params: { questionId: strin
   }
 
   return (
-    <main id="content" className={cn('flex size-full pt-3 px-3 overflow-scroll flex-col !h-[calc(100dvh-3.5rem)]')}>
+    <main
+      id="content"
+      ref={observerRootRef}
+      className={cn('flex size-full pt-3 px-3 overflow-scroll flex-col !h-[calc(100dvh-3.5rem)]')}
+    >
       <SandpackProvider
         template={coding_question?.sandpack_template}
         theme={resolvedTheme === undefined ? 'auto' : (resolvedTheme as SandpackThemeProp)}
         className={'!size-full !overflow-hidden !flex !flex-col'}
         files={filesObject}
+        options={{
+          initModeObserverOptions: {
+            threshold: 1,
+            rootMargin: '10000px',
+            root: observerRootRef.current, // Using ref to specify the root
+          },
+        }}
       >
         <ResizablePanelGroup
           direction={isMobileBreakpoint ? 'vertical' : 'horizontal'}
@@ -104,7 +124,6 @@ export default function CodingQuestion({ params }: { params: { questionId: strin
             minSize={15}
             defaultValue="description"
             tabs={descriptionTabs}
-            extraClassName={isMobileBreakpoint ? '!flex-none h-full' : ''}
           >
             <CustomTabsContent value="description" className="p-4 space-y-4 justify-center">
               <TypographyH4>{coding_question?.title}</TypographyH4>
@@ -139,6 +158,7 @@ export default function CodingQuestion({ params }: { params: { questionId: strin
           <ResizeHandle />
           {/* Preview Panel*/}
           <ResizablePanelTabs
+            extraClassName={isMobileBreakpoint ? '!flex-none h-full' : ''}
             defaultSize={defaultSize[2]}
             setDefaultSize={setDefaultSize}
             minSize={15}
@@ -152,6 +172,7 @@ export default function CodingQuestion({ params }: { params: { questionId: strin
                 showOpenInCodeSandbox={false}
                 className={'size-full'}
               />
+              {/* <SandpackPreviewClient /> */}
             </CustomTabsContent>
             <CustomTabsContent value="console" className="p-0 size-full">
               <SandpackConsole className={'size-full'} standalone={false} />

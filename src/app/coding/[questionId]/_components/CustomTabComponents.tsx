@@ -27,5 +27,5 @@ export const TabTriggerCustom = ({ tab, handleTabChange, activeTab }: TabTrigger
 }
 
 export const CustomTabsContent = ({ children, className, isActiveTab }: CustomTabsContentProps) => {
-  return <div className={cn(isActiveTab ? '' : 'hidden', className)}>{children}</div>
+  return <div className={cn(isActiveTab ? '' : 'invisible absolute', className)}>{children}</div>
 }

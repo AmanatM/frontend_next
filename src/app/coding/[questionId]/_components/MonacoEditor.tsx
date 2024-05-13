@@ -19,7 +19,7 @@ export function MonacoEditor() {
   const resolvedLanguage = fileExtenstion === 'jsx' ? 'javascript' : fileExtenstion
 
   return (
-    <SandpackStack className="size-full">
+    <div className="size-full">
       {/* <SandpackFileExplorer /> */}
       <FileTabs />
       <div className="size-full">
@@ -41,6 +41,6 @@ export function MonacoEditor() {
           }}
         />
       </div>
-    </SandpackStack>
+    </div>
   )
 }
