@@ -1,7 +1,7 @@
 import { TypedSupabaseClient } from '@/supabase-utils/types'
 
-export function getQuestionById(client: TypedSupabaseClient, questionId: string) {
-  return client
+export async function getQuestionById(client: TypedSupabaseClient, questionId: string) {
+  const { data, error } = await client
     .from('coding_questions')
     .select(
       `*,
@@ -9,4 +9,9 @@ export function getQuestionById(client: TypedSupabaseClient, questionId: string)
     )
     .eq('id', questionId)
     .single()
+
+  if (error) {
+    throw error
+  }
+  return data
 }

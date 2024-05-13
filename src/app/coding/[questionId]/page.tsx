@@ -18,15 +18,15 @@ import { browserTabs, descriptionTabs } from './utils/tabs-data'
 import { useTheme } from 'next-themes'
 import { MonacoEditor } from './_components/MonacoEditor'
 import useSupabaseBrowser from '@/supabase-utils/supabase-client'
-import { useQuery } from '@supabase-cache-helpers/postgrest-react-query'
 import { getQuestionById } from './_api/getQuestionById'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { useIsMobileAgent } from '@/hooks/useUserAgent'
 import InfoPopUp from '@/components/InfoPopUp'
 import { useGetCurrentUrl } from '@/hooks/useGetCurrentUrl'
 import { CustomTabsContent } from './_components/CustomTabComponents'
 import { SandpackPreviewClient } from './_components/SandpackPreview'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 
 type FilesObject = {
   [key: string]: {
@@ -41,6 +41,7 @@ export default function CodingQuestion({ params }: { params: { questionId: strin
   const isMobileBreakpoint = useIsMobileBreakpoint()
   const isMobileAgent = useIsMobileAgent()
   const currentUrl = useGetCurrentUrl()
+  const idFromParams = params.questionId
 
   const [defaultSize, setDefaultSize] = useState<number[]>([30, 40, 30])
 
@@ -48,20 +49,28 @@ export default function CodingQuestion({ params }: { params: { questionId: strin
 
   useEffect(() => {
     setPopupOpen(isMobileAgent)
-    console.log(isMobileAgent)
   }, [isMobileAgent])
 
-  const { data: coding_question, isLoading, isError, error } = useQuery(getQuestionById(supabase, params.questionId))
-  const coding_question_files = coding_question?.coding_question_files
+  const {
+    data: coding_question,
+    error,
+    isError,
+    isLoading,
+  } = useQuery({
+    queryKey: ['coding_question', idFromParams],
+    queryFn: async () => getQuestionById(supabase, idFromParams),
+    enabled: !!idFromParams,
+    refetchOnWindowFocus: false,
+  })
 
-  const filesObject = coding_question_files?.reduce((obj: FilesObject, file) => {
-    if (file.path !== null && file.content !== null) {
-      obj[file.path] = { code: file.content, id: file.id, path: file.path }
-    }
-    return obj
-  }, {})
-
-  const observerRootRef = useRef(null)
+  const filesObject = useMemo(() => {
+    return coding_question?.coding_question_files.reduce((obj: FilesObject, file) => {
+      if (file.path !== null && file.content !== null) {
+        obj[file.path] = { code: file.content, id: file.id, path: file.path }
+      }
+      return obj
+    }, {})
+  }, [coding_question?.coding_question_files])
 
   if (isError || !coding_question || isLoading) {
     return (
@@ -88,22 +97,14 @@ export default function CodingQuestion({ params }: { params: { questionId: strin
   }
 
   return (
-    <main
-      id="content"
-      ref={observerRootRef}
-      className={cn('flex size-full pt-3 px-3 overflow-scroll flex-col !h-[calc(100dvh-3.5rem)]')}
-    >
+    <main id="content" className={cn('flex size-full pt-3 px-3 overflow-scroll flex-col !h-[calc(100dvh-3.5rem)]')}>
       <SandpackProvider
         template={coding_question?.sandpack_template}
         theme={resolvedTheme === undefined ? 'auto' : (resolvedTheme as SandpackThemeProp)}
         className={'!size-full !overflow-hidden !flex !flex-col'}
         files={filesObject}
         options={{
-          initModeObserverOptions: {
-            threshold: 1,
-            rootMargin: '10000px',
-            root: observerRootRef.current, // Using ref to specify the root
-          },
+          recompileDelay: 1000,
         }}
       >
         <ResizablePanelGroup
