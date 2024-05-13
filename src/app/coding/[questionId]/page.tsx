@@ -1,11 +1,5 @@
 'use client'
-import {
-  SandpackPreview,
-  SandpackProvider,
-  SandpackConsole,
-  SandpackThemeProp,
-  SandpackCodeEditor,
-} from '@codesandbox/sandpack-react'
+import { SandpackPreview, SandpackProvider, SandpackConsole, SandpackThemeProp } from '@codesandbox/sandpack-react'
 import { cn } from '@/lib/utils'
 import { ResizablePanelGroup } from '@/components/ui/resizable'
 import { useIsMobileBreakpoint } from '@/hooks/useIsMobileBreakpoint'
@@ -18,15 +12,15 @@ import { browserTabs, descriptionTabs } from './utils/tabs-data'
 import { useTheme } from 'next-themes'
 import { MonacoEditor } from './_components/MonacoEditor'
 import useSupabaseBrowser from '@/supabase-utils/supabase-client'
-import { getQuestionById } from './_api/getQuestionById'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { getQuestionById } from './_api/questionQuries'
+import { useEffect, useMemo, useState } from 'react'
 import { toast } from 'sonner'
 import { useIsMobileAgent } from '@/hooks/useUserAgent'
 import InfoPopUp from '@/components/InfoPopUp'
 import { useGetCurrentUrl } from '@/hooks/useGetCurrentUrl'
 import { CustomTabsContent } from './_components/CustomTabComponents'
-import { SandpackPreviewClient } from './_components/SandpackPreview'
-import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
+import SavedCode from './_components/SavedCode'
 
 type FilesObject = {
   [key: string]: {
@@ -136,8 +130,9 @@ export default function CodingQuestion({ params }: { params: { questionId: strin
               <TypographyH4>Solution</TypographyH4>
               <TypographyP>Content</TypographyP>
             </CustomTabsContent>
-            <CustomTabsContent value="saved_code" className="p-4">
+            <CustomTabsContent value="saved_code" className="p-4 space-y-4">
               <TypographyH4>Saved Code</TypographyH4>
+              <SavedCode questionId={idFromParams} />
             </CustomTabsContent>
           </ResizablePanelTabs>
 

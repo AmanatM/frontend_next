@@ -3,7 +3,7 @@ import { Button } from '@/components/custom/button'
 import { useIsMobileBreakpoint } from '@/hooks/useIsMobileBreakpoint'
 import { cn } from '@/lib/utils'
 import { useActiveCode, useSandpack } from '@codesandbox/sandpack-react'
-import { Settings, ChevronLeft, List, ChevronRight, Save } from 'lucide-react'
+import { Settings, ChevronLeft, List, ChevronRight, Save, Check } from 'lucide-react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { toast } from 'sonner'
 import { TypedSupabaseClient } from '@/supabase-utils/types'
@@ -56,6 +56,10 @@ export function BottomToolbar({
     })
   }
 
+  const handleMarkCompleted = async () => {
+    console.log('Mark completed')
+  }
+
   // Save code shortcut(cmd+s)
   useHotkeys(
     'meta+s',
@@ -89,7 +93,17 @@ export function BottomToolbar({
           <ChevronRight size={17} />
         </Button>
       </div>
-      <div className="flex">
+      <div className="flex space-x-2">
+        <Button
+          variant={'secondary'}
+          size={'sm'}
+          className={cn('flex align-center space-x-2', isMobileBreakpoint && 'hidden')}
+          onClick={handleMarkCompleted}
+        >
+          <Check size={15} />
+
+          <div>Mark Completed</div>
+        </Button>
         <Button
           variant={'secondary'}
           size={'sm'}

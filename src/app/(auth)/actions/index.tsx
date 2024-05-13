@@ -20,3 +20,9 @@ export async function logout() {
   const supabase = await createClientServer()
   await supabase.auth.signOut()
 }
+
+export async function getUser() {
+  const supabase = await createClientServer()
+  const { data: user, error: AuthError } = await supabase.auth.getUser()
+  return JSON.stringify({ user, AuthError })
+}
