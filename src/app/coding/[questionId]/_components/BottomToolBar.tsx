@@ -74,7 +74,9 @@ export function BottomToolbar({
     mutationFn: () => saveCode(),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['savedCode', questionId] })
-      toast.success('Code saved successfully')
+      toast.success('Code saved successfully', {
+        icon: <FileCheck size={15} />,
+      })
     },
     onError: error => {
       toast.error(`${error.message}`)

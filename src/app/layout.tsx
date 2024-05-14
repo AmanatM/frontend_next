@@ -7,7 +7,7 @@ import { ThemeProvider } from '@/providers/theme-provider'
 import { Toaster } from '@/components/ui/sonner'
 import { SandpackCSS } from '@/components/sandpack-styles'
 import { MenuTopBar } from '@/components/Header/Header'
-
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import Providers from '@/providers/Providers'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -53,6 +53,7 @@ export default function RootLayout({
             />
           </ThemeProvider>
         </Providers>
+        <SpeedInsights />
       </body>
     </html>
   )
