@@ -57,7 +57,12 @@ const SavedCode = ({ questionId, user }: { questionId: string; user: User | null
       sandpack.sandpack.addFile(file.coding_question_files.path, file.content || '')
     })
 
-    toast.success('Code loaded successfully')
+    toast.success('Code loaded successfully', {
+      action: {
+        label: 'Undo',
+        onClick: () => sandpack.sandpack.resetAllFiles(),
+      },
+    })
   }
 
   if (!user)
