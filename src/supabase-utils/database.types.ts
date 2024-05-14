@@ -48,7 +48,7 @@ export type Database = {
           created_at: string | null
           id: string
           language: string | null
-          path: string | null
+          path: string
           question_id: string | null
         }
         Insert: {
@@ -56,7 +56,7 @@ export type Database = {
           created_at?: string | null
           id?: string
           language?: string | null
-          path?: string | null
+          path: string
           question_id?: string | null
         }
         Update: {
@@ -64,7 +64,7 @@ export type Database = {
           created_at?: string | null
           id?: string
           language?: string | null
-          path?: string | null
+          path?: string
           question_id?: string | null
         }
         Relationships: [
@@ -158,7 +158,7 @@ export type Database = {
           {
             foreignKeyName: "user_completed_code_question_user_id_fkey"
             columns: ["user_id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "users"
             referencedColumns: ["id"]
           },

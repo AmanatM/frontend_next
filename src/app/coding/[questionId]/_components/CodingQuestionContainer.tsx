@@ -57,6 +57,8 @@ export default function CodingQuestionContainer({
   const [isMounted, setIsMounted] = useState(false)
   const [currentTheme, setCurrentTheme] = useState<'light' | 'dark' | undefined>(undefined)
 
+  const [currentFiles, setCurrentFiles] = useState<FilesObject | undefined>(undefined)
+
   useEffect(() => {
     setIsMounted(true)
   }, [])

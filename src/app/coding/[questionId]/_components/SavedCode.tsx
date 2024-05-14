@@ -7,6 +7,7 @@ import { TypographyH4 } from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import { FileWarning, LogIn } from 'lucide-react'
 import { toast } from 'sonner'
+import { useSandpack } from '@codesandbox/sandpack-react'
 
 const SavedCode = ({ questionId, user }: { questionId: string; user: User | null }) => {
   const supabase = useSupabaseBrowser()
@@ -47,6 +48,17 @@ const SavedCode = ({ questionId, user }: { questionId: string; user: User | null
       toast.error('Error deleting code')
     },
   })
+  const sandpack = useSandpack()
+
+  const handleLoadCode = () => {
+    if (!savedFiles) return
+
+    savedFiles.map(file => {
+      sandpack.sandpack.addFile(file.coding_question_files.path, file.content || '')
+    })
+
+    toast.success('Code loaded successfully')
+  }
 
   if (!user)
     return (
@@ -75,7 +87,7 @@ const SavedCode = ({ questionId, user }: { questionId: string; user: User | null
           <CardDescription>{new Date(last_updated).toLocaleString()}</CardDescription>
         </CardHeader>
         <CardContent className="space-x-3">
-          <Button variant={'default'} size={'sm'}>
+          <Button variant={'default'} size={'sm'} onClick={handleLoadCode}>
             Load code
           </Button>
           <Button variant={'destructive'} size={'sm'} onClick={() => deleteMutation.mutate()}>
