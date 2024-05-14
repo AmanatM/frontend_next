@@ -2,40 +2,63 @@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { useQuery } from '@tanstack/react-query'
 import useSupabaseBrowser from '@/supabase-utils/supabase-client'
+import { User } from '@supabase/auth-js'
+import { TypographyH4 } from '@/components/typography'
+import { Button } from '@/components/ui/button'
+import { usePathname, useRouter } from 'next/navigation'
+import { FileWarning, LogIn } from 'lucide-react'
 
-const SavedCode = ({ questionId }: { questionId: string }) => {
+const SavedCode = ({ questionId, user }: { questionId: string; user: User | null }) => {
   const supabase = useSupabaseBrowser()
 
-  const {
-    data: savedFiles,
-    isError,
-    isPending,
-  } = useQuery({
+  const { data: savedFiles, isSuccess } = useQuery({
     queryKey: ['savedCode', questionId],
     queryFn: async () => {
-      const data = await supabase
+      const { data, error } = await supabase
         .from('user_saved_coding_question_files')
         .select(`*, coding_question_files!inner(*)`)
         .eq('coding_question_files.question_id', questionId)
+      if (error) {
+        throw error
+      }
       return data
     },
   })
-  if (isPending) return 'Loading...'
-  if (isError) return 'Error'
 
+  if (!user)
+    return (
+      <div className="text-center space-y-5 flex flex-col self-center mx-auto w-full">
+        <LogIn className="mx-auto" size={30} />
+        <TypographyH4>Sign in to save code</TypographyH4>
+      </div>
+    )
+
+  if (!savedFiles || savedFiles.length === 0) {
+    return (
+      <div className="text-center space-y-5 flex flex-col self-center mx-auto w-full">
+        <FileWarning className="mx-auto" size={30} />
+        <TypographyH4>No saved code</TypographyH4>
+      </div>
+    )
+  }
+  const last_updated = savedFiles[0].updated_at !== null ? savedFiles[0].updated_at : savedFiles[0].created_at
   return (
-    <div>
+    <div className="size-full">
+      <TypographyH4 className="mb-4">Saved Code</TypographyH4>
+
       <Card>
         <CardHeader>
-          <CardTitle>Saved Code</CardTitle>
-          <CardDescription></CardDescription>
+          <CardTitle className="bold text-lg">Your saved code</CardTitle>
+          <CardDescription>{new Date(last_updated).toLocaleString()}</CardDescription>
         </CardHeader>
-        <CardContent>
-          <p>Card Content</p>
+        <CardContent className="space-x-3">
+          <Button variant={'default'} size={'sm'}>
+            Load code
+          </Button>
+          <Button variant={'destructive'} size={'sm'}>
+            Delete code
+          </Button>
         </CardContent>
-        <CardFooter>
-          <p>Card Footer</p>
-        </CardFooter>
       </Card>
     </div>
   )

@@ -23,6 +23,7 @@ import SavedCode from './SavedCode'
 import { User } from '@supabase/auth-js/dist/module/lib/types'
 import { CodingQuestion } from '@/supabase-utils/types'
 import { Skeleton } from '@/components/ui/skeleton'
+import { LogIn } from 'lucide-react'
 
 type FilesObject = {
   [key: string]: {
@@ -128,9 +129,8 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
               <TypographyH4>Solution</TypographyH4>
               <TypographyP>Content</TypographyP>
             </CustomTabsContent>
-            <CustomTabsContent value="saved_code" className="p-4 space-y-4">
-              <TypographyH4>Saved Code</TypographyH4>
-              <SavedCode questionId={idFromParams} />
+            <CustomTabsContent value="saved_code" className="p-4 space-y-4 min-h-full flex">
+              <SavedCode questionId={idFromParams} user={user} />
             </CustomTabsContent>
           </ResizablePanelTabs>
 
@@ -174,7 +174,7 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
           </ResizablePanelTabs>
         </ResizablePanelGroup>
 
-        <BottomToolbar supabase={supabase} filesObject={filesObject} />
+        <BottomToolbar supabase={supabase} filesObject={filesObject} user={user} questionId={idFromParams} />
         <InfoPopUp
           open={popupOpen}
           setOpen={setPopupOpen}

@@ -9,6 +9,8 @@ import { toast } from 'sonner'
 import { TypedSupabaseClient } from '@/supabase-utils/types'
 import { useRouter, usePathname } from 'next/navigation'
 import { saveCodingQuestionFile } from '../_api/saveCodingFiles'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { User } from '@supabase/auth-js'
 
 type FilesObject = {
   [key: string]: {
@@ -20,9 +22,13 @@ type FilesObject = {
 export function BottomToolbar({
   supabase,
   filesObject,
+  user,
+  questionId,
 }: {
   supabase: TypedSupabaseClient
   filesObject: FilesObject | undefined
+  user: User | null
+  questionId: string
 }) {
   const isMobileBreakpoint = useIsMobileBreakpoint()
   const router = useRouter()
@@ -32,28 +38,38 @@ export function BottomToolbar({
   const { sandpack } = useSandpack()
   const { files } = sandpack
 
-  const handleSaveCode = async () => {
-    const { data: user, error: userError } = await supabase.auth.getUser()
-    if (userError) {
-      toast.error('Please login to save code', {
-        action: { label: 'Login', onClick: () => router.push(`/login?redirectTo=${pathname}`) },
-      })
+  const queryClient = useQueryClient()
+
+  const mutation = useMutation({
+    mutationFn: async () => {
+      if (!filesObject) return
+
+      const filesArray = Object.values(filesObject).map(file => ({
+        content: files[file.path].code,
+        id: file.id,
+        user_id: user?.id,
+      }))
+
+      const { status, error } = await supabase.from('user_saved_coding_question_files').upsert(filesArray)
+      if (error) throw error
+      console.log(status)
+      return status
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['savedCode', questionId] })
+      toast.success('Code saved successfully')
+    },
+    onError: error => {
+      toast.error(`${error.message}`)
+    },
+  })
+
+  const handleSaveCode = () => {
+    if (!user) {
+      toast.error('Please login to save code')
       return
     }
-
-    if (!filesObject) return
-
-    const filesArray = Object.values(filesObject).map(file => ({
-      content: files[file.path].code, // Fix: Use file.code instead of file
-      id: file.id,
-      user_id: user.user.id,
-    }))
-
-    toast.promise(saveCodingQuestionFile(supabase, filesArray), {
-      loading: 'Logging out...',
-      success: 'Code saved successfully',
-      error: error => `${error.message}`,
-    })
+    mutation.mutate()
   }
 
   const handleMarkCompleted = async () => {
