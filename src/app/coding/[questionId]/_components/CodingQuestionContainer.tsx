@@ -174,7 +174,13 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
           </ResizablePanelTabs>
         </ResizablePanelGroup>
 
-        <BottomToolbar supabase={supabase} filesObject={filesObject} user={user} questionId={idFromParams} />
+        <BottomToolbar
+          supabase={supabase}
+          filesObject={filesObject}
+          user={user}
+          questionId={idFromParams}
+          coding_question={coding_question}
+        />
         <InfoPopUp
           open={popupOpen}
           setOpen={setPopupOpen}

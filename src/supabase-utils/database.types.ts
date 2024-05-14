@@ -128,6 +128,42 @@ export type Database = {
         }
         Relationships: []
       }
+      user_completed_code_question: {
+        Row: {
+          created_at: string
+          id: string
+          question_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          question_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          question_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_completed_code_question_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: true
+            referencedRelation: "coding_questions"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_completed_code_question_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_saved_coding_question_files: {
         Row: {
           content: string | null

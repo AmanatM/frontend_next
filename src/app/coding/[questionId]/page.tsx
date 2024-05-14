@@ -7,7 +7,7 @@ import Loading from './loading'
 async function getCodingQuestionById({ questionId, client }: { questionId: string; client: TypedSupabaseClient }) {
   const { data: codingQuestion, error } = await client
     .from('coding_questions')
-    .select(`*,coding_question_files(*)`)
+    .select(`*,coding_question_files(*), user_completed_code_question(*)`)
     .eq('id', questionId)
     .single()
 

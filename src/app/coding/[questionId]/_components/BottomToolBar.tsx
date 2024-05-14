@@ -6,12 +6,16 @@ import { useActiveCode, useSandpack } from '@codesandbox/sandpack-react'
 import { Settings, ChevronLeft, List, ChevronRight, Save, Check } from 'lucide-react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { toast } from 'sonner'
-import { TypedSupabaseClient } from '@/supabase-utils/types'
+import { CodingQuestion, TypedSupabaseClient } from '@/supabase-utils/types'
 import { useRouter, usePathname } from 'next/navigation'
 
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { User } from '@supabase/auth-js'
 import { on } from 'events'
+import { useState } from 'react'
+import { set } from 'react-hook-form'
+import { toggleUserComplete } from '../actions'
+import { error } from 'console'
 
 type FilesObject = {
   [key: string]: {
@@ -25,11 +29,13 @@ export function BottomToolbar({
   filesObject,
   user,
   questionId,
+  coding_question,
 }: {
   supabase: TypedSupabaseClient
   filesObject: FilesObject | undefined
   user: User | null
   questionId: string
+  coding_question: CodingQuestion
 }) {
   const isMobileBreakpoint = useIsMobileBreakpoint()
   const router = useRouter()
@@ -40,6 +46,8 @@ export function BottomToolbar({
   const { files } = sandpack
 
   const queryClient = useQueryClient()
+
+  const [isCompletedByUser, setIsCompletedByUser] = useState<boolean>(!!coding_question.user_completed_code_question)
 
   const saveCode = async () => {
     if (!user) {
@@ -76,7 +84,34 @@ export function BottomToolbar({
   }
 
   const handleMarkCompleted = async () => {
-    console.log('Mark completed')
+    if (!user) {
+      toast.error('Please login to mark completed')
+      return
+    }
+
+    if (!isCompletedByUser) {
+      const { data, error } = await supabase
+        .from('user_completed_code_question')
+        .upsert({ user_id: user.id, question_id: coding_question.id })
+      setIsCompletedByUser(true)
+      if (error) {
+        toast.error(error.message)
+        setIsCompletedByUser(false)
+      }
+      toast.success('Marked as completed')
+    } else {
+      const { data, error } = await supabase
+        .from('user_completed_code_question')
+        .delete()
+        .eq('user_id', user.id)
+        .eq('question_id', coding_question.id)
+      setIsCompletedByUser(false)
+      if (error) {
+        toast.error(error.message)
+        setIsCompletedByUser(true)
+      }
+      toast.success('Marked as not completed')
+    }
   }
 
   // Save code shortcut(cmd+s)
@@ -88,6 +123,7 @@ export function BottomToolbar({
     },
     { enableOnFormTags: true },
   )
+
   return (
     <div
       className={cn(
@@ -116,12 +152,23 @@ export function BottomToolbar({
         <Button
           variant={'secondary'}
           size={'sm'}
-          className={cn('flex align-center space-x-2', isMobileBreakpoint && 'hidden')}
-          onClick={handleMarkCompleted}
+          className={cn(
+            'flex align-center space-x-2',
+            isMobileBreakpoint && 'hidden',
+            coding_question.user_completed_code_question && 'bg-green-500',
+          )}
+          onClick={async (e, isMarkedComplete = !!coding_question.user_completed_code_question) => {
+            const data = await toggleUserComplete(questionId, isMarkedComplete)
+            if (data instanceof Error) {
+              toast.error(data.message)
+            } else {
+              toast.success(data)
+            }
+          }}
         >
           <Check size={15} />
 
-          <div>Mark Completed</div>
+          <div>{coding_question.user_completed_code_question ? 'Completed' : 'Mark Completed'}</div>
         </Button>
         <Button
           variant={'secondary'}
