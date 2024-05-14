@@ -37,9 +37,15 @@ type CodingQuestionProps = {
   idFromParams: string
   user: User | null
   coding_question: CodingQuestion
+  isQuestionMarkedComplete: boolean
 }
 
-export default function CodingQuestionContainer({ idFromParams, user, coding_question }: CodingQuestionProps) {
+export default function CodingQuestionContainer({
+  idFromParams,
+  user,
+  coding_question,
+  isQuestionMarkedComplete,
+}: CodingQuestionProps) {
   const { resolvedTheme } = useTheme()
   const supabase = useSupabaseBrowser()
   const isMobileBreakpoint = useIsMobileBreakpoint()
@@ -50,6 +56,8 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
   const [popupOpen, setPopupOpen] = useState(false)
   const [isMounted, setIsMounted] = useState(false)
   const [currentTheme, setCurrentTheme] = useState<'light' | 'dark' | undefined>(undefined)
+
+  console.log(isQuestionMarkedComplete)
 
   useEffect(() => {
     setIsMounted(true)
@@ -76,7 +84,7 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
       }
       return obj
     }, {})
-  }, [coding_question?.coding_question_files])
+  }, [])
 
   async function copyUrlAndClose() {
     try {
@@ -180,6 +188,7 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
           user={user}
           questionId={idFromParams}
           coding_question={coding_question}
+          isQuestionMarkedComplete={isQuestionMarkedComplete}
         />
         <InfoPopUp
           open={popupOpen}

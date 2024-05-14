@@ -3,7 +3,7 @@ import { Button } from '@/components/custom/button'
 import { useIsMobileBreakpoint } from '@/hooks/useIsMobileBreakpoint'
 import { cn } from '@/lib/utils'
 import { useActiveCode, useSandpack } from '@codesandbox/sandpack-react'
-import { Settings, ChevronLeft, List, ChevronRight, Save, Check } from 'lucide-react'
+import { Settings, ChevronLeft, List, ChevronRight, Save, Check, FileCheck } from 'lucide-react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { toast } from 'sonner'
 import { CodingQuestion, TypedSupabaseClient } from '@/supabase-utils/types'
@@ -12,10 +12,11 @@ import { useRouter, usePathname } from 'next/navigation'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { User } from '@supabase/auth-js'
 import { on } from 'events'
-import { useState } from 'react'
+import { useState, useTransition } from 'react'
 import { set } from 'react-hook-form'
 import { toggleUserComplete } from '../actions'
 import { error } from 'console'
+import { ResetIcon } from '@radix-ui/react-icons'
 
 type FilesObject = {
   [key: string]: {
@@ -30,12 +31,14 @@ export function BottomToolbar({
   user,
   questionId,
   coding_question,
+  isQuestionMarkedComplete,
 }: {
   supabase: TypedSupabaseClient
   filesObject: FilesObject | undefined
   user: User | null
   questionId: string
   coding_question: CodingQuestion
+  isQuestionMarkedComplete: boolean
 }) {
   const isMobileBreakpoint = useIsMobileBreakpoint()
   const router = useRouter()
@@ -47,7 +50,7 @@ export function BottomToolbar({
 
   const queryClient = useQueryClient()
 
-  const [isCompletedByUser, setIsCompletedByUser] = useState<boolean>(!!coding_question.user_completed_code_question)
+  const [isMarkingComplete, startMarkkingTransition] = useTransition()
 
   const saveCode = async () => {
     if (!user) {
@@ -84,34 +87,13 @@ export function BottomToolbar({
   }
 
   const handleMarkCompleted = async () => {
-    if (!user) {
-      toast.error('Please login to mark completed')
-      return
-    }
-
-    if (!isCompletedByUser) {
-      const { data, error } = await supabase
-        .from('user_completed_code_question')
-        .upsert({ user_id: user.id, question_id: coding_question.id })
-      setIsCompletedByUser(true)
-      if (error) {
-        toast.error(error.message)
-        setIsCompletedByUser(false)
+    startMarkkingTransition(async () => {
+      if (!user) {
+        toast.error('Please login to mark completed')
+        return
       }
-      toast.success('Marked as completed')
-    } else {
-      const { data, error } = await supabase
-        .from('user_completed_code_question')
-        .delete()
-        .eq('user_id', user.id)
-        .eq('question_id', coding_question.id)
-      setIsCompletedByUser(false)
-      if (error) {
-        toast.error(error.message)
-        setIsCompletedByUser(true)
-      }
-      toast.success('Marked as not completed')
-    }
+      const data = await toggleUserComplete(questionId, isQuestionMarkedComplete)
+    })
   }
 
   // Save code shortcut(cmd+s)
@@ -136,7 +118,7 @@ export function BottomToolbar({
           <Settings size={17} />
         </Button>
       </div>
-      <div className="flex gap-x-2">
+      <div className="flex gap-x-2  md:absolute md:left-1/2 md:-translate-x-1/2">
         <Button variant={'outline'} size={'icon'}>
           <ChevronLeft size={17} />
         </Button>
@@ -153,22 +135,16 @@ export function BottomToolbar({
           variant={'secondary'}
           size={'sm'}
           className={cn(
-            'flex align-center space-x-2',
+            'flex align-center space-x-1 ',
             isMobileBreakpoint && 'hidden',
-            coding_question.user_completed_code_question && 'bg-green-500',
+            isQuestionMarkedComplete && 'bg-green-700',
           )}
-          onClick={async (e, isMarkedComplete = !!coding_question.user_completed_code_question) => {
-            const data = await toggleUserComplete(questionId, isMarkedComplete)
-            if (data instanceof Error) {
-              toast.error(data.message)
-            } else {
-              toast.success(data)
-            }
-          }}
+          disabled={isMarkingComplete}
+          loading={isMarkingComplete}
+          leftIcon={isQuestionMarkedComplete ? <Check size={15} /> : undefined}
+          onClick={handleMarkCompleted}
         >
-          <Check size={15} />
-
-          <div>{coding_question.user_completed_code_question ? 'Completed' : 'Mark Completed'}</div>
+          <div>{isQuestionMarkedComplete ? 'Completed' : 'Mark Completed'}</div>
         </Button>
         <Button
           variant={'secondary'}
