@@ -86,6 +86,8 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
     }
   }
 
+  if (!isMounted) return null
+
   return (
     <main id="content" className={cn('flex size-full pt-3 px-3 overflow-scroll flex-col !h-[calc(100dvh-3.5rem)]')}>
       <SandpackProvider
