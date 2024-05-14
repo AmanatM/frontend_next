@@ -54,8 +54,7 @@ export function BottomToolbar({
 
   const saveCode = async () => {
     if (!user) {
-      toast.error('Please login to save code')
-      return
+      throw new Error('Please login to save code')
     }
     if (!filesObject) return
 

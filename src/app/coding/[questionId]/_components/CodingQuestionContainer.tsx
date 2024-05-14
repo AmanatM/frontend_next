@@ -57,8 +57,6 @@ export default function CodingQuestionContainer({
   const [isMounted, setIsMounted] = useState(false)
   const [currentTheme, setCurrentTheme] = useState<'light' | 'dark' | undefined>(undefined)
 
-  console.log(isQuestionMarkedComplete)
-
   useEffect(() => {
     setIsMounted(true)
   }, [])
