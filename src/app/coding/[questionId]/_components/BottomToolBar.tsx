@@ -8,9 +8,10 @@ import { useHotkeys } from 'react-hotkeys-hook'
 import { toast } from 'sonner'
 import { TypedSupabaseClient } from '@/supabase-utils/types'
 import { useRouter, usePathname } from 'next/navigation'
-import { saveCodingQuestionFile } from '../_api/saveCodingFiles'
+
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { User } from '@supabase/auth-js'
+import { on } from 'events'
 
 type FilesObject = {
   [key: string]: {
@@ -40,21 +41,27 @@ export function BottomToolbar({
 
   const queryClient = useQueryClient()
 
-  const mutation = useMutation({
-    mutationFn: async () => {
-      if (!filesObject) return
+  const saveCode = async () => {
+    if (!user) {
+      toast.error('Please login to save code')
+      return
+    }
+    if (!filesObject) return
 
-      const filesArray = Object.values(filesObject).map(file => ({
-        content: files[file.path].code,
-        id: file.id,
-        user_id: user?.id,
-      }))
+    const filesArray = Object.values(filesObject).map(file => ({
+      content: files[file.path].code,
+      id: file.id,
+      user_id: user?.id,
+    }))
 
-      const { status, error } = await supabase.from('user_saved_coding_question_files').upsert(filesArray)
-      if (error) throw error
-      console.log(status)
-      return status
-    },
+    const { status, error } = await supabase.from('user_saved_coding_question_files').upsert(filesArray)
+    if (error) throw error
+    console.log(status)
+    return status
+  }
+
+  const saveCodeMutation = useMutation({
+    mutationFn: () => saveCode(),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['savedCode', questionId] })
       toast.success('Code saved successfully')
@@ -65,11 +72,7 @@ export function BottomToolbar({
   })
 
   const handleSaveCode = () => {
-    if (!user) {
-      toast.error('Please login to save code')
-      return
-    }
-    mutation.mutate()
+    saveCodeMutation.mutate()
   }
 
   const handleMarkCompleted = async () => {

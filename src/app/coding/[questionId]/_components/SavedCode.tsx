@@ -1,15 +1,16 @@
 'use client'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import useSupabaseBrowser from '@/supabase-utils/supabase-client'
 import { User } from '@supabase/auth-js'
 import { TypographyH4 } from '@/components/typography'
 import { Button } from '@/components/ui/button'
-import { usePathname, useRouter } from 'next/navigation'
 import { FileWarning, LogIn } from 'lucide-react'
+import { toast } from 'sonner'
 
 const SavedCode = ({ questionId, user }: { questionId: string; user: User | null }) => {
   const supabase = useSupabaseBrowser()
+  const queryClient = useQueryClient()
 
   const { data: savedFiles, isSuccess } = useQuery({
     queryKey: ['savedCode', questionId],
@@ -22,6 +23,28 @@ const SavedCode = ({ questionId, user }: { questionId: string; user: User | null
         throw error
       }
       return data
+    },
+  })
+
+  const deleteMutation = useMutation({
+    mutationFn: async () => {
+      const idsToDelete = savedFiles?.map(file => file.id)
+      if (!idsToDelete) return
+
+      const { data, error } = await supabase.from('user_saved_coding_question_files').delete().in('id', idsToDelete)
+      if (error) {
+        throw new Error(error.message)
+      }
+      return data
+    },
+    onSuccess: () => {
+      toast.success('Code deleted successfully')
+      queryClient.invalidateQueries({
+        queryKey: ['savedCode', questionId],
+      })
+    },
+    onError: error => {
+      toast.error('Error deleting code')
     },
   })
 
@@ -55,7 +78,7 @@ const SavedCode = ({ questionId, user }: { questionId: string; user: User | null
           <Button variant={'default'} size={'sm'}>
             Load code
           </Button>
-          <Button variant={'destructive'} size={'sm'}>
+          <Button variant={'destructive'} size={'sm'} onClick={() => deleteMutation.mutate()}>
             Delete code
           </Button>
         </CardContent>
