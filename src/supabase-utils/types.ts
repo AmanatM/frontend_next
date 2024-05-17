@@ -14,7 +14,7 @@ export type QuestionsSearchResults = {
   title: string
 }
 
-export type SavedCodingQuestionFile = Database['public']['Tables']['user_saved_coding_question_files']['Row']
+export type SavedCodingQuestionFiles = Database['public']['Tables']['user_saved_coding_question_files']['Row']
 
 export type SandpackTemplate =
   | 'angular-cli'

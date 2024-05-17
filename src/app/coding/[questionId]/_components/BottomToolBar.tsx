@@ -12,6 +12,9 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { User } from '@supabase/auth-js'
 import { useTransition } from 'react'
 import { useRouter } from 'next/navigation'
+import { useIsMarkedComplete } from '../_hooks/useIsMarkedComplete'
+import { useToggleMarkComplete } from '../_hooks/useToggleMarkedComplete'
+import { useSaveFiles } from '../_hooks/useSaveFiles'
 
 type FilesObject = {
   [key: string]: {
@@ -42,100 +45,40 @@ export function BottomToolbar({
   const queryClient = useQueryClient()
   const router = useRouter()
 
-  const { data: isMarkedComplete } = useQuery({
-    queryKey: ['isMarkedComplete', questionId, user?.id],
-    queryFn: async () => {
-      if (!user) return
+  const { data: isMarkedComplete, isLoading: isMarkingComplete } = useIsMarkedComplete({ questionId, user })
 
-      const { data, error } = await supabase
-        .from('user_completed_code_question')
-        .select(`*`)
-        .eq('question_id', questionId)
-        .eq('user_id', user?.id)
-      if (error) throw new Error(error.message)
-      if (!data || data.length === 0) {
-        return false
-      }
-      return true
-    },
-    enabled: !!user,
-  })
-
-  const saveCodeMutation = useMutation({
-    mutationFn: async () => {
-      if (!user) {
-        throw new Error('Please login to save code')
-      }
-      if (!filesObject) return
-
-      const filesArray = Object.values(filesObject).map(file => ({
-        content: files[file.path].code,
-        file_id: file.id,
-        user_id: user?.id,
-        question_id: questionId,
-        path: file.path,
-      }))
-
-      const { status, error } = await supabase.from('user_saved_coding_question_files').upsert(filesArray)
-      if (error) throw error
-      console.log(status)
-      return status
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['savedCode', questionId, user?.id] })
-
-      toast.success('Code saved successfully', {
-        icon: <FileCheck size={15} />,
-      })
-    },
-    onError: error => {
-      toast.error(`${error.message}`)
-    },
-  })
+  const { mutate: toggleMarkedComplete } = useToggleMarkComplete({ user, questionId, isMarkedComplete })
+  const { mutate: saveCode } = useSaveFiles()
 
   const handleSaveCode = () => {
-    saveCodeMutation.mutate()
+    if (!filesObject || !user) return
+
+    const updatedFiles = Object.values(filesObject).map(file => ({
+      content: files[file.path].code,
+      file_id: file.id,
+      user_id: user.id,
+      question_id: questionId,
+      path: file.path,
+    }))
+
+    saveCode(
+      { user, updatedFiles },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ['savedCode', questionId, user?.id] })
+          toast.success('Code saved successfully', {
+            icon: <FileCheck size={15} />,
+          })
+        },
+        onError: error => {
+          toast.error(`${error.message}`)
+        },
+      },
+    )
   }
 
-  const toggleUserCompleteMutation = useMutation({
-    mutationFn: async () => {
-      if (!user) {
-        throw new Error('Login to first')
-      }
-
-      if (isMarkedComplete) {
-        const data = await supabase
-          .from('user_completed_code_question')
-          .delete()
-          .eq('user_id', user.id)
-          .eq('question_id', questionId)
-        if (data.error && data.error.code !== '23505') {
-          //if error code is not unique_violation
-          throw new Error(data.error.code)
-        }
-        return data.status
-      } else {
-        const data = await supabase
-          .from('user_completed_code_question')
-          .insert({ user_id: user.id, question_id: questionId })
-        if (data.error && data.error.code !== '23505') {
-          throw new Error(data.error.code)
-        }
-
-        return data.status
-      }
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['isMarkedComplete', questionId, user?.id] })
-      router.refresh()
-    },
-    onError: error => {
-      toast.error(`${error.message}`)
-    },
-  })
-
   const handleMarkCompleted = async () => {
-    toggleUserCompleteMutation.mutate()
+    toggleMarkedComplete()
   }
 
   // Save code shortcut(cmd+s)
@@ -181,9 +124,10 @@ export function BottomToolbar({
             isMobileBreakpoint && 'hidden',
             isMarkedComplete && 'bg-green-700 hover:bg-green-700',
           )}
-          disabled={toggleUserCompleteMutation.isPending}
+          disabled={isMarkingComplete}
           leftIcon={isMarkedComplete ? <Check size={15} /> : undefined}
           onClick={handleMarkCompleted}
+          loading={isMarkingComplete}
         >
           <div>{isMarkedComplete ? 'Completed' : 'Mark as complete'}</div>
         </Button>
