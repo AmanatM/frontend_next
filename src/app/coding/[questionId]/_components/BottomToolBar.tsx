@@ -11,6 +11,7 @@ import { CodingQuestion, TypedSupabaseClient } from '@/supabase-utils/types'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { User } from '@supabase/auth-js'
 import { useTransition } from 'react'
+import { useRouter } from 'next/navigation'
 
 type FilesObject = {
   [key: string]: {
@@ -39,6 +40,7 @@ export function BottomToolbar({
   const { sandpack } = useSandpack()
   const { files } = sandpack
   const queryClient = useQueryClient()
+  const router = useRouter()
 
   const { data: isMarkedComplete } = useQuery({
     queryKey: ['isMarkedComplete', questionId, user?.id],
@@ -81,6 +83,7 @@ export function BottomToolbar({
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['savedCode', questionId, user?.id] })
+
       toast.success('Code saved successfully', {
         icon: <FileCheck size={15} />,
       })
@@ -124,6 +127,7 @@ export function BottomToolbar({
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['isMarkedComplete', questionId, user?.id] })
+      router.refresh()
     },
     onError: error => {
       toast.error(`${error.message}`)
