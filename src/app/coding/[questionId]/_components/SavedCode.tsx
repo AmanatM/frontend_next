@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { FileWarning, LogIn } from 'lucide-react'
 import { toast } from 'sonner'
 import { useSandpack } from '@codesandbox/sandpack-react'
+import { useEffect } from 'react'
 
 const SavedCode = ({ questionId, user }: { questionId: string; user: User | null }) => {
   const supabase = useSupabaseBrowser()
@@ -27,6 +28,23 @@ const SavedCode = ({ questionId, user }: { questionId: string; user: User | null
     },
     enabled: !!user,
   })
+
+  useEffect(() => {
+    if (isSuccess && savedFiles && savedFiles.length > 0) {
+      toast.info('Saved code detected', {
+        action: {
+          label: 'Load Code',
+          onClick: () => {
+            if (!savedFiles) return
+
+            savedFiles.map(file => {
+              sandpack.sandpack.addFile(file.path || '', file.content || '')
+            })
+          },
+        },
+      })
+    }
+  }, [isSuccess])
 
   const deleteMutation = useMutation({
     mutationFn: async () => {
