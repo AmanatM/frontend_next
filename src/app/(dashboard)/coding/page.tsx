@@ -28,6 +28,8 @@ async function getCodingQuestions({ client }: { client: TypedSupabaseClient }) {
 
 export default async function Coding() {
   const supabase = createClientServer()
+  const user = (await supabase.auth.getUser()).data.user
+
   const codingQuestions = await getCodingQuestions({ client: supabase })
 
   return (
@@ -64,7 +66,7 @@ export default async function Coding() {
             <Card className="size-full px-1 py-1">
               <CardHeader className="flex flex-row space-x-2 items-middle justify-between">
                 <TypographyP>{question.title}</TypographyP>
-                {!!question.user_completed_code_question && <Badge variant="secondary">Completed</Badge>}
+                {question.user_completed_code_question.length > 0 && <Badge variant="secondary">Completed</Badge>}
               </CardHeader>
               <CardContent>
                 <div className="flex space-x-4 text-sm text-muted-foreground">
@@ -81,7 +83,7 @@ export default async function Coding() {
                     <StarIcon className="mr-1 h-3 w-3" />
                     20k
                   </div>
-                  <div>Updated April 2023</div>
+                  {/* <div>{JSON.stringify(question.user_completed_code_question)}</div> */}
                 </div>
               </CardContent>
             </Card>
