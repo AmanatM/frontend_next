@@ -8,9 +8,8 @@ import { useHotkeys } from 'react-hotkeys-hook'
 import { toast } from 'sonner'
 import { CodingQuestion, TypedSupabaseClient } from '@/supabase-utils/types'
 
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQueryClient } from '@tanstack/react-query'
 import { User } from '@supabase/auth-js'
-import { useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { useIsMarkedComplete } from '../_hooks/useIsMarkedComplete'
 import { useToggleMarkComplete } from '../_hooks/useToggleMarkedComplete'
@@ -24,19 +23,13 @@ type FilesObject = {
   }
 }
 export function BottomToolbar({
-  supabase,
   filesObject,
   user,
   questionId,
-  coding_question,
-  isQuestionMarkedComplete,
 }: {
-  supabase: TypedSupabaseClient
   filesObject: FilesObject | undefined
   user: User | null
   questionId: string
-  coding_question: CodingQuestion
-  isQuestionMarkedComplete: boolean
 }) {
   const isMobileBreakpoint = useIsMobileBreakpoint()
 

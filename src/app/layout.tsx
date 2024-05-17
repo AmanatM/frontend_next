@@ -44,7 +44,7 @@ export default function RootLayout({
             <div className="grow">{children}</div>
             <Toaster
               richColors
-              visibleToasts={3}
+              visibleToasts={2}
               toastOptions={{
                 style: {
                   bottom: '30px',

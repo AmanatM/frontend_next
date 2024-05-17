@@ -9,25 +9,16 @@ import { FileWarning, LogIn } from 'lucide-react'
 import { toast } from 'sonner'
 import { useSandpack } from '@codesandbox/sandpack-react'
 import { useEffect } from 'react'
+import { useDeleteSavedFiles } from '../_hooks/useDeleteSavedFiles'
+import { useGetSavedFiles } from '../_hooks/useGetSavedFiles'
 
 const SavedCode = ({ questionId, user }: { questionId: string; user: User | null }) => {
   const supabase = useSupabaseBrowser()
   const queryClient = useQueryClient()
 
-  const { data: savedFiles, isSuccess } = useQuery({
-    queryKey: ['savedCode', questionId, user?.id],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from('user_saved_coding_question_files')
-        .select(`*`)
-        .eq('question_id', questionId)
-      if (error) {
-        throw error
-      }
-      return data
-    },
-    enabled: !!user,
-  })
+  const { data: savedFiles, isSuccess } = useGetSavedFiles({ questionId, user })
+
+  const { mutate: deleteSavedFiles } = useDeleteSavedFiles()
 
   useEffect(() => {
     if (isSuccess && savedFiles && savedFiles.length > 0) {
@@ -46,29 +37,23 @@ const SavedCode = ({ questionId, user }: { questionId: string; user: User | null
     }
   }, [isSuccess])
 
-  const deleteMutation = useMutation({
-    mutationFn: async () => {
-      const idsToDelete = savedFiles?.map(file => file.file_id)
-      if (!idsToDelete) return
-      const { data, error } = await supabase
-        .from('user_saved_coding_question_files')
-        .delete()
-        .in('file_id', idsToDelete)
-      if (error) {
-        throw new Error(error.message)
-      }
-      return data
-    },
-    onSuccess: () => {
-      toast.success('Code deleted successfully')
-      queryClient.invalidateQueries({
-        queryKey: ['savedCode', questionId, user?.id],
-      })
-    },
-    onError: error => {
-      toast.error('Error deleting code')
-    },
-  })
+  const handleDeleteFiles = () => {
+    const idsToDelete = savedFiles?.map(file => file.file_id)
+    deleteSavedFiles(
+      { idsToDelete },
+      {
+        onSuccess: () => {
+          toast.success('Code deleted successfully')
+          queryClient.invalidateQueries({
+            queryKey: ['savedCode', questionId, user?.id],
+          })
+        },
+        onError: error => {
+          toast.error('Error deleting code')
+        },
+      },
+    )
+  }
 
   const sandpack = useSandpack()
   const handleLoadCode = () => {
@@ -116,7 +101,7 @@ const SavedCode = ({ questionId, user }: { questionId: string; user: User | null
           <Button variant={'default'} size={'sm'} onClick={handleLoadCode}>
             Load code
           </Button>
-          <Button variant={'destructive'} size={'sm'} onClick={() => deleteMutation.mutate()}>
+          <Button variant={'destructive'} size={'sm'} onClick={handleDeleteFiles}>
             Delete code
           </Button>
         </CardContent>
