@@ -44,7 +44,11 @@ export function BottomToolbar({
   const { mutate: saveCode } = useSaveFiles()
 
   const handleSaveCode = () => {
-    if (!filesObject || !user) return
+    if (!filesObject) return
+    if (!user) {
+      toast.error('Please sign in to save your code')
+      return
+    }
 
     const updatedFiles = Object.values(filesObject).map(file => ({
       content: files[file.path].code,

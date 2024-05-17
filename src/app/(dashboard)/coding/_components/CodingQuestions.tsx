@@ -30,10 +30,10 @@ const CodingQuestions = () => {
 
   if (filteredCodingQuestions && codingQuestions)
     return (
-      <div className="flex flex-col space-y-1">
+      <div className="flex flex-col space-y-2">
         {filteredCodingQuestions.map(question => (
           <Link key={question.id} href={`/coding/${question.id}`} className="flex">
-            <div className="size-full space-y-4 px-6 py-4 bg-primary-foreground rounded-sm">
+            <Card className="size-full space-y-4 px-6 py-4 bg-primary-foreground rounded-sm">
               <div className="flex flex-row space-x-4">
                 <TypographyP>{question.title}</TypographyP>
                 {question.user_completed_code_question.length > 0 && (
@@ -63,7 +63,7 @@ const CodingQuestions = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </Card>
           </Link>
         ))}
       </div>

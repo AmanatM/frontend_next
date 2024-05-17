@@ -30,14 +30,14 @@ const SearchFilter = () => {
 
   return (
     <div className="space-y-3 flex flex-col">
-      <div className="flex space-x-3 ">
+      <div className="flex flex-col space-y-3 md:space-y-0 md:flex-row space-x-3 ">
         <div className="grow bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <div className="relative">
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input placeholder="Search" className="pl-8" />
           </div>
         </div>
-        <ToggleGroup value={typeFilter} type="single" variant="outline" defaultValue="">
+        <ToggleGroup value={typeFilter} type="single" variant="outline" defaultValue={typeFilter}>
           <ToggleGroupItem onClick={() => setFilter('')} value="all" className="space-x-2">
             <List size={15} className="text-muted-foreground" />
             <TypographyMuted className="text-sm">All</TypographyMuted>

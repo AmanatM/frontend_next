@@ -1,3 +1,4 @@
+import { User } from '@supabase/auth-js'
 import { Card } from './ui/card'
 import { Progress } from './ui/progress'
 
@@ -19,7 +20,8 @@ const mockData = [
   },
 ]
 
-function ProgressSimple() {
+function ProgressSimple({ user }: { user: User | null }) {
+  if (!user) return null
   return (
     <Card className="grid md:grid-cols-3 grid-cols-1 gap-y-6 gap-x-6 px-6 py-4">
       {mockData.map((data, index) => (
