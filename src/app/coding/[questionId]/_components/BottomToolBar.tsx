@@ -2,21 +2,15 @@
 import { Button } from '@/components/custom/button'
 import { useIsMobileBreakpoint } from '@/hooks/useIsMobileBreakpoint'
 import { cn } from '@/lib/utils'
-import { useActiveCode, useSandpack } from '@codesandbox/sandpack-react'
+import { useSandpack } from '@codesandbox/sandpack-react'
 import { Settings, ChevronLeft, List, ChevronRight, Save, Check, FileCheck } from 'lucide-react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { toast } from 'sonner'
 import { CodingQuestion, TypedSupabaseClient } from '@/supabase-utils/types'
-import { useRouter, usePathname } from 'next/navigation'
 
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { User } from '@supabase/auth-js'
-import { on } from 'events'
-import { useState, useTransition } from 'react'
-import { set } from 'react-hook-form'
-import { toggleUserComplete } from '../actions'
-import { error } from 'console'
-import { ResetIcon } from '@radix-ui/react-icons'
+import { useTransition } from 'react'
 
 type FilesObject = {
   [key: string]: {
@@ -41,16 +35,29 @@ export function BottomToolbar({
   isQuestionMarkedComplete: boolean
 }) {
   const isMobileBreakpoint = useIsMobileBreakpoint()
-  const router = useRouter()
-  const pathname = usePathname()
 
-  // Save code function
   const { sandpack } = useSandpack()
   const { files } = sandpack
-
   const queryClient = useQueryClient()
 
-  const [isMarkingComplete, startMarkkingTransition] = useTransition()
+  const { data: isMarkedComplete } = useQuery({
+    queryKey: ['isMarkedComplete', questionId, user?.id],
+    queryFn: async () => {
+      if (!user) return
+
+      const { data, error } = await supabase
+        .from('user_completed_code_question')
+        .select(`*`)
+        .eq('question_id', questionId)
+        .eq('user_id', user?.id)
+      if (error) throw new Error(error.message)
+      if (!data || data.length === 0) {
+        return false
+      }
+      return true
+    },
+    enabled: !!user,
+  })
 
   const saveCodeMutation = useMutation({
     mutationFn: async () => {
@@ -73,7 +80,7 @@ export function BottomToolbar({
       return status
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['savedCode', questionId] })
+      queryClient.invalidateQueries({ queryKey: ['savedCode', questionId, user?.id] })
       toast.success('Code saved successfully', {
         icon: <FileCheck size={15} />,
       })
@@ -87,14 +94,44 @@ export function BottomToolbar({
     saveCodeMutation.mutate()
   }
 
-  const handleMarkCompleted = async () => {
-    startMarkkingTransition(async () => {
+  const toggleUserCompleteMutation = useMutation({
+    mutationFn: async () => {
       if (!user) {
-        toast.error('Please login to mark completed')
-        return
+        throw new Error('Login to first')
       }
-      const data = await toggleUserComplete(questionId, isQuestionMarkedComplete)
-    })
+
+      if (isMarkedComplete) {
+        const data = await supabase
+          .from('user_completed_code_question')
+          .delete()
+          .eq('user_id', user.id)
+          .eq('question_id', questionId)
+        if (data.error && data.error.code !== '23505') {
+          //if error code is not unique_violation
+          throw new Error(data.error.code)
+        }
+        return data.status
+      } else {
+        const data = await supabase
+          .from('user_completed_code_question')
+          .insert({ user_id: user.id, question_id: questionId })
+        if (data.error && data.error.code !== '23505') {
+          throw new Error(data.error.code)
+        }
+
+        return data.status
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['isMarkedComplete', questionId, user?.id] })
+    },
+    onError: error => {
+      toast.error(`${error.message}`)
+    },
+  })
+
+  const handleMarkCompleted = async () => {
+    toggleUserCompleteMutation.mutate()
   }
 
   // Save code shortcut(cmd+s)
@@ -136,16 +173,15 @@ export function BottomToolbar({
           variant={'secondary'}
           size={'sm'}
           className={cn(
-            'flex align-center space-x-1 ',
+            'flex align-center space-x-1 transition',
             isMobileBreakpoint && 'hidden',
-            isQuestionMarkedComplete && 'bg-green-700',
+            isMarkedComplete && 'bg-green-700 hover:bg-green-700',
           )}
-          disabled={isMarkingComplete}
-          loading={isMarkingComplete}
-          leftIcon={isQuestionMarkedComplete ? <Check size={15} /> : undefined}
+          disabled={toggleUserCompleteMutation.isPending}
+          leftIcon={isMarkedComplete ? <Check size={15} /> : undefined}
           onClick={handleMarkCompleted}
         >
-          <div>{isQuestionMarkedComplete ? 'Completed' : 'Mark Completed'}</div>
+          <div>{isMarkedComplete ? 'Completed' : 'Mark as complete'}</div>
         </Button>
         <Button
           variant={'secondary'}

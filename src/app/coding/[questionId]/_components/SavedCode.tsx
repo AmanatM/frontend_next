@@ -62,7 +62,7 @@ const SavedCode = ({ questionId, user }: { questionId: string; user: User | null
     onSuccess: () => {
       toast.success('Code deleted successfully')
       queryClient.invalidateQueries({
-        queryKey: ['savedCode', questionId],
+        queryKey: ['savedCode', questionId, user?.id],
       })
     },
     onError: error => {
