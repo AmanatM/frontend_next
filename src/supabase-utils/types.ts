@@ -7,7 +7,6 @@ export type QuestionFile = Database['public']['Tables']['coding_question_files']
 
 export type CodingQuestion = Database['public']['Tables']['coding_questions']['Row'] & {
   coding_question_files: QuestionFile[]
-  user_completed_code_question: Database['public']['Tables']['user_completed_code_question']['Row'] | null
 }
 
 export type QuestionsSearchResults = {

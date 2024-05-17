@@ -52,26 +52,26 @@ export function BottomToolbar({
 
   const [isMarkingComplete, startMarkkingTransition] = useTransition()
 
-  const saveCode = async () => {
-    if (!user) {
-      throw new Error('Please login to save code')
-    }
-    if (!filesObject) return
-
-    const filesArray = Object.values(filesObject).map(file => ({
-      content: files[file.path].code,
-      id: file.id,
-      user_id: user?.id,
-    }))
-
-    const { status, error } = await supabase.from('user_saved_coding_question_files').upsert(filesArray)
-    if (error) throw error
-    console.log(status)
-    return status
-  }
-
   const saveCodeMutation = useMutation({
-    mutationFn: () => saveCode(),
+    mutationFn: async () => {
+      if (!user) {
+        throw new Error('Please login to save code')
+      }
+      if (!filesObject) return
+
+      const filesArray = Object.values(filesObject).map(file => ({
+        content: files[file.path].code,
+        file_id: file.id,
+        user_id: user?.id,
+        question_id: questionId,
+        path: file.path,
+      }))
+
+      const { status, error } = await supabase.from('user_saved_coding_question_files').upsert(filesArray)
+      if (error) throw error
+      console.log(status)
+      return status
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['savedCode', questionId] })
       toast.success('Code saved successfully', {

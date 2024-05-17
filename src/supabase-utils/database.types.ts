@@ -83,6 +83,7 @@ export type Database = {
           description: string
           difficulty: string | null
           id: string
+          question_type: Database["public"]["Enums"]["question_type"]
           sandpack_template: Database["public"]["Enums"]["sandpackTemplates"]
           solution: string | null
           title: string
@@ -93,6 +94,7 @@ export type Database = {
           description: string
           difficulty?: string | null
           id?: string
+          question_type?: Database["public"]["Enums"]["question_type"]
           sandpack_template?: Database["public"]["Enums"]["sandpackTemplates"]
           solution?: string | null
           title: string
@@ -103,6 +105,7 @@ export type Database = {
           description?: string
           difficulty?: string | null
           id?: string
+          question_type?: Database["public"]["Enums"]["question_type"]
           sandpack_template?: Database["public"]["Enums"]["sandpackTemplates"]
           solution?: string | null
           title?: string
@@ -151,7 +154,7 @@ export type Database = {
           {
             foreignKeyName: "user_completed_code_question_question_id_fkey"
             columns: ["question_id"]
-            isOneToOne: true
+            isOneToOne: false
             referencedRelation: "coding_questions"
             referencedColumns: ["id"]
           },
@@ -168,34 +171,54 @@ export type Database = {
         Row: {
           content: string | null
           created_at: string
-          id: string
+          file_id: string
+          path: string | null
+          question_id: string | null
           updated_at: string | null
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           content?: string | null
           created_at?: string
-          id: string
+          file_id: string
+          path?: string | null
+          question_id?: string | null
           updated_at?: string | null
-          user_id?: string | null
+          user_id: string
         }
         Update: {
           content?: string | null
           created_at?: string
-          id?: string
+          file_id?: string
+          path?: string | null
+          question_id?: string | null
           updated_at?: string | null
-          user_id?: string | null
+          user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "user_saved_coding_question_files_coding_question_file_id_fkey"
-            columns: ["id"]
-            isOneToOne: true
+            foreignKeyName: "user_saved_coding_question_files_file_id_fkey"
+            columns: ["file_id"]
+            isOneToOne: false
             referencedRelation: "coding_question_files"
             referencedColumns: ["id"]
           },
           {
+            foreignKeyName: "user_saved_coding_question_files_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "coding_questions"
+            referencedColumns: ["id"]
+          },
+          {
             foreignKeyName: "user_saved_coding_question_files_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_saved_coding_question_files_user_id_fkey1"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
@@ -237,7 +260,9 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      sandpackTemplates: "static" | "vite-react"
+      question_difficulty: "Easy" | "Medium" | "Hard"
+      question_type: "user_interface" | "javascript"
+      sandpackTemplates: "static" | "vite-react" | "vanilla"
       user_roles: "admin"
     }
     CompositeTypes: {

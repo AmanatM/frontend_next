@@ -14,25 +14,28 @@ const SavedCode = ({ questionId, user }: { questionId: string; user: User | null
   const queryClient = useQueryClient()
 
   const { data: savedFiles, isSuccess } = useQuery({
-    queryKey: ['savedCode', questionId],
+    queryKey: ['savedCode', questionId, user?.id],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('user_saved_coding_question_files')
-        .select(`*, coding_question_files!inner(*)`)
-        .eq('coding_question_files.question_id', questionId)
+        .select(`*`)
+        .eq('question_id', questionId)
       if (error) {
         throw error
       }
       return data
     },
+    enabled: !!user,
   })
 
   const deleteMutation = useMutation({
     mutationFn: async () => {
-      const idsToDelete = savedFiles?.map(file => file.id)
+      const idsToDelete = savedFiles?.map(file => file.file_id)
       if (!idsToDelete) return
-
-      const { data, error } = await supabase.from('user_saved_coding_question_files').delete().in('id', idsToDelete)
+      const { data, error } = await supabase
+        .from('user_saved_coding_question_files')
+        .delete()
+        .in('file_id', idsToDelete)
       if (error) {
         throw new Error(error.message)
       }
@@ -48,18 +51,18 @@ const SavedCode = ({ questionId, user }: { questionId: string; user: User | null
       toast.error('Error deleting code')
     },
   })
-  const sandpack = useSandpack()
 
+  const sandpack = useSandpack()
   const handleLoadCode = () => {
     if (!savedFiles) return
 
     savedFiles.map(file => {
-      sandpack.sandpack.addFile(file.coding_question_files.path, file.content || '')
+      sandpack.sandpack.addFile(file.path || '', file.content || '')
     })
 
     toast.success('Code loaded successfully', {
       action: {
-        label: 'Undo',
+        label: 'Reset Code',
         onClick: () => sandpack.sandpack.resetAllFiles(),
       },
     })

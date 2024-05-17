@@ -37,15 +37,9 @@ type CodingQuestionProps = {
   idFromParams: string
   user: User | null
   coding_question: CodingQuestion
-  isQuestionMarkedComplete: boolean
 }
 
-export default function CodingQuestionContainer({
-  idFromParams,
-  user,
-  coding_question,
-  isQuestionMarkedComplete,
-}: CodingQuestionProps) {
+export default function CodingQuestionContainer({ idFromParams, user, coding_question }: CodingQuestionProps) {
   const { resolvedTheme } = useTheme()
   const supabase = useSupabaseBrowser()
   const isMobileBreakpoint = useIsMobileBreakpoint()
@@ -188,7 +182,7 @@ export default function CodingQuestionContainer({
           user={user}
           questionId={idFromParams}
           coding_question={coding_question}
-          isQuestionMarkedComplete={isQuestionMarkedComplete}
+          isQuestionMarkedComplete={false}
         />
         <InfoPopUp
           open={popupOpen}
