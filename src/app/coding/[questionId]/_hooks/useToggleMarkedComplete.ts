@@ -1,24 +1,21 @@
 import useSupabaseBrowser from '@/supabase-utils/supabase-client'
 import { User } from '@supabase/supabase-js'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useRouter } from 'next/navigation'
-import { toast } from 'sonner'
 
-export const useToggleMarkComplete = ({
-  questionId,
-  user,
-  isMarkedComplete,
-}: {
-  questionId: string
-  user: User | null
-  isMarkedComplete: boolean | undefined
-}) => {
+export const useToggleMarkComplete = () => {
   const supabase = useSupabaseBrowser()
-  const queryClient = useQueryClient()
-  const router = useRouter()
 
   return useMutation({
-    mutationFn: async () => {
+    mutationFn: async ({
+      questionId,
+      user,
+      isMarkedComplete,
+    }: {
+      questionId: string
+      user: User | null
+      isMarkedComplete: boolean | undefined
+    }) => {
       if (!user) {
         throw new Error('Login to first')
       }
@@ -44,13 +41,6 @@ export const useToggleMarkComplete = ({
 
         return data.status
       }
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['isMarkedComplete', questionId, user?.id] })
-      router.refresh()
-    },
-    onError: error => {
-      toast.error(`${error.message}`)
     },
   })
 }

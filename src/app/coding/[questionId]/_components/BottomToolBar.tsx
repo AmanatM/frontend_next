@@ -45,9 +45,9 @@ export function BottomToolbar({
   const queryClient = useQueryClient()
   const router = useRouter()
 
-  const { data: isMarkedComplete, isLoading: isMarkingComplete } = useIsMarkedComplete({ questionId, user })
+  const { data: isMarkedComplete } = useIsMarkedComplete({ questionId, user })
 
-  const { mutate: toggleMarkedComplete } = useToggleMarkComplete({ user, questionId, isMarkedComplete })
+  const { mutate: toggleMarkedComplete, isPending: isMarkingComplete } = useToggleMarkComplete()
   const { mutate: saveCode } = useSaveFiles()
 
   const handleSaveCode = () => {
@@ -77,8 +77,19 @@ export function BottomToolbar({
     )
   }
 
-  const handleMarkCompleted = async () => {
-    toggleMarkedComplete()
+  const handleMarkCompleted = () => {
+    toggleMarkedComplete(
+      { questionId, user, isMarkedComplete },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ['isMarkedComplete', questionId, user?.id] })
+          router.refresh()
+        },
+        onError: error => {
+          toast.error(`${error.message}`)
+        },
+      },
+    )
   }
 
   // Save code shortcut(cmd+s)
@@ -127,7 +138,6 @@ export function BottomToolbar({
           disabled={isMarkingComplete}
           leftIcon={isMarkedComplete ? <Check size={15} /> : undefined}
           onClick={handleMarkCompleted}
-          loading={isMarkingComplete}
         >
           <div>{isMarkedComplete ? 'Completed' : 'Mark as complete'}</div>
         </Button>
