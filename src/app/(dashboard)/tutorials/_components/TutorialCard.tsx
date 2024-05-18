@@ -1,19 +1,7 @@
-import {
-  AlignHorizontalSpaceAround,
-  ChevronDownIcon,
-  CircleIcon,
-  EllipsisVertical,
-  PlusIcon,
-  StarIcon,
-  WandSparkles,
-} from 'lucide-react'
-import { TypographyMuted } from '../../../../components/typography'
+import { CircleIcon, EllipsisVertical, PlusIcon, StarIcon } from 'lucide-react'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '../../../../components/ui/card'
-import { Badge } from '../../../../components/ui/badge'
-import { Tutorial } from '@/mockData/mock_tutorials'
 import Link from 'next/link'
 import { Button } from '@/components/custom/button'
-import { Separator } from '@/components/ui/separator'
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -24,17 +12,14 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
-function TutorialCard({ description, title, interactive, id, tags }: Tutorial) {
+function TutorialCard({ ...props }) {
   return (
-    <Link href={`/tutorials/${id}`}>
+    <Link href={`/tutorials/${props.slug}`}>
       <Card>
         <CardHeader className="grid grid-cols-[1fr_40px] items-start gap-4 space-y-0">
           <div className="space-y-1">
-            <CardTitle>How to center a div in CSS</CardTitle>
-            <CardDescription>
-              Beautifully designed components that you can copy and paste into your apps. Accessible. Customizable. Open
-              Source.
-            </CardDescription>
+            <CardTitle>{props.metadata.title}</CardTitle>
+            <CardDescription>{props.metadata.summary}</CardDescription>
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -65,7 +50,7 @@ function TutorialCard({ description, title, interactive, id, tags }: Tutorial) {
               <StarIcon className="mr-1 h-3 w-3" />
               20k
             </div>
-            <div>Updated April 2023</div>
+            <div>{props.metadata.publishedAt}</div>
           </div>
         </CardContent>
       </Card>

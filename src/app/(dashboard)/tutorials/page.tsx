@@ -2,9 +2,13 @@ import { DashboardContainer } from '@/components/dashboard-container'
 import TutorialCard from '@/app/(dashboard)/tutorials/_components/TutorialCard'
 import { TypographyH3, TypographyMuted } from '@/components/typography'
 
-import { mockTutorials } from '@/mockData/mock_tutorials'
+import { getBlogPosts } from '@/lib/tutorials'
 
 export default function Tutorials() {
+  let allBlogs = getBlogPosts()
+
+  console.log(allBlogs)
+
   return (
     <DashboardContainer className="space-y-8">
       <div className="space-y-0.5">
@@ -12,8 +16,8 @@ export default function Tutorials() {
         <TypographyMuted>Interactive tutorials</TypographyMuted>
       </div>
       <div className="grid gap-6 lg:grid-cols-2">
-        {mockTutorials.map(tutorial => (
-          <TutorialCard key={tutorial.id} {...tutorial} />
+        {allBlogs.map(tutorial => (
+          <TutorialCard key={tutorial.slug} {...tutorial} />
         ))}
       </div>
     </DashboardContainer>
