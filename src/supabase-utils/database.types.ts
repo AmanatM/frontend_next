@@ -15,6 +15,7 @@ export type Database = {
           created_at: string | null
           id: string
           language: string | null
+          name: string
           path: string
           question_id: string | null
           solution_code: string | null
@@ -24,6 +25,7 @@ export type Database = {
           created_at?: string | null
           id?: string
           language?: string | null
+          name?: string
           path: string
           question_id?: string | null
           solution_code?: string | null
@@ -33,6 +35,7 @@ export type Database = {
           created_at?: string | null
           id?: string
           language?: string | null
+          name?: string
           path?: string
           question_id?: string | null
           solution_code?: string | null
@@ -51,7 +54,7 @@ export type Database = {
         Row: {
           created_at: string
           description: string
-          difficulty: string | null
+          difficulty: Database["public"]["Enums"]["question_difficulty"]
           id: string
           question_type: Database["public"]["Enums"]["question_type"]
           sandpack_template: Database["public"]["Enums"]["sandpackTemplates"]
@@ -62,7 +65,7 @@ export type Database = {
         Insert: {
           created_at?: string
           description: string
-          difficulty?: string | null
+          difficulty?: Database["public"]["Enums"]["question_difficulty"]
           id?: string
           question_type?: Database["public"]["Enums"]["question_type"]
           sandpack_template?: Database["public"]["Enums"]["sandpackTemplates"]
@@ -73,7 +76,7 @@ export type Database = {
         Update: {
           created_at?: string
           description?: string
-          difficulty?: string | null
+          difficulty?: Database["public"]["Enums"]["question_difficulty"]
           id?: string
           question_type?: Database["public"]["Enums"]["question_type"]
           sandpack_template?: Database["public"]["Enums"]["sandpackTemplates"]
@@ -229,7 +232,7 @@ export type Database = {
     Enums: {
       question_difficulty: "Easy" | "Medium" | "Hard"
       question_type: "user_interface" | "javascript"
-      sandpackTemplates: "static" | "vite-react" | "vanilla"
+      sandpackTemplates: "static" | "vite-react" | "vanilla" | "react"
       user_roles: "admin"
     }
     CompositeTypes: {

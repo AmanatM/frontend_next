@@ -9,13 +9,15 @@ import { toast } from 'sonner'
 function SolutionTab({
   originalFiles,
   setIsSolution,
+  isSolution,
 }: {
   originalFiles: QuestionFile[]
-  setIsSolution: (value: boolean) => void
+  setIsSolution: React.Dispatch<React.SetStateAction<boolean>>
+  isSolution: boolean
 }) {
   const sandpack = useSandpack()
 
-  const handleShowSolution = () => {
+  const toggleSolution = () => {
     if (!originalFiles) return
 
     originalFiles.map(file => {
@@ -23,14 +25,14 @@ function SolutionTab({
 
       sandpack.sandpack.addFile(file.path || '', file.solution_code || '')
     })
-    setIsSolution(true)
+    setIsSolution(prev => !prev)
   }
 
   return (
     <div className="flex justify-between">
       <TypographyH4>Solution</TypographyH4>
-      <Button variant={'secondary'} size={'sm'} onClick={handleShowSolution}>
-        Show Solution
+      <Button variant={'secondary'} size={'sm'} onClick={toggleSolution}>
+        {isSolution ? 'Solution Shown' : 'Show Solution'}
       </Button>
     </div>
   )

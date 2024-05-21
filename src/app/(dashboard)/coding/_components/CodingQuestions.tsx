@@ -64,7 +64,7 @@ const CodingQuestions = () => {
                       className={cn(
                         question.difficulty === 'Easy' && 'text-green-500',
                         question.difficulty === 'Medium' && 'text-yellow-500',
-                        question.difficulty === 'Hark' && 'text-red-500',
+                        question.difficulty === 'Hard' && 'text-red-500',
                       )}
                     >
                       {question.difficulty}
