@@ -5,6 +5,9 @@ import {
   SandpackConsole,
   SandpackThemeProp,
   useSandpack,
+  ErrorOverlay,
+  Sandpack,
+  SandpackLayout,
 } from '@codesandbox/sandpack-react'
 import { cn } from '@/lib/utils'
 import { ResizablePanelGroup } from '@/components/ui/resizable'
@@ -99,87 +102,82 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
   return (
     <main id="content" className={cn('flex size-full pt-3 px-3 overflow-scroll flex-col !h-[calc(100dvh-3.5rem)]')}>
       <SandpackProvider
-        template={coding_question.sandpack_template}
+        template={'vanilla'}
         theme={currentTheme === undefined ? 'auto' : (currentTheme as SandpackThemeProp)}
         className={'!size-full !overflow-hidden !flex !flex-col'}
         files={filesObject}
-        options={{ bundlerURL: 'https://sandpack-bundler.codesandbox.io' }}
       >
-        <ResizablePanelGroup
-          direction={isMobileBreakpoint ? 'vertical' : 'horizontal'}
-          className="relative size-full grow"
-          onResize={() => {
-            if (isMobileBreakpoint) {
-              setDefaultSize([100, 100, 100])
-            } else {
-              setDefaultSize([30, 40, 30])
-            }
-          }}
-        >
-          {/* Descripition Panel*/}
-          <ResizablePanelTabs
-            defaultSize={defaultSize[0]}
-            setDefaultSize={setDefaultSize}
-            minSize={15}
-            defaultValue="description"
-            tabs={descriptionTabs}
+        <SandpackLayout className={'!size-full !overflow-hidden !flex !flex-col !bg-transparent !border-none'}>
+          <ResizablePanelGroup
+            direction={isMobileBreakpoint ? 'vertical' : 'horizontal'}
+            className="relative size-full grow"
+            onResize={() => {
+              if (isMobileBreakpoint) {
+                setDefaultSize([100, 100, 100])
+              } else {
+                setDefaultSize([30, 40, 30])
+              }
+            }}
           >
-            <CustomTabsContent value="description" className="p-4 space-y-4 justify-center">
-              <TypographyH4>{coding_question?.title}</TypographyH4>
-              <article className={'prose dark:prose-invert prose-pre:p-0'}>
-                <MarkdownRenderer>{coding_question?.description}</MarkdownRenderer>
-              </article>
-            </CustomTabsContent>
-            <CustomTabsContent value="solution" className="p-4 space-y-4 justify-center">
-              <SolutionTab originalFiles={coding_question?.coding_question_files} setIsSolution={setIsSolution} />
-              <article className={'prose dark:prose-invert prose-pre:p-0'}>
-                <MarkdownRenderer>{coding_question?.solution}</MarkdownRenderer>
-              </article>
-            </CustomTabsContent>
-            <CustomTabsContent value="saved_code" className="p-4 space-y-4 min-h-full flex">
-              <SavedCode questionId={idFromParams} user={user} />
-            </CustomTabsContent>
-          </ResizablePanelTabs>
+            {/* Descripition Panel*/}
+            <ResizablePanelTabs
+              defaultSize={defaultSize[0]}
+              setDefaultSize={setDefaultSize}
+              minSize={15}
+              defaultValue="description"
+              tabs={descriptionTabs}
+            >
+              <CustomTabsContent value="description" className="p-4 space-y-4 justify-center">
+                <TypographyH4>{coding_question?.title}</TypographyH4>
+                <article className={'prose dark:prose-invert prose-pre:p-0'}>
+                  <MarkdownRenderer>{coding_question?.description}</MarkdownRenderer>
+                </article>
+              </CustomTabsContent>
+              <CustomTabsContent value="solution" className="p-4 space-y-4 justify-center">
+                <SolutionTab originalFiles={coding_question?.coding_question_files} setIsSolution={setIsSolution} />
+                <article className={'prose dark:prose-invert prose-pre:p-0'}>
+                  <MarkdownRenderer>{coding_question?.solution}</MarkdownRenderer>
+                </article>
+              </CustomTabsContent>
+              <CustomTabsContent value="saved_code" className="p-4 space-y-4 min-h-full flex">
+                <SavedCode questionId={idFromParams} user={user} />
+              </CustomTabsContent>
+            </ResizablePanelTabs>
 
-          <ResizeHandle />
+            <ResizeHandle />
 
-          {/* Editor Panel*/}
-          <ResizablePanelTabs
-            defaultSize={defaultSize[1]}
-            setDefaultSize={setDefaultSize}
-            minSize={15}
-            defaultValue="editor"
-          >
-            <CustomTabsContent value="editor" className="p-0 size-full">
-              {/* <SandpackCodeEditor className="size-full" /> */}
-              <MonacoEditor currentTheme={currentTheme} isSolution={isSolution} setIsSolution={setIsSolution} />
-            </CustomTabsContent>
-          </ResizablePanelTabs>
+            {/* Editor Panel*/}
+            <ResizablePanelTabs
+              defaultSize={defaultSize[1]}
+              setDefaultSize={setDefaultSize}
+              minSize={15}
+              defaultValue="editor"
+            >
+              <CustomTabsContent value="editor" className="p-0 size-full">
+                {/* <SandpackCodeEditor className="size-full" /> */}
+                <MonacoEditor currentTheme={currentTheme} isSolution={isSolution} setIsSolution={setIsSolution} />
+              </CustomTabsContent>
+            </ResizablePanelTabs>
 
-          <ResizeHandle />
-          {/* Preview Panel*/}
-          <ResizablePanelTabs
-            extraClassName={isMobileBreakpoint ? '!flex-none h-full' : ''}
-            defaultSize={defaultSize[2]}
-            setDefaultSize={setDefaultSize}
-            minSize={15}
-            defaultValue="browser"
-            tabs={browserTabs}
-          >
-            <CustomTabsContent value="browser" className="p-0 size-full">
-              {/* <SandpackPreview
-                showSandpackErrorOverlay={false}
-                showNavigator={true}
-                showOpenInCodeSandbox={true}
-                className={'size-full'}
-              /> */}
-              <SandpackPreviewClient />
-            </CustomTabsContent>
-            <CustomTabsContent value="console" className="p-0 size-full">
-              <SandpackConsole className={'size-full'} standalone={false} />
-            </CustomTabsContent>
-          </ResizablePanelTabs>
-        </ResizablePanelGroup>
+            <ResizeHandle />
+            {/* Preview Panel*/}
+            <ResizablePanelTabs
+              extraClassName={isMobileBreakpoint ? '!flex-none h-full' : ''}
+              defaultSize={defaultSize[2]}
+              setDefaultSize={setDefaultSize}
+              minSize={15}
+              defaultValue="browser"
+              tabs={browserTabs}
+            >
+              <CustomTabsContent value="browser" className="p-0 size-full">
+                <SandpackPreviewClient />
+              </CustomTabsContent>
+              <CustomTabsContent value="console" className="p-0 size-full">
+                <SandpackConsole className={'size-full'} standalone={false} />
+              </CustomTabsContent>
+            </ResizablePanelTabs>
+          </ResizablePanelGroup>
+        </SandpackLayout>
 
         <BottomToolbar filesObject={filesObject} user={user} questionId={idFromParams} />
         <InfoPopUp

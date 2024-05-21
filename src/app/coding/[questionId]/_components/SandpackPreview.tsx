@@ -12,8 +12,8 @@ const SandpackPreviewClient: React.FC = () => {
     const clientId = previewRef.current?.clientId
 
     if (client && clientId) {
-      console.log(client)
-      console.log(sandpack.clients[clientId])
+      // console.log(client)
+      // console.log(sandpack.clients[clientId])
     }
     /**
      * NOTE: In order to make sure that the client will be available
@@ -24,9 +24,9 @@ const SandpackPreviewClient: React.FC = () => {
   return (
     <SandpackPreview
       ref={previewRef}
-      showSandpackErrorOverlay={false}
+      showSandpackErrorOverlay={true}
       showNavigator={true}
-      showOpenInCodeSandbox={true}
+      showOpenInCodeSandbox={false}
       className={'size-full'}
     />
   )
