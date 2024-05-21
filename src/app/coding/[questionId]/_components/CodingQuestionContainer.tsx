@@ -103,6 +103,7 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
         theme={currentTheme === undefined ? 'auto' : (currentTheme as SandpackThemeProp)}
         className={'!size-full !overflow-hidden !flex !flex-col'}
         files={filesObject}
+        options={{ bundlerURL: 'https://sandpack-bundler.codesandbox.io' }}
       >
         <ResizablePanelGroup
           direction={isMobileBreakpoint ? 'vertical' : 'horizontal'}
