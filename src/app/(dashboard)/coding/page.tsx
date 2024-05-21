@@ -6,6 +6,12 @@ import SearchFilter from './_components/SearchFilter'
 import CodingQuestions from './_components/CodingQuestions'
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query'
 import { getCodingQuestions } from './_queries/getCodingQuestions'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Coding Questions',
+  description: 'Free platform to learn frontend interactively',
+}
 
 export default async function Coding() {
   const supabase = createClientServer()

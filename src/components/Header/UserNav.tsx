@@ -32,14 +32,14 @@ export function UserNav({ user }: { user: User | null }) {
     })
   }
 
-  const redirectToLogin = () => {
-    router.push(`/login?redirectTo=${pathname}`)
-  }
+  // const redirectToLogin = () => {
+  //   router.push(`/login?redirectTo=${pathname}`)
+  // }
 
   if (!user)
     return (
-      <Button variant="outline" onClick={redirectToLogin}>
-        Login
+      <Button asChild variant="outline">
+        <Link href={`/login?redirectTo=${pathname}`}>Login</Link>
       </Button>
     )
   return (

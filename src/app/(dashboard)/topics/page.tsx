@@ -1,5 +1,10 @@
 import { DashboardContainer } from '@/components/dashboard-container'
 import { TypographyH3, TypographyMuted } from '@/components/typography'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Topics',
+}
 
 export default function Topics() {
   return (

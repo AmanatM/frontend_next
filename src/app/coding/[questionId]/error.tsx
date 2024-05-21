@@ -13,7 +13,7 @@ export default function Error({ error, reset }: { error: Error & { digest?: stri
   const router = useRouter()
 
   return (
-    <div className="h-svh">
+    <div className="h-[calc(100dvh-3.5rem)]">
       <div className="m-auto flex h-full w-full flex-col items-center justify-center gap-2">
         <h1 className="text-[7rem] font-bold leading-tight">500</h1>
         <span className="font-medium">Oops! Something went wront!</span>

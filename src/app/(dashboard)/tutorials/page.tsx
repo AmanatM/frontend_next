@@ -1,13 +1,15 @@
 import { DashboardContainer } from '@/components/dashboard-container'
 import TutorialCard from '@/app/(dashboard)/tutorials/_components/TutorialCard'
 import { TypographyH3, TypographyMuted } from '@/components/typography'
-
 import { getBlogPosts } from '@/lib/tutorials'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Tutorials',
+}
 
 export default function Tutorials() {
   let allBlogs = getBlogPosts()
-
-  console.log(allBlogs)
 
   return (
     <DashboardContainer className="space-y-8">

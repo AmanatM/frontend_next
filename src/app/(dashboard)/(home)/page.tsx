@@ -3,6 +3,11 @@ import ProgressSimple from '@/components/progress-simple'
 
 import { TypographyH3, TypographyH4, TypographyMuted } from '@/components/typography'
 import { createClientServer } from '@/supabase-utils/supabase-server'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Dashboard',
+}
 
 export default async function Home() {
   const supabase = createClientServer()

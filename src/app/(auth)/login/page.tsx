@@ -9,11 +9,10 @@ import { Card } from '@/components/ui/card'
 import { useState, useTransition } from 'react'
 import { PasswordInput } from '@/components/custom/password-input'
 import Link from 'next/link'
-import { useParams, useRouter, useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { loginWithEmailAndPassword, signUpWithEmailAndPassword } from '../actions'
 import { AuthTokenResponse } from '@supabase/supabase-js'
 import { toast } from 'sonner'
-import { UrlObject } from 'url'
 import { Route } from 'next'
 
 const FormSchema = z.object({
@@ -67,8 +66,7 @@ export default function Login() {
   }
 
   return (
-    <div className="mx-auto flex justify-center items-center h-dvh">
-      {' '}
+    <div className="mx-auto flex justify-center items-center size-full px-3">
       {/* Adjusted h-lvh to h-screen for simplicity */}
       <Card className="p-6 max-w-full w-[500px]">
         <div className="flex flex-col space-y-2 text-left mb-4">

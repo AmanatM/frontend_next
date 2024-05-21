@@ -10,7 +10,7 @@ type INavLinks = {
 
 export const side_nav_links: INavLinks[] = [
   {
-    title: 'Home',
+    title: 'Dashboard',
     url: { pathname: '/' },
     icon: Home,
   },

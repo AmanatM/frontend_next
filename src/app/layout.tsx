@@ -6,7 +6,7 @@ import '@/styles/globals.css'
 import { ThemeProvider } from '@/providers/theme-provider'
 import { Toaster } from '@/components/ui/sonner'
 import { SandpackCSS } from '@/components/sandpack-styles'
-import { MenuTopBar } from '@/components/Header/Header'
+import { MenuTopBar } from '@/components/header/Header'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import Providers from '@/providers/Providers'
 
@@ -14,7 +14,7 @@ const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'Learn Frontend Interactively',
-  description: 'Platform to learn frontend interactively',
+  description: 'Free platform to learn frontend interactively',
 }
 
 export const viewport: Viewport = {

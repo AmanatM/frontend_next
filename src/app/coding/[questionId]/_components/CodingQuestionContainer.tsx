@@ -22,8 +22,6 @@ import { ResizablePanelTabs } from './ResizablePanelTabs'
 import SavedCode from './SavedCode'
 import { User } from '@supabase/auth-js/dist/module/lib/types'
 import { CodingQuestion } from '@/supabase-utils/types'
-import { Skeleton } from '@/components/ui/skeleton'
-import { LogIn } from 'lucide-react'
 
 type FilesObject = {
   [key: string]: {

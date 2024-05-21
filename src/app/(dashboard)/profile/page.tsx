@@ -1,7 +1,12 @@
 import { DashboardContainer } from '@/components/dashboard-container'
 import { TypographyH3, TypographyMuted } from '@/components/typography'
 import { createClientServer } from '@/supabase-utils/supabase-server'
+import { Metadata } from 'next'
 import { redirect } from 'next/navigation'
+
+export const metadata: Metadata = {
+  title: 'Profile',
+}
 
 export default async function Profile() {
   const supabase = createClientServer()
