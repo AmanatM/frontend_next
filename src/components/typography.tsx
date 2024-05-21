@@ -20,7 +20,7 @@ export const TypographyH4 = React.forwardRef<HTMLDivElement, React.HTMLAttribute
     <h4 ref={ref} className={cn('scroll-m-20 text-xl font-semibold tracking-tight', className)} {...props} />
   ),
 )
-TypographyH4.displayName = 'TypographyH24'
+TypographyH4.displayName = 'TypographyH4'
 
 export const TypographyP = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
