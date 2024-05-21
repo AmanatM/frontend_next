@@ -39,7 +39,7 @@ export type Database = {
         }
         Relationships: [
           {
-            foreignKeyName: "public_coding_question_files_question_id_fkey"
+            foreignKeyName: "coding_question_files_question_id_fkey"
             columns: ["question_id"]
             isOneToOne: false
             referencedRelation: "coding_questions"
@@ -58,7 +58,6 @@ export type Database = {
           short_description: string | null
           solution: string | null
           title: string
-          with_browser: boolean
         }
         Insert: {
           created_at?: string
@@ -70,7 +69,6 @@ export type Database = {
           short_description?: string | null
           solution?: string | null
           title: string
-          with_browser?: boolean
         }
         Update: {
           created_at?: string
@@ -82,7 +80,6 @@ export type Database = {
           short_description?: string | null
           solution?: string | null
           title?: string
-          with_browser?: boolean
         }
         Relationships: []
       }
