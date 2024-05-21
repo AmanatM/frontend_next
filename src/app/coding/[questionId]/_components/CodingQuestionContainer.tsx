@@ -128,10 +128,8 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
           >
             {/* Descripition Panel*/}
             <ResizablePanelTabs
-              extraClassName={isMobileBreakpoint ? '!flex-none ' : ''}
               defaultSize={defaultSize[0]}
               setDefaultSize={setDefaultSize}
-              minSize={15}
               defaultValue="description"
               tabs={descriptionTabs}
             >
@@ -155,13 +153,7 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
             <ResizeHandle />
 
             {/* Editor Panel*/}
-            <ResizablePanelTabs
-              extraClassName={isMobileBreakpoint ? '!flex-none ' : ''}
-              defaultSize={defaultSize[1]}
-              setDefaultSize={setDefaultSize}
-              minSize={15}
-              defaultValue="editor"
-            >
+            <ResizablePanelTabs defaultSize={defaultSize[1]} setDefaultSize={setDefaultSize} defaultValue="editor">
               <CustomTabsContent value="editor" className="p-0 size-full">
                 {isMobileBreakpoint ? (
                   <SandpackCodeEditor className="size-full h-[400px]" />
@@ -174,10 +166,9 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
             <ResizeHandle />
             {/* Preview Panel*/}
             <ResizablePanelTabs
-              extraClassName={isMobileBreakpoint ? '!flex-none h-[500px]' : ''}
+              extraClassName={cn(isMobileBreakpoint && 'h-[500px]')}
               defaultSize={defaultSize[2]}
               setDefaultSize={setDefaultSize}
-              minSize={15}
               defaultValue="browser"
               tabs={browserTabs}
             >
