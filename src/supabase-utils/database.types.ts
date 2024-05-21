@@ -52,6 +52,7 @@ export type Database = {
           id: string
           question_type: Database["public"]["Enums"]["question_type"]
           sandpack_template: Database["public"]["Enums"]["sandpackTemplates"]
+          short_description: string | null
           solution: string | null
           title: string
           with_browser: boolean
@@ -63,6 +64,7 @@ export type Database = {
           id?: string
           question_type?: Database["public"]["Enums"]["question_type"]
           sandpack_template?: Database["public"]["Enums"]["sandpackTemplates"]
+          short_description?: string | null
           solution?: string | null
           title: string
           with_browser?: boolean
@@ -74,6 +76,7 @@ export type Database = {
           id?: string
           question_type?: Database["public"]["Enums"]["question_type"]
           sandpack_template?: Database["public"]["Enums"]["sandpackTemplates"]
+          short_description?: string | null
           solution?: string | null
           title?: string
           with_browser?: boolean

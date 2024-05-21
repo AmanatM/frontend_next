@@ -1,6 +1,6 @@
 'use client'
 import { TypographyMuted, TypographyP } from '@/components/typography'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 import { useQuery } from '@tanstack/react-query'
 import { AppWindow, CircleIcon, Code, Gauge, StarIcon } from 'lucide-react'
@@ -33,7 +33,7 @@ const CodingQuestions = () => {
       <div className="flex flex-col space-y-2">
         {filteredCodingQuestions.map(question => (
           <Link key={question.id} href={`/coding/${question.id}`} className="flex">
-            <Card className="size-full space-y-4 px-6 py-4 bg-primary-foreground rounded-sm">
+            <Card className="size-full space-y-2 px-6 py-4 bg-primary-foreground rounded-sm">
               <div className="flex flex-row space-x-4">
                 <TypographyP>{question.title}</TypographyP>
                 {question.user_completed_code_question.length > 0 && (
@@ -42,6 +42,7 @@ const CodingQuestions = () => {
                   </Badge>
                 )}
               </div>
+              <CardDescription>{question.short_description}</CardDescription>
               <div>
                 <div className="flex space-x-4 text-sm text-muted-foreground">
                   <div className="flex items-center min-w-[140px]">
