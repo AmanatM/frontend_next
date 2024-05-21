@@ -17,6 +17,7 @@ export type Database = {
           language: string | null
           path: string
           question_id: string | null
+          solution_code: string | null
         }
         Insert: {
           content?: string | null
@@ -25,6 +26,7 @@ export type Database = {
           language?: string | null
           path: string
           question_id?: string | null
+          solution_code?: string | null
         }
         Update: {
           content?: string | null
@@ -33,6 +35,7 @@ export type Database = {
           language?: string | null
           path?: string
           question_id?: string | null
+          solution_code?: string | null
         }
         Relationships: [
           {

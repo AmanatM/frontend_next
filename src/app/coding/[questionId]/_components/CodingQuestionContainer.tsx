@@ -1,9 +1,15 @@
 'use client'
-import { SandpackPreview, SandpackProvider, SandpackConsole, SandpackThemeProp } from '@codesandbox/sandpack-react'
+import {
+  SandpackPreview,
+  SandpackProvider,
+  SandpackConsole,
+  SandpackThemeProp,
+  useSandpack,
+} from '@codesandbox/sandpack-react'
 import { cn } from '@/lib/utils'
 import { ResizablePanelGroup } from '@/components/ui/resizable'
 import { useIsMobileBreakpoint } from '@/hooks/useIsMobileBreakpoint'
-import { TypographyH4, TypographyP } from '@/components/typography'
+import { TypographyH4, TypographyMuted, TypographyP } from '@/components/typography'
 
 import { useTheme } from 'next-themes'
 import useSupabaseBrowser from '@/supabase-utils/supabase-client'
@@ -22,6 +28,8 @@ import { ResizablePanelTabs } from './ResizablePanelTabs'
 import SavedCode from './SavedCode'
 import { User } from '@supabase/auth-js/dist/module/lib/types'
 import { CodingQuestion } from '@/supabase-utils/types'
+import { Button } from '@/components/custom/button'
+import SolutionTab from './SolutionTab'
 
 type FilesObject = {
   [key: string]: {
@@ -39,7 +47,6 @@ type CodingQuestionProps = {
 
 export default function CodingQuestionContainer({ idFromParams, user, coding_question }: CodingQuestionProps) {
   const { resolvedTheme } = useTheme()
-  const supabase = useSupabaseBrowser()
   const isMobileBreakpoint = useIsMobileBreakpoint()
   const isMobileAgent = useIsMobileAgent()
   const currentUrl = useGetCurrentUrl()
@@ -48,8 +55,7 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
   const [popupOpen, setPopupOpen] = useState(false)
   const [isMounted, setIsMounted] = useState(false)
   const [currentTheme, setCurrentTheme] = useState<'light' | 'dark' | undefined>(undefined)
-
-  const [currentFiles, setCurrentFiles] = useState<FilesObject | undefined>(undefined)
+  const [isSolution, setIsSolution] = useState(false)
 
   useEffect(() => {
     setIsMounted(true)
@@ -69,15 +75,6 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
     setPopupOpen(isMobileAgent)
   }, [isMobileAgent])
 
-  const filesObject = useMemo(() => {
-    return coding_question?.coding_question_files.reduce((obj: FilesObject, file) => {
-      if (file.path !== null && file.content !== null) {
-        obj[file.path] = { code: file.content, id: file.id, path: file.path }
-      }
-      return obj
-    }, {})
-  }, [])
-
   async function copyUrlAndClose() {
     try {
       await navigator.clipboard.writeText(currentUrl)
@@ -86,6 +83,15 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
       toast.error('Failed to copy to clipboard.')
     }
   }
+
+  const filesObject = useMemo(() => {
+    return coding_question?.coding_question_files.reduce((obj: FilesObject, file) => {
+      if (file.path !== null && file.content !== null) {
+        obj[file.path] = { code: file.content, id: file.id, path: file.path }
+      }
+      return obj
+    }, {})
+  }, [])
 
   if (!isMounted) return null
 
@@ -125,9 +131,11 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
                 <MarkdownRenderer>{coding_question?.description}</MarkdownRenderer>
               </article>
             </CustomTabsContent>
-            <CustomTabsContent value="solution" className="p-4">
-              <TypographyH4>Solution</TypographyH4>
-              <TypographyP>Content</TypographyP>
+            <CustomTabsContent value="solution" className="p-4 space-y-4 justify-center">
+              <SolutionTab originalFiles={coding_question?.coding_question_files} setIsSolution={setIsSolution} />
+              <article className={'prose dark:prose-invert prose-pre:p-0'}>
+                <MarkdownRenderer>{coding_question?.solution}</MarkdownRenderer>
+              </article>
             </CustomTabsContent>
             <CustomTabsContent value="saved_code" className="p-4 space-y-4 min-h-full flex">
               <SavedCode questionId={idFromParams} user={user} />
@@ -145,7 +153,7 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
           >
             <CustomTabsContent value="editor" className="p-0 size-full">
               {/* <SandpackCodeEditor className="size-full" /> */}
-              <MonacoEditor currentTheme={currentTheme} />
+              <MonacoEditor currentTheme={currentTheme} isSolution={isSolution} setIsSolution={setIsSolution} />
             </CustomTabsContent>
           </ResizablePanelTabs>
 
