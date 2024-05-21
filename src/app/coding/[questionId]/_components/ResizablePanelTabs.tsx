@@ -8,11 +8,12 @@ import { Tabs, TabsList } from '@/components/ui/tabs'
 import { cn } from '@/lib/utils'
 
 import { Ellipsis, Maximize, Minimize, PanelLeftClose } from 'lucide-react'
-import React from 'react'
+import React, { use } from 'react'
 import { useState } from 'react'
 
 import { TabTriggerCustom } from './CustomTabComponents'
 import { CustomTabsContentProps, TabProps } from '../utils/tabs-data'
+import { useIsMobileBreakpoint } from '@/hooks/useIsMobileBreakpoint'
 
 type ResizablePanelTabsProps = {
   children: React.ReactNode
@@ -37,7 +38,7 @@ export function ResizablePanelTabs({
   const tabsLayout = tabs !== undefined && tabs !== null
 
   const [activeTab, setActiveTab] = useState(defaultValue + '_tab')
-
+  const isMobileBreakpoint = useIsMobileBreakpoint()
   const handleTabChange = (newTab: string) => {
     setActiveTab(newTab + '_tab') // Ensure consistency in tab state.
   }

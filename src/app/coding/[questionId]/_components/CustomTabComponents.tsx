@@ -2,6 +2,7 @@ import { TypographySmall } from '@/components/typography'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { CustomTabsContentProps, TabProps } from '../utils/tabs-data'
+import { useIsMobileBreakpoint } from '@/hooks/useIsMobileBreakpoint'
 
 type TabTriggerCustomProps = {
   tab: TabProps
@@ -27,5 +28,9 @@ export const TabTriggerCustom = ({ tab, handleTabChange, activeTab }: TabTrigger
 }
 
 export const CustomTabsContent = ({ children, className, isActiveTab }: CustomTabsContentProps) => {
-  return <div className={cn(isActiveTab ? '' : 'invisible absolute', className)}>{children}</div>
+  const isMobileBreakpoint = useIsMobileBreakpoint()
+
+  return (
+    <div className={cn(isActiveTab ? '' : 'invisible absolute', className, isMobileBreakpoint && '')}>{children}</div>
+  )
 }

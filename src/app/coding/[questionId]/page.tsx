@@ -1,6 +1,8 @@
 import { createClientServer } from '@/supabase-utils/supabase-server'
 import CodingQuestionContainer from './_components/CodingQuestionContainer'
 import { TypedSupabaseClient } from '@/supabase-utils/types'
+import { Suspense } from 'react'
+import Loading from './loading'
 
 async function getCodingQuestionById({ questionId, client }: { questionId: string; client: TypedSupabaseClient }) {
   const { data: codingQuestion, error } = await client

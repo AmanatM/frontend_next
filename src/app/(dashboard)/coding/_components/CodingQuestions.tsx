@@ -60,7 +60,15 @@ const CodingQuestions = () => {
                   </div>
                   <div className="flex items-center">
                     <Gauge size={15} className={cn('mr-2')} />
-                    <TypographyMuted>{question.difficulty}</TypographyMuted>
+                    <TypographyMuted
+                      className={cn(
+                        question.difficulty === 'Easy' && 'text-green-500',
+                        question.difficulty === 'Medium' && 'text-yellow-500',
+                        question.difficulty === 'Hark' && 'text-red-500',
+                      )}
+                    >
+                      {question.difficulty}
+                    </TypographyMuted>
                   </div>
                 </div>
               </div>

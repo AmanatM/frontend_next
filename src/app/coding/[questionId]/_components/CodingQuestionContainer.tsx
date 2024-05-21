@@ -8,6 +8,7 @@ import {
   ErrorOverlay,
   Sandpack,
   SandpackLayout,
+  SandpackCodeEditor,
 } from '@codesandbox/sandpack-react'
 import { cn } from '@/lib/utils'
 import { ResizablePanelGroup } from '@/components/ui/resizable'
@@ -100,7 +101,13 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
   if (!isMounted) return null
   if (!coding_question) return null
   return (
-    <main id="content" className={cn('flex size-full pt-3 px-3 overflow-scroll flex-col !h-[calc(100dvh-3.5rem)]')}>
+    <main
+      id="content"
+      className={cn(
+        'flex size-full pt-3 px-3 overflow-scroll flex-col',
+        isMobileBreakpoint ? '!min-h-[calc(100dvh-3.5rem)]' : '!h-[calc(100dvh-3.5rem)]',
+      )}
+    >
       <SandpackProvider
         template={'vanilla'}
         theme={currentTheme === undefined ? 'auto' : (currentTheme as SandpackThemeProp)}
@@ -110,7 +117,7 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
         <SandpackLayout className={'!size-full !overflow-hidden !flex !flex-col !bg-transparent !border-none'}>
           <ResizablePanelGroup
             direction={isMobileBreakpoint ? 'vertical' : 'horizontal'}
-            className="relative size-full grow"
+            className={cn('relative size-full grow', isMobileBreakpoint && 'pb-16 space-y-2')}
             onResize={() => {
               if (isMobileBreakpoint) {
                 setDefaultSize([100, 100, 100])
@@ -121,6 +128,7 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
           >
             {/* Descripition Panel*/}
             <ResizablePanelTabs
+              extraClassName={isMobileBreakpoint ? '!flex-none ' : ''}
               defaultSize={defaultSize[0]}
               setDefaultSize={setDefaultSize}
               minSize={15}
@@ -148,21 +156,25 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
 
             {/* Editor Panel*/}
             <ResizablePanelTabs
+              extraClassName={isMobileBreakpoint ? '!flex-none ' : ''}
               defaultSize={defaultSize[1]}
               setDefaultSize={setDefaultSize}
               minSize={15}
               defaultValue="editor"
             >
               <CustomTabsContent value="editor" className="p-0 size-full">
-                {/* <SandpackCodeEditor className="size-full" /> */}
-                <MonacoEditor currentTheme={currentTheme} isSolution={isSolution} setIsSolution={setIsSolution} />
+                {isMobileBreakpoint ? (
+                  <SandpackCodeEditor className="size-full h-[400px]" />
+                ) : (
+                  <MonacoEditor currentTheme={currentTheme} isSolution={isSolution} setIsSolution={setIsSolution} />
+                )}
               </CustomTabsContent>
             </ResizablePanelTabs>
 
             <ResizeHandle />
             {/* Preview Panel*/}
             <ResizablePanelTabs
-              extraClassName={isMobileBreakpoint ? '!flex-none h-full' : ''}
+              extraClassName={isMobileBreakpoint ? '!flex-none h-[500px]' : ''}
               defaultSize={defaultSize[2]}
               setDefaultSize={setDefaultSize}
               minSize={15}
@@ -180,14 +192,14 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
         </SandpackLayout>
 
         <BottomToolbar filesObject={filesObject} user={user} questionId={idFromParams} />
-        <InfoPopUp
+        {/* <InfoPopUp
           open={popupOpen}
           setOpen={setPopupOpen}
           title={'Editor is not available on mobile devices'}
           description="Copy link and continue on laptop"
           closeAction={copyUrlAndClose}
           closeText={'Copy Link & Close'}
-        />
+        /> */}
       </SandpackProvider>
     </main>
   )
