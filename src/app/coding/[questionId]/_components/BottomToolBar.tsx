@@ -3,7 +3,7 @@ import { Button } from '@/components/custom/button'
 import { useIsMobileBreakpoint } from '@/hooks/useIsMobileBreakpoint'
 import { cn } from '@/lib/utils'
 import { useSandpack } from '@codesandbox/sandpack-react'
-import { Settings, ChevronLeft, List, ChevronRight, Save, Check, FileCheck } from 'lucide-react'
+import { Settings, ChevronLeft, List, ChevronRight, Save, Check, FileCheck, RotateCcw, Circle } from 'lucide-react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { toast } from 'sonner'
 import { CodingQuestion, TypedSupabaseClient } from '@/supabase-utils/types'
@@ -14,6 +14,31 @@ import { useRouter } from 'next/navigation'
 import { useIsMarkedComplete } from '../_hooks/useIsMarkedComplete'
 import { useToggleMarkComplete } from '../_hooks/useToggleMarkedComplete'
 import { useSaveFiles } from '../_hooks/useSaveFiles'
+import { ResetIcon } from '@radix-ui/react-icons'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog'
+import {
+  Credenza,
+  CredenzaBody,
+  CredenzaClose,
+  CredenzaContent,
+  CredenzaDescription,
+  CredenzaFooter,
+  CredenzaHeader,
+  CredenzaTitle,
+  CredenzaTrigger,
+} from '@/components/ui/credenza'
+import { useState } from 'react'
+import { ModalTrigger } from '@/components/modal'
 
 type FilesObject = {
   [key: string]: {
@@ -107,45 +132,52 @@ export function BottomToolbar({
       )}
     >
       <div className="flex">
-        <Button variant="outline" size="icon" className={cn(isMobileBreakpoint && 'hidden')}>
-          <Settings size={17} />
-        </Button>
+        <ModalTrigger
+          type="confirm-danger"
+          action={() => sandpack.resetAllFiles()}
+          options={{
+            title: 'Reset code',
+            description: 'Are you sure you want to reset the code?',
+          }}
+        >
+          <Button variant="outline" size="icon">
+            <RotateCcw size={15} />
+          </Button>
+        </ModalTrigger>
       </div>
-      <div className="flex gap-x-2  md:absolute md:left-1/2 md:-translate-x-1/2">
-        <Button variant={'outline'} size={'icon'}>
+      <div className={cn('flex gap-x-2  md:absolute md:left-1/2 md:-translate-x-1/2', isMobileBreakpoint && 'hidden')}>
+        {/* <Button variant={'outline'} size={'icon'}>
           <ChevronLeft size={17} />
-        </Button>
+        </Button> */}
         <Button className="gap-x-1" variant={'outline'}>
           <List size={17} />
           Questions list
         </Button>
-        <Button variant={'outline'} size={'icon'}>
+        {/* <Button variant={'outline'} size={'icon'}>
           <ChevronRight size={17} />
-        </Button>
+        </Button> */}
       </div>
       <div className="flex space-x-2">
         <Button
-          variant={'secondary'}
+          variant={'outline'}
           size={'sm'}
           className={cn(
-            'flex align-center space-x-1 transition',
-            isMobileBreakpoint && 'hidden',
+            'flex align-center space-x-0 md:space-x-1 transition',
             isMarkedComplete && 'bg-green-700 hover:bg-green-700',
           )}
           disabled={isMarkingComplete}
           leftIcon={isMarkedComplete ? <Check size={15} /> : undefined}
           onClick={handleMarkCompleted}
         >
-          <div>{isMarkedComplete ? 'Completed' : 'Mark as complete'}</div>
+          {isMobileBreakpoint ? (
+            <>{!isMarkedComplete && <Check size={15} />}</>
+          ) : (
+            <div>{isMarkedComplete ? 'Completed' : 'Mark as complete'}</div>
+          )}
         </Button>
-        <Button
-          variant={'secondary'}
-          size={'sm'}
-          className={cn('flex align-center space-x-2', isMobileBreakpoint && 'hidden')}
-          onClick={handleSaveCode}
-        >
+        <Button variant={'outline'} size={'sm'} className={cn('flex align-center space-x-2')} onClick={handleSaveCode}>
           <Save size={15} />
-          <div>Save</div>
+          {!isMobileBreakpoint && <div>Save</div>}
         </Button>
       </div>
     </div>

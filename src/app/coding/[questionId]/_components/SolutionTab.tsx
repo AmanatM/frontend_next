@@ -32,7 +32,7 @@ function SolutionTab({
     <div className="flex justify-between">
       <TypographyH4>Solution</TypographyH4>
       <Button variant={'secondary'} size={'sm'} onClick={toggleSolution}>
-        {isSolution ? 'Solution Shown' : 'Show Solution'}
+        {isSolution ? 'Reset Code' : 'Show Solution'}
       </Button>
     </div>
   )

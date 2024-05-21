@@ -50,7 +50,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
       >
         {loading && <LoaderCircle className="mr-1 h-4 w-4 animate-spin" />}
-        {!loading && leftIcon && <div className="mr-1">{leftIcon}</div>}
+        {!loading && leftIcon && <div className="">{leftIcon}</div>}
         <Slottable>{children}</Slottable>
       </Comp>
     )
