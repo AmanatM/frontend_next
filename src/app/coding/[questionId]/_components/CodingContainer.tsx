@@ -41,7 +41,7 @@ type CodingQuestionProps = {
   coding_question: CodingQuestion
 }
 
-export default function CodingQuestionContainer({ idFromParams, user, coding_question }: CodingQuestionProps) {
+export default function CodingContainer({ idFromParams, user, coding_question }: CodingQuestionProps) {
   const { resolvedTheme } = useTheme()
   const isMobileBreakpoint = useIsMobileBreakpoint()
 
