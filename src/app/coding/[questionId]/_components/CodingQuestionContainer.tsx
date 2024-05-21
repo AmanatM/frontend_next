@@ -30,6 +30,7 @@ import { User } from '@supabase/auth-js/dist/module/lib/types'
 import { CodingQuestion } from '@/supabase-utils/types'
 import { Button } from '@/components/custom/button'
 import SolutionTab from './SolutionTab'
+import SandpackPreviewClient from './SandpackPreview'
 
 type FilesObject = {
   [key: string]: {
@@ -94,11 +95,11 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
   }, [])
 
   if (!isMounted) return null
-
+  if (!coding_question) return null
   return (
     <main id="content" className={cn('flex size-full pt-3 px-3 overflow-scroll flex-col !h-[calc(100dvh-3.5rem)]')}>
       <SandpackProvider
-        template={coding_question?.sandpack_template}
+        template={coding_question.sandpack_template}
         theme={currentTheme === undefined ? 'auto' : (currentTheme as SandpackThemeProp)}
         className={'!size-full !overflow-hidden !flex !flex-col'}
         files={filesObject}
@@ -165,13 +166,13 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
             tabs={browserTabs}
           >
             <CustomTabsContent value="browser" className="p-0 size-full">
-              <SandpackPreview
-                showSandpackErrorOverlay={true}
+              {/* <SandpackPreview
+                showSandpackErrorOverlay={false}
                 showNavigator={true}
-                showOpenInCodeSandbox={false}
+                showOpenInCodeSandbox={true}
                 className={'size-full'}
-              />
-              {/* <SandpackPreviewClient /> */}
+              /> */}
+              <SandpackPreviewClient />
             </CustomTabsContent>
             <CustomTabsContent value="console" className="p-0 size-full">
               <SandpackConsole className={'size-full'} standalone={false} />

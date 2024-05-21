@@ -12,7 +12,7 @@
   "dependencies": {
     "@babel/parser": "^7.24.5",
     "@babel/traverse": "^7.24.5",
-    "@codesandbox/sandpack-react": "^2.13.7",
+    "@codesandbox/sandpack-react": "^2.13.10",
     "@codesandbox/sandpack-themes": "^2.0.21",
     "@hookform/resolvers": "^3.3.4",
     "@mdx-js/loader": "^3.0.1",
