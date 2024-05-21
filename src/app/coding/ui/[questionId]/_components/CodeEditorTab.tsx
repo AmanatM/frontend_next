@@ -11,13 +11,14 @@ import {
 import { TypographyMuted, TypographyP } from '@/components/typography'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
-import { ResizablePanelTabs } from './ResizablePanelTabs'
-import { CustomTabsContent } from './CustomTabComponents'
+import { ResizablePanelTabs } from '../../../_components/ResizablePanelTabs'
+import { CustomTabsContent } from '../../../_components/CustomTabComponents'
 import { useIsMobileBreakpoint } from '@/hooks/useIsMobileBreakpoint'
-import { FilesObject } from './CodingQuestionContainer'
+import { FilesObject } from './UserInterfaceContainer'
 import language from 'react-syntax-highlighter/dist/esm/languages/hljs/1c'
 import { Braces, Code } from 'lucide-react'
-import { getIconForLanguage } from '../utils/getIconForLanguage'
+import { getIconForLanguage } from '../../../utils/getIconForLanguage'
+import MonacoEditor from '../../../_components/MonacoEditor'
 
 /**
  * Renders a ResizablePanelTabs component with a Monaco Editor.
@@ -75,23 +76,7 @@ function CodeEditorTab({
               </TypographyP>
             </div>
             <div className="size-full">
-              <Editor
-                width="100%"
-                height="100%"
-                language={resolvedLanguage}
-                theme={currentTheme === 'dark' ? 'vs-dark' : 'vs-light'}
-                path={sandpack.activeFile}
-                value={code}
-                onChange={value => updateCode(value || '')}
-                options={{
-                  minimap: { enabled: false },
-                  fontSize: 12,
-                  fontFamily: 'Menlo, Monaco, "Courier New", monospace',
-                  scrollBeyondLastLine: true,
-                  fixedOverflowWidgets: true,
-                  tabSize: 2,
-                }}
-              />
+              <MonacoEditor currentTheme={currentTheme} />
             </div>
           </div>
         )}

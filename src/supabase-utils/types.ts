@@ -5,9 +5,11 @@ export type TypedSupabaseClient = SupabaseClient<Database>
 
 export type QuestionFile = Database['public']['Tables']['coding_question_files']['Row']
 
-export type CodingQuestion = Database['public']['Tables']['coding_questions']['Row'] & {
+export type UserInterfaceQuestion = Database['public']['Tables']['coding_questions']['Row'] & {
   coding_question_files: QuestionFile[]
 }
+
+export type CodingQuestion = Database['public']['Tables']['coding_questions']['Row']
 
 export type QuestionsSearchResults = {
   id: string

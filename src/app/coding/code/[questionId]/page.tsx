@@ -1,14 +1,11 @@
 import { createClientServer } from '@/supabase-utils/supabase-server'
-import CodingQuestionContainer from './_components/CodingQuestionContainer'
 import { TypedSupabaseClient } from '@/supabase-utils/types'
-import { Suspense } from 'react'
-import Loading from './loading'
-import CodingContainer from './_components/CodingContainer'
+import CodingQuestionContainer from './_components/CodingQuestionContainer'
 
 async function getCodingQuestionById({ questionId, client }: { questionId: string; client: TypedSupabaseClient }) {
   const { data: codingQuestion, error } = await client
     .from('coding_questions')
-    .select(`*,coding_question_files(*)`)
+    .select(`*`)
     .eq('id', questionId)
     .single()
 
@@ -28,11 +25,7 @@ export default async function CodingQuestion({ params }: { params: { questionId:
 
   return (
     <>
-      {questionType === 'user_interface' ? (
-        <CodingQuestionContainer idFromParams={questionId} user={user} coding_question={codingQuestion} />
-      ) : (
-        <CodingContainer idFromParams={questionId} user={user} coding_question={codingQuestion} />
-      )}
+      <CodingQuestionContainer idFromParams={questionId} user={user} coding_question={codingQuestion} />
     </>
   )
 }

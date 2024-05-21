@@ -15,14 +15,14 @@ import { TypographyH4 } from '@/components/typography'
 import { useTheme } from 'next-themes'
 import { useEffect, useMemo, useState } from 'react'
 import { MarkdownRenderer } from '@/components/markdown'
-import { descriptionTabs, browserTabs } from '../utils/tabs-data'
-import { BottomToolbar } from './BottomToolBar'
-import { CustomTabsContent } from './CustomTabComponents'
-import { ResizeHandle } from './ResizableHandleCustom'
-import { ResizablePanelTabs } from './ResizablePanelTabs'
+import { descriptionTabs, browserTabs } from '../../../utils/tabs-data'
+import { BottomToolbar_ui } from './BottomToolBar'
+import { CustomTabsContent } from '../../../_components/CustomTabComponents'
+import { ResizeHandle } from '../../../_components/ResizableHandleCustom'
+import { ResizablePanelTabs } from '../../../_components/ResizablePanelTabs'
 import SavedCode from './SavedCode'
 import { User } from '@supabase/auth-js/dist/module/lib/types'
-import { CodingQuestion } from '@/supabase-utils/types'
+import { CodingQuestion, UserInterfaceQuestion } from '@/supabase-utils/types'
 import SolutionTab from './SolutionTab'
 import CodeEditorTab from './CodeEditorTab'
 
@@ -38,10 +38,10 @@ export interface FilesObject {
 type CodingQuestionProps = {
   idFromParams: string
   user: User | null
-  coding_question: CodingQuestion
+  coding_question: UserInterfaceQuestion
 }
 
-export default function CodingQuestionContainer({ idFromParams, user, coding_question }: CodingQuestionProps) {
+export default function UserInterfaceContainer({ idFromParams, user, coding_question }: CodingQuestionProps) {
   const { resolvedTheme } = useTheme()
   const isMobileBreakpoint = useIsMobileBreakpoint()
 
@@ -158,7 +158,7 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
           </ResizablePanelGroup>
         </SandpackLayout>
 
-        <BottomToolbar filesObject={filesObject} user={user} questionId={idFromParams} />
+        <BottomToolbar_ui filesObject={filesObject} user={user} questionId={idFromParams} />
       </SandpackProvider>
     </main>
   )

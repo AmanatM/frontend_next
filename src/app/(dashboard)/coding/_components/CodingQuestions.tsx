@@ -32,7 +32,11 @@ const CodingQuestions = () => {
     return (
       <div className="flex flex-col space-y-2">
         {filteredCodingQuestions.map(question => (
-          <Link key={question.id} href={`/coding/${question.id}`} className="flex">
+          <Link
+            key={question.id}
+            href={`/coding/${question.question_type === 'user_interface' ? '/ui/' : '/code/'}${question.id}`}
+            className="flex"
+          >
             <Card className="size-full space-y-2 px-6 py-4 bg-primary-foreground rounded-sm">
               <div className="flex flex-row space-x-4">
                 <TypographyP>{question.title}</TypographyP>

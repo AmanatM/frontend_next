@@ -3,41 +3,16 @@ import { Button } from '@/components/custom/button'
 import { useIsMobileBreakpoint } from '@/hooks/useIsMobileBreakpoint'
 import { cn } from '@/lib/utils'
 import { useSandpack } from '@codesandbox/sandpack-react'
-import { Settings, ChevronLeft, List, ChevronRight, Save, Check, FileCheck, RotateCcw, Circle } from 'lucide-react'
+import { List, Save, Check, FileCheck, RotateCcw } from 'lucide-react'
 import { useHotkeys } from 'react-hotkeys-hook'
 import { toast } from 'sonner'
-import { CodingQuestion, TypedSupabaseClient } from '@/supabase-utils/types'
 
 import { useQueryClient } from '@tanstack/react-query'
 import { User } from '@supabase/auth-js'
 import { useRouter } from 'next/navigation'
-import { useIsMarkedComplete } from '../_hooks/useIsMarkedComplete'
-import { useToggleMarkComplete } from '../_hooks/useToggleMarkedComplete'
-import { useSaveFiles } from '../_hooks/useSaveFiles'
-import { ResetIcon } from '@radix-ui/react-icons'
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from '@/components/ui/alert-dialog'
-import {
-  Credenza,
-  CredenzaBody,
-  CredenzaClose,
-  CredenzaContent,
-  CredenzaDescription,
-  CredenzaFooter,
-  CredenzaHeader,
-  CredenzaTitle,
-  CredenzaTrigger,
-} from '@/components/ui/credenza'
-import { useState } from 'react'
+import { useIsMarkedComplete } from '../../../_hooks/useIsMarkedComplete'
+import { useToggleMarkComplete } from '../../../_hooks/useToggleMarkedComplete'
+import { useSaveFiles } from '../../../_hooks/useSaveFiles'
 import { ModalTrigger } from '@/components/modal'
 
 type FilesObject = {
@@ -47,15 +22,7 @@ type FilesObject = {
     path: string
   }
 }
-export function BottomToolbar({
-  filesObject,
-  user,
-  questionId,
-}: {
-  filesObject: FilesObject | undefined
-  user: User | null
-  questionId: string
-}) {
+export function BottomToolbar_code({ user, questionId }: { user: User | null; questionId: string }) {
   const isMobileBreakpoint = useIsMobileBreakpoint()
 
   const { sandpack } = useSandpack()
@@ -67,37 +34,6 @@ export function BottomToolbar({
 
   const { mutate: toggleMarkedComplete, isPending: isMarkingComplete } = useToggleMarkComplete()
   const { mutate: saveCode } = useSaveFiles()
-
-  const handleSaveCode = () => {
-    if (!filesObject) return
-    if (!user) {
-      toast.error('Please sign in to save your code')
-      return
-    }
-
-    const updatedFiles = Object.values(filesObject).map(file => ({
-      content: files[file.path].code,
-      file_id: file.id,
-      user_id: user.id,
-      question_id: questionId,
-      path: file.path,
-    }))
-
-    saveCode(
-      { user, updatedFiles },
-      {
-        onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: ['savedCode', questionId, user?.id] })
-          toast.success('Code saved successfully', {
-            icon: <FileCheck size={15} />,
-          })
-        },
-        onError: error => {
-          toast.error(`${error.message}`)
-        },
-      },
-    )
-  }
 
   const handleMarkCompleted = () => {
     toggleMarkedComplete(
@@ -113,16 +49,6 @@ export function BottomToolbar({
       },
     )
   }
-
-  // Save code shortcut(cmd+s)
-  useHotkeys(
-    'meta+s',
-    event => {
-      event.preventDefault()
-      handleSaveCode()
-    },
-    { enableOnFormTags: true },
-  )
 
   return (
     <div
@@ -175,7 +101,7 @@ export function BottomToolbar({
             <div>{isMarkedComplete ? 'Completed' : 'Mark as complete'}</div>
           )}
         </Button>
-        <Button variant={'outline'} size={'sm'} className={cn('flex align-center space-x-2')} onClick={handleSaveCode}>
+        <Button variant={'outline'} size={'sm'} className={cn('flex align-center space-x-2')}>
           <Save size={15} />
           {!isMobileBreakpoint && <div>Save</div>}
         </Button>
