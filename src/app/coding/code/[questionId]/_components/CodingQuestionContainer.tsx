@@ -165,7 +165,7 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
                 <SandpackConsole className={'size-full'} standalone resetOnPreviewRestart showHeader={false} />
               </CustomTabsContent>
               <CustomTabsContent value="tests" className="p-0 size-full">
-                <SandpackTests />
+                <SandpackTests hideTestsAndSupressLogs />
               </CustomTabsContent>
             </ResizablePanelTabs>
           </ResizablePanelGroup>

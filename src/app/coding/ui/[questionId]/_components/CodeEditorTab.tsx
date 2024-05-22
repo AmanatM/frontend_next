@@ -14,11 +14,12 @@ import { toast } from 'sonner'
 import { ResizablePanelTabs } from '../../../_components/ResizablePanelTabs'
 import { CustomTabsContent } from '../../../_components/CustomTabComponents'
 import { useIsMobileBreakpoint } from '@/hooks/useIsMobileBreakpoint'
-import { FilesObject } from './UserInterfaceContainer'
+
 import language from 'react-syntax-highlighter/dist/esm/languages/hljs/1c'
 import { Braces, Code } from 'lucide-react'
 import { getIconForLanguage } from '../../../utils/getIconForLanguage'
 import MonacoEditor from '../../../_components/MonacoEditor'
+import { FilesObjectWithSandpack } from '@/supabase-utils/types'
 
 /**
  * Renders a ResizablePanelTabs component with a Monaco Editor.
@@ -49,7 +50,7 @@ function CodeEditorTab({
     setIsSolution(false)
   }
 
-  const filteredFiles = Object.values(sandpack.files as FilesObject).filter(file => file.id)
+  const filteredFiles = Object.values(sandpack.files as FilesObjectWithSandpack).filter(file => file.id)
   const filesTabs = filteredFiles.map(file => {
     return {
       value: file.path,
