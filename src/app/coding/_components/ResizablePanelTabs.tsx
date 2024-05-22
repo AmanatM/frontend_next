@@ -7,8 +7,8 @@ import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area'
 import { Tabs, TabsList } from '@/components/ui/tabs'
 import { cn } from '@/lib/utils'
 
-import { Code, Ellipsis, Maximize, Minimize, PanelLeftClose, PanelLeftOpen } from 'lucide-react'
-import React, { useRef } from 'react'
+import { ChevronsUpDown, Code, Ellipsis, Maximize, Minimize, PanelLeftClose, PanelLeftOpen } from 'lucide-react'
+import React, { useEffect, useRef } from 'react'
 import { useState } from 'react'
 
 import { TabTriggerCustom } from './CustomTabComponents'
@@ -27,6 +27,7 @@ type ResizablePanelTabsProps = {
   defaultSize?: number
   extraClassName?: string
   overrideDefaultBehavior?: boolean
+  vertical?: boolean
 }
 
 export function ResizablePanelTabs({
@@ -36,6 +37,7 @@ export function ResizablePanelTabs({
   defaultSize,
   extraClassName,
   overrideDefaultBehavior,
+  vertical,
 }: ResizablePanelTabsProps) {
   const [isFullScreen, setIsFullScreen] = useState(false)
   const [collapsed, setCollapsed] = useState(false)
@@ -93,31 +95,53 @@ export function ResizablePanelTabs({
         <Card className="h-full overflow-clip flex flex-col">
           {/******** Collapsed Tab ********/}
           {collapsed && !isMobileBreakpoint && (
-            <div className={cn('size-full px-2 py-2 flex flex-col items-center')}>
-              <Button variant={'ghost'} size={'icon'} onClick={handleExpand}>
-                <PanelLeftOpen size={17} />
+            <div
+              className={cn(
+                'size-full px-2 py-2 flex items-center',
+                vertical ? 'flex-row justify-between' : 'flex-col',
+              )}
+            >
+              <Button variant={'ghost'} size={'icon'} onClick={handleExpand} className={vertical ? 'order-last' : ''}>
+                {vertical ? <ChevronsUpDown size={17} /> : <PanelLeftOpen size={17} />}
               </Button>
-              <Separator className="my-2" />
-              <div className="flex flex-col mt-4">
-                {tabs?.map(tab => (
-                  <TooltipProvider key={tab.value} delayDuration={0}>
-                    <Tooltip>
-                      <TooltipTrigger>
-                        <Button
-                          key={tab.value}
-                          variant={'ghost'}
-                          onClick={() => handleTabChange(tab.value)}
-                          className={'my-2'}
-                        >
-                          {tab.icon && <>{tab.icon}</>}
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent align="center" avoidCollisions={true} side="right" sideOffset={10}>
-                        {tab.label}
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                ))}
+              <Separator className={cn('my-w', vertical && 'hidden')} />
+              <div className={cn('flex ', vertical ? 'flex-row' : 'flex-col mt-4')}>
+                {tabs?.map(tab => {
+                  if (vertical) {
+                    return (
+                      <Button
+                        key={tab.value}
+                        variant={'ghost'}
+                        onClick={() => handleTabChange(tab.value)}
+                        className={
+                          'my-2 text-sm font-medium ring-offset-background space-x-2 text-muted-foreground !bg-transparent'
+                        }
+                      >
+                        {tab.icon ? <>{tab.icon}</> : <Code size={15} />}
+                        <TypographySmall className="font-normal">{tab.label}</TypographySmall>
+                      </Button>
+                    )
+                  }
+                  return (
+                    <TooltipProvider key={tab.value} delayDuration={0}>
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <Button
+                            key={tab.value}
+                            variant={'ghost'}
+                            onClick={() => handleTabChange(tab.value)}
+                            className={'my-2'}
+                          >
+                            {tab.icon && <>{tab.icon}</>}
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent align="center" avoidCollisions={true} side="right" sideOffset={10}>
+                          {tab.label}
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  )
+                })}
               </div>
             </div>
           )}

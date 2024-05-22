@@ -12,7 +12,7 @@ import {
   SandpackStack,
 } from '@codesandbox/sandpack-react'
 import { cn } from '@/lib/utils'
-import { ResizablePanelGroup } from '@/components/ui/resizable'
+import { ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
 import { useIsMobileBreakpoint } from '@/hooks/useIsMobileBreakpoint'
 import { TypographyH4 } from '@/components/typography'
 
@@ -47,7 +47,7 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
   const { resolvedTheme } = useTheme()
   const isMobileBreakpoint = useIsMobileBreakpoint()
 
-  const [defaultSize, setDefaultSize] = useState<number[]>([30, 40, 30])
+  const [defaultSize, setDefaultSize] = useState<number[]>([40, 60])
   const [isMounted, setIsMounted] = useState(false)
   const [currentTheme, setCurrentTheme] = useState<'light' | 'dark' | undefined>(undefined)
 
@@ -105,9 +105,9 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
             className={cn('relative size-full grow', isMobileBreakpoint && 'pb-16 space-y-2')}
             onResize={() => {
               if (isMobileBreakpoint) {
-                setDefaultSize([100, 100, 100])
+                setDefaultSize([100, 100])
               } else {
-                setDefaultSize([30, 40, 30])
+                setDefaultSize([40, 60])
               }
             }}
           >
@@ -136,45 +136,53 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
 
             <ResizeHandle />
 
-            {/* Editor Panel*/}
-            <ResizablePanelTabs
-              extraClassName={cn(isMobileBreakpoint && 'h-[500px]')}
-              defaultSize={defaultSize[1]}
-              defaultValue="code"
-              tabs={CODE_editor_tabs}
-            >
-              <CustomTabsContent value="code" className="p-0 size-full">
-                {/* <SandpackFileExplorer /> */}
-                {/* <SandpackCodeEditor /> */}
-                <MonacoEditor currentTheme={currentTheme} />
-              </CustomTabsContent>
-              <CustomTabsContent value="test_cases" className="p-0 size-full">
-                Test cases
-              </CustomTabsContent>
-            </ResizablePanelTabs>
-            <ResizeHandle />
+            {/* Editor and Preview Panels */}
+            <ResizablePanel defaultSize={defaultSize[1]}>
+              <ResizablePanelGroup direction="vertical">
+                {/* Editor Panel*/}
+                <ResizablePanelTabs
+                  extraClassName={cn(isMobileBreakpoint && 'h-[500px]')}
+                  defaultSize={95}
+                  defaultValue="code"
+                  tabs={CODE_editor_tabs}
+                  vertical={true}
+                >
+                  <CustomTabsContent value="code" className="p-0 size-full">
+                    {/* <SandpackFileExplorer /> */}
+                    {/* <SandpackCodeEditor /> */}
+                    <MonacoEditor currentTheme={currentTheme} />
+                  </CustomTabsContent>
+                  <CustomTabsContent value="test_cases" className="p-0 size-full">
+                    Test cases
+                  </CustomTabsContent>
+                </ResizablePanelTabs>
 
-            {/* Preview Panel*/}
-            <ResizablePanelTabs
-              extraClassName={cn(isMobileBreakpoint && 'h-[500px]')}
-              defaultSize={defaultSize[2]}
-              defaultValue="tests"
-              tabs={CODE_result_tabs}
-            >
-              <CustomTabsContent value="console" className="p-0 size-full">
-                <SandpackConsole
-                  className={'size-full'}
-                  standalone={true}
-                  resetOnPreviewRestart={true}
-                  showHeader={false}
-                />
-              </CustomTabsContent>
-              <CustomTabsContent value="tests" className="p-0 size-full">
-                <SandpackStack>
-                  <SandpackTests hideTestsAndSupressLogs />
-                </SandpackStack>
-              </CustomTabsContent>
-            </ResizablePanelTabs>
+                <ResizeHandle vertical={true} />
+
+                {/* Preview Panel*/}
+                <ResizablePanelTabs
+                  extraClassName={cn(isMobileBreakpoint && 'h-[500px]')}
+                  defaultSize={5}
+                  defaultValue="tests"
+                  tabs={CODE_result_tabs}
+                  vertical={true}
+                >
+                  <CustomTabsContent value="console" className="p-0 size-full">
+                    <SandpackConsole
+                      className={'size-full'}
+                      standalone={true}
+                      resetOnPreviewRestart={true}
+                      showHeader={false}
+                    />
+                  </CustomTabsContent>
+                  <CustomTabsContent value="tests" className="p-0 size-full">
+                    <SandpackStack>
+                      <SandpackTests hideTestsAndSupressLogs />
+                    </SandpackStack>
+                  </CustomTabsContent>
+                </ResizablePanelTabs>
+              </ResizablePanelGroup>
+            </ResizablePanel>
           </ResizablePanelGroup>
         </SandpackLayout>
 
