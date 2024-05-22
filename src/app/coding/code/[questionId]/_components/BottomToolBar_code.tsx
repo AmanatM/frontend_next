@@ -11,7 +11,15 @@ import ToggleCompleteButton from '@/app/coding/_components/MarkCompleteButton'
 import { getPanelElement, ImperativePanelHandle } from 'react-resizable-panels'
 import { useEffect, useRef } from 'react'
 
-export function BottomToolbar_code({ user, questionId }: { user: User | null; questionId: string }) {
+export function BottomToolbar_code({
+  user,
+  questionId,
+  setVerticalLayout,
+}: {
+  user: User | null
+  questionId: string
+  setVerticalLayout: (numbers: number[]) => void
+}) {
   const isMobileBreakpoint = useIsMobileBreakpoint()
 
   const sandpack = useSandpack()
@@ -20,7 +28,7 @@ export function BottomToolbar_code({ user, questionId }: { user: User | null; qu
   const runCode = () => {
     // refresh()
     // sandpack.dispatch({ type: 'start' })
-
+    setVerticalLayout([60, 40])
     sandpack.dispatch({ type: 'run-all-tests' })
   }
 

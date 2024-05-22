@@ -56,7 +56,15 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
   const [isMounted, setIsMounted] = useState(false)
   const [currentTheme, setCurrentTheme] = useState<'light' | 'dark' | undefined>(undefined)
 
-  const groupRef = useRef(null)
+  const ref = useRef<ImperativePanelGroupHandle>(null)
+
+  const setVerticalLayout = (layout: number[]) => {
+    const panelGroup = ref.current
+    if (panelGroup) {
+      panelGroup.setLayout(layout)
+    }
+    console.log(panelGroup)
+  }
 
   useEffect(() => {
     setIsMounted(true)
@@ -146,7 +154,7 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
 
             {/* Editor and Preview Panels */}
             <ResizablePanel defaultSize={defaultSize[1]}>
-              <ResizablePanelGroup direction="vertical">
+              <ResizablePanelGroup direction="vertical" ref={ref}>
                 {/* Editor Panel*/}
                 <ResizablePanelTabs
                   extraClassName={cn(isMobileBreakpoint && 'h-[500px]')}
@@ -194,7 +202,7 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
           </ResizablePanelGroup>
         </SandpackLayout>
 
-        <BottomToolbar_code user={user} questionId={idFromParams} />
+        <BottomToolbar_code user={user} questionId={idFromParams} setVerticalLayout={setVerticalLayout} />
       </SandpackProvider>
     </main>
   )
