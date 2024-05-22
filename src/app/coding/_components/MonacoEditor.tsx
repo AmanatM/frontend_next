@@ -31,7 +31,7 @@ export const getLanguageFromExtension = (language: string | undefined) => {
  *
  * @returns ResizablePanelTabs
  */
-function MonacoEditor({ currentTheme }: { currentTheme: string | undefined }) {
+export function MonacoEditorSandpack({ currentTheme }: { currentTheme: string | undefined }) {
   const { code, updateCode } = useActiveCode()
   const { sandpack } = useSandpack()
 
@@ -60,4 +60,31 @@ function MonacoEditor({ currentTheme }: { currentTheme: string | undefined }) {
   )
 }
 
-export default MonacoEditor
+export function MonacoEditorView({
+  code,
+  language,
+  currentTheme,
+}: {
+  code: string
+  language: string
+  currentTheme: string | undefined
+}) {
+  return (
+    <Editor
+      width="100%"
+      height="100%"
+      defaultValue={code}
+      language={language}
+      theme={currentTheme === 'dark' ? 'vs-dark' : 'vs-light'}
+      options={{
+        minimap: { enabled: false },
+        fontSize: 12,
+        fontFamily: 'Menlo, Monaco, "Courier New", monospace',
+        scrollBeyondLastLine: true,
+        fixedOverflowWidgets: true,
+        tabSize: 2,
+        readOnly: true,
+      }}
+    />
+  )
+}

@@ -18,7 +18,7 @@ import { useIsMobileBreakpoint } from '@/hooks/useIsMobileBreakpoint'
 import language from 'react-syntax-highlighter/dist/esm/languages/hljs/1c'
 import { Braces, Code } from 'lucide-react'
 import { getIconForLanguage } from '../../../utils/getIconForLanguage'
-import MonacoEditor from '../../../_components/MonacoEditor'
+import { MonacoEditorSandpack } from '../../../_components/MonacoEditor'
 import { FilesObjectWithSandpack } from '@/supabase-utils/types'
 
 /**
@@ -77,7 +77,7 @@ function CodeEditorTab({
               </TypographyP>
             </div>
             <div className="size-full">
-              <MonacoEditor currentTheme={currentTheme} />
+              <MonacoEditorSandpack currentTheme={currentTheme} />
             </div>
           </div>
         )}

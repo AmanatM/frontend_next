@@ -54,16 +54,10 @@ export function BottomToolbar_code({
         </ModalTrigger>
       </div>
       <div className={cn('flex gap-x-2  md:absolute md:left-1/2 md:-translate-x-1/2', isMobileBreakpoint && 'hidden')}>
-        {/* <Button variant={'outline'} size={'icon'}>
-          <ChevronLeft size={17} />
-        </Button> */}
         <Button className="gap-x-1" variant={'outline'}>
           <List size={17} />
           Questions list
         </Button>
-        {/* <Button variant={'outline'} size={'icon'}>
-          <ChevronRight size={17} />
-        </Button> */}
       </div>
       <div className="flex space-x-2">
         <ToggleCompleteButton questionId={questionId} user={user} />

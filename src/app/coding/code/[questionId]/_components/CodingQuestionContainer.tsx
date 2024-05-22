@@ -10,6 +10,7 @@ import {
   SandpackTests,
   SandpackCodeEditor,
   SandpackStack,
+  SandpackCodeViewer,
 } from '@codesandbox/sandpack-react'
 import { cn } from '@/lib/utils'
 import { ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
@@ -33,7 +34,7 @@ import { ResizeHandle } from '@/app/coding/_components/ResizableHandleCustom'
 import { ResizablePanelTabs } from '@/app/coding/_components/ResizablePanelTabs'
 import { CODE_description_tabs, CODE_editor_tabs, CODE_result_tabs } from '@/app/coding/utils/tabs-data'
 import Submissions from './Submissions'
-import MonacoEditor from '@/app/coding/_components/MonacoEditor'
+import { MonacoEditorSandpack, MonacoEditorView } from '@/app/coding/_components/MonacoEditor'
 import { BottomToolbar_code } from './BottomToolBar_code'
 import {
   getPanelElement,
@@ -89,9 +90,12 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
   //   },
   // }
 
+  const tests = coding_question.coding_question_files_code[0].tests || ''
+  const code = coding_question.coding_question_files_code[0].code || ''
+
   const filesObject = {
-    '/add.ts': coding_question.coding_question_files_code[0].code || '',
-    '/add.test.ts': coding_question.coding_question_files_code[0].tests || '',
+    '/add.ts': code,
+    '/add.test.ts': tests,
   }
 
   if (!isMounted) return null
@@ -166,10 +170,10 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
                   <CustomTabsContent value="code" className="p-0 size-full">
                     {/* <SandpackFileExplorer /> */}
                     {/* <SandpackCodeEditor /> */}
-                    <MonacoEditor currentTheme={currentTheme} />
+                    <MonacoEditorSandpack currentTheme={currentTheme} />
                   </CustomTabsContent>
                   <CustomTabsContent value="test_cases" className="p-0 size-full">
-                    Test cases
+                    <MonacoEditorView language="javascript" currentTheme={currentTheme} code={tests} />
                   </CustomTabsContent>
                 </ResizablePanelTabs>
 
