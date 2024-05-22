@@ -45,8 +45,6 @@ export function ResizablePanelTabs({
   const { sandpack } = useSandpack()
   const panelRef = useRef<ImperativePanelHandle>(null)
 
-  console.log(sandpack.files) //Debug
-
   const handleTabChange = (newTab: string) => {
     if (panelRef.current?.isCollapsed()) {
       panelRef.current?.expand()

@@ -2,7 +2,7 @@
 import { Button } from '@/components/custom/button'
 import { useIsMobileBreakpoint } from '@/hooks/useIsMobileBreakpoint'
 import { cn } from '@/lib/utils'
-import { useSandpack } from '@codesandbox/sandpack-react'
+import { useSandpack, useSandpackNavigation } from '@codesandbox/sandpack-react'
 import { List, Save, RotateCcw, Play } from 'lucide-react'
 
 import { User } from '@supabase/auth-js'
@@ -12,10 +12,14 @@ import ToggleCompleteButton from '@/app/coding/_components/MarkCompleteButton'
 export function BottomToolbar_code({ user, questionId }: { user: User | null; questionId: string }) {
   const isMobileBreakpoint = useIsMobileBreakpoint()
 
-  const { sandpack } = useSandpack()
+  const sandpack = useSandpack()
+  const { refresh } = useSandpackNavigation()
 
   const runCode = () => {
-    // sandpack.runSandpack()
+    // refresh()
+    sandpack.dispatch({ type: 'start' })
+
+    sandpack.dispatch({ type: 'run-all-tests' })
   }
 
   return (
@@ -28,7 +32,7 @@ export function BottomToolbar_code({ user, questionId }: { user: User | null; qu
       <div className="flex">
         <ModalTrigger
           type="confirm-danger"
-          action={() => sandpack.resetAllFiles()}
+          action={() => sandpack.sandpack.resetAllFiles()}
           options={{
             title: 'Reset code',
             description: 'Are you sure you want to reset the code?',

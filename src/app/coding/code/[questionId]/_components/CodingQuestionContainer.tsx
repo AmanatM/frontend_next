@@ -9,6 +9,7 @@ import {
   SandpackFileExplorer,
   SandpackTests,
   SandpackCodeEditor,
+  SandpackStack,
 } from '@codesandbox/sandpack-react'
 import { cn } from '@/lib/utils'
 import { ResizablePanelGroup } from '@/components/ui/resizable'
@@ -64,24 +65,18 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
     }
   }, [resolvedTheme])
 
-  useEffect(() => {
-    if (!isMounted) return
-    if (
-      !coding_question ||
-      !coding_question.coding_question_files_code ||
-      coding_question.coding_question_files_code.length === 0
-    ) {
-      console.error('Error: Invalid coding question data.')
-    }
-  }, [isMounted, coding_question])
+  // const filesObject = {
+  //   '/add.ts': {
+  //     code: coding_question.coding_question_files_code[0].code || 'null',
+  //   },
+  //   '/add.test.ts': {
+  //     code: coding_question.coding_question_files_code[0].tests || 'null',
+  //   },
+  // }
 
   const filesObject = {
-    '/add.ts': {
-      code: coding_question.coding_question_files_code[0].code || 'null',
-    },
-    '/add.test.ts': {
-      code: coding_question.coding_question_files_code[0].tests || 'null',
-    },
+    '/add.ts': coding_question.coding_question_files_code[0].code || '',
+    '/add.test.ts': coding_question.coding_question_files_code[0].tests || '',
   }
 
   if (!isMounted) return null
@@ -98,6 +93,11 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
         theme={currentTheme === undefined ? 'auto' : (currentTheme as SandpackThemeProp)}
         className={'!size-full !overflow-hidden !flex !flex-col'}
         files={filesObject}
+        options={{
+          activeFile: '/add.ts',
+          visibleFiles: ['/add.ts'],
+          autoReload: false,
+        }}
       >
         <SandpackLayout className={'!size-full !overflow-hidden !flex !flex-col !bg-transparent !border-none'}>
           <ResizablePanelGroup
@@ -144,9 +144,9 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
               tabs={CODE_editor_tabs}
             >
               <CustomTabsContent value="code" className="p-0 size-full">
-                <SandpackFileExplorer />
-                <SandpackCodeEditor />
-                {/* <MonacoEditor currentTheme={currentTheme} /> */}
+                {/* <SandpackFileExplorer /> */}
+                {/* <SandpackCodeEditor /> */}
+                <MonacoEditor currentTheme={currentTheme} />
               </CustomTabsContent>
               <CustomTabsContent value="test_cases" className="p-0 size-full">
                 Test cases
@@ -162,10 +162,17 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
               tabs={CODE_result_tabs}
             >
               <CustomTabsContent value="console" className="p-0 size-full">
-                <SandpackConsole className={'size-full'} standalone resetOnPreviewRestart showHeader={false} />
+                <SandpackConsole
+                  className={'size-full'}
+                  standalone={true}
+                  resetOnPreviewRestart={true}
+                  showHeader={false}
+                />
               </CustomTabsContent>
               <CustomTabsContent value="tests" className="p-0 size-full">
-                <SandpackTests hideTestsAndSupressLogs />
+                <SandpackStack>
+                  <SandpackTests hideTestsAndSupressLogs />
+                </SandpackStack>
               </CustomTabsContent>
             </ResizablePanelTabs>
           </ResizablePanelGroup>

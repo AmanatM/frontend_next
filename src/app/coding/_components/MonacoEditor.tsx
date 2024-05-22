@@ -10,15 +10,19 @@ export const getLanguageFromExtension = (language: string | undefined) => {
 
   switch (language) {
     case 'js':
+    case 'jsx':
+    case 'ts':
+    case 'tsx':
       return 'javascript'
+    case 'vue':
     case 'html':
       return 'html'
     case 'css':
+    case 'scss':
+    case 'less':
       return 'css'
-    case 'ts':
-      return 'typescript'
     default:
-      return ''
+      return
   }
 }
 
@@ -32,7 +36,6 @@ function MonacoEditor({ currentTheme }: { currentTheme: string | undefined }) {
   const { sandpack } = useSandpack()
 
   const fileExtenstion = sandpack.activeFile.split('.').pop()
-
   const filteredFiles = sandpack.files as FilesObjectWithSandpack
 
   return (
@@ -40,6 +43,7 @@ function MonacoEditor({ currentTheme }: { currentTheme: string | undefined }) {
       width="100%"
       height="100%"
       language={filteredFiles[sandpack.activeFile].language || getLanguageFromExtension(fileExtenstion)}
+      defaultValue={code}
       theme={currentTheme === 'dark' ? 'vs-dark' : 'vs-light'}
       path={sandpack.activeFile}
       value={code}
