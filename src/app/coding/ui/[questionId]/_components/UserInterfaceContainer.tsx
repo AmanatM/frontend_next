@@ -16,29 +16,20 @@ import { useTheme } from 'next-themes'
 import { useEffect, useMemo, useState } from 'react'
 import { MarkdownRenderer } from '@/components/markdown'
 import { descriptionTabs, browserTabs } from '../../../utils/tabs-data'
-import { BottomToolbar_ui } from './BottomToolBar'
+import { BottomToolbar_ui } from './BottomToolBar_ui'
 import { CustomTabsContent } from '../../../_components/CustomTabComponents'
 import { ResizeHandle } from '../../../_components/ResizableHandleCustom'
 import { ResizablePanelTabs } from '../../../_components/ResizablePanelTabs'
 import SavedCode from './SavedCode'
 import { User } from '@supabase/auth-js/dist/module/lib/types'
-import { CodingQuestion, UserInterfaceQuestion } from '@/supabase-utils/types'
+import { CodingQuestion, SandpackFile_UI, Question_UI } from '@/supabase-utils/types'
 import SolutionTab from './SolutionTab'
 import CodeEditorTab from './CodeEditorTab'
-
-export interface FilesObject {
-  [key: string]: {
-    id: string
-    path: string
-    name: string
-    language: string | null
-  } & SandpackFile
-}
 
 type CodingQuestionProps = {
   idFromParams: string
   user: User | null
-  coding_question: UserInterfaceQuestion
+  coding_question: Question_UI
 }
 
 export default function UserInterfaceContainer({ idFromParams, user, coding_question }: CodingQuestionProps) {
@@ -65,13 +56,15 @@ export default function UserInterfaceContainer({ idFromParams, user, coding_ques
   }, [resolvedTheme])
 
   const filesObject = useMemo(() => {
-    return coding_question?.coding_question_files.reduce((obj: FilesObject, file) => {
+    return coding_question?.coding_question_files_ui.reduce((obj: SandpackFile_UI, file) => {
       if (file.path !== null && file.content !== null) {
         obj[file.path] = { code: file.content, id: file.id, path: file.path, name: file.name, language: file.language }
       }
       return obj
     }, {})
   }, [])
+
+  // console.log(filesObject)
 
   if (!isMounted) return null
   if (!coding_question) return null
@@ -111,7 +104,7 @@ export default function UserInterfaceContainer({ idFromParams, user, coding_ques
               </CustomTabsContent>
               <CustomTabsContent value="solution" className="p-4 space-y-4 justify-center">
                 <SolutionTab
-                  originalFiles={coding_question?.coding_question_files}
+                  originalFiles={coding_question?.coding_question_files_ui}
                   setIsSolution={setIsSolution}
                   isSolution={isSolution}
                 />

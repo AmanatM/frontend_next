@@ -7,10 +7,7 @@ export const useGetSavedFiles = ({ questionId, user }: { questionId: string; use
   return useQuery({
     queryKey: ['savedCode', questionId, user?.id],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('user_saved_coding_question_files')
-        .select(`*`)
-        .eq('question_id', questionId)
+      const { data, error } = await supabase.from('user_saved_question_files').select(`*`).eq('question_id', questionId)
       if (error) {
         throw error
       }

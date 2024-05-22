@@ -9,8 +9,8 @@ import { FileWarning, LogIn } from 'lucide-react'
 import { toast } from 'sonner'
 import { useSandpack } from '@codesandbox/sandpack-react'
 import { useEffect } from 'react'
-import { useDeleteSavedFiles } from '../../../_hooks/useDeleteSavedFiles'
-import { useGetSavedFiles } from '../../../_hooks/useGetSavedFiles'
+import { useGetSavedFiles } from '@/app/coding/_hooks/useGetSavedFiles'
+import { useDeleteSavedFiles } from '@/app/coding/_hooks/useDeleteSavedFiles'
 
 const SavedCode = ({ questionId, user }: { questionId: string; user: User | null }) => {
   const supabase = useSupabaseBrowser()

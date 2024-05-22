@@ -1,11 +1,13 @@
 import {
   Archive,
+  Code,
   Database,
   FileText,
   FlaskConical,
   Lightbulb,
   LucideIcon,
   PanelTop,
+  Play,
   SquareChevronRight,
   TestTubeDiagonal,
 } from 'lucide-react'
@@ -75,6 +77,19 @@ export const CODE_description_tabs = [
   },
 ]
 
+export const CODE_editor_tabs = [
+  {
+    value: 'code',
+    label: 'Code',
+    icon: <Code size={15} />,
+  },
+  {
+    value: 'test_cases',
+    label: 'Test Cases',
+    icon: <FlaskConical size={15} />,
+  },
+]
+
 export const CODE_result_tabs = [
   {
     value: 'console',
@@ -82,8 +97,8 @@ export const CODE_result_tabs = [
     icon: <SquareChevronRight size={15} />,
   },
   {
-    value: 'test',
-    label: 'Tests',
-    icon: <FlaskConical size={15} />,
+    value: 'tests',
+    label: 'Test',
+    icon: <Play size={14} />,
   },
 ]

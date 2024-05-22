@@ -6,6 +6,9 @@ import {
   SandpackLayout,
   SandpackPreview,
   SandpackFile,
+  SandpackFileExplorer,
+  SandpackTests,
+  SandpackCodeEditor,
 } from '@codesandbox/sandpack-react'
 import { cn } from '@/lib/utils'
 import { ResizablePanelGroup } from '@/components/ui/resizable'
@@ -13,32 +16,30 @@ import { useIsMobileBreakpoint } from '@/hooks/useIsMobileBreakpoint'
 import { TypographyH4 } from '@/components/typography'
 
 import { useTheme } from 'next-themes'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { MarkdownRenderer } from '@/components/markdown'
 
 import { User } from '@supabase/auth-js/dist/module/lib/types'
-import { CodingQuestion } from '@/supabase-utils/types'
+import {
+  CodingQuestion,
+  SandpackFile_CODE,
+  Question_CODE,
+  SandpackFile_UI,
+  QuestionFile_CODE,
+} from '@/supabase-utils/types'
 import { CustomTabsContent } from '@/app/coding/_components/CustomTabComponents'
 import { ResizeHandle } from '@/app/coding/_components/ResizableHandleCustom'
 import { ResizablePanelTabs } from '@/app/coding/_components/ResizablePanelTabs'
-import { CODE_description_tabs, CODE_result_tabs } from '@/app/coding/utils/tabs-data'
+import { CODE_description_tabs, CODE_editor_tabs, CODE_result_tabs } from '@/app/coding/utils/tabs-data'
 import Submissions from './Submissions'
 import MonacoEditor from '@/app/coding/_components/MonacoEditor'
-import { BottomToolbar_code } from './BottomToolBar'
-
-export interface FilesObject {
-  [key: string]: {
-    id: string
-    path: string
-    name: string
-    language: string | null
-  } & SandpackFile
-}
+import { BottomToolbar_code } from './BottomToolBar_code'
+import { ErrorBoundary } from 'next/dist/client/components/error-boundary'
 
 type CodingQuestionProps = {
   idFromParams: string
   user: User | null
-  coding_question: CodingQuestion
+  coding_question: Question_CODE
 }
 
 export default function CodingQuestionContainer({ idFromParams, user, coding_question }: CodingQuestionProps) {
@@ -48,7 +49,6 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
   const [defaultSize, setDefaultSize] = useState<number[]>([30, 40, 30])
   const [isMounted, setIsMounted] = useState(false)
   const [currentTheme, setCurrentTheme] = useState<'light' | 'dark' | undefined>(undefined)
-  const [isSolution, setIsSolution] = useState(false)
 
   useEffect(() => {
     setIsMounted(true)
@@ -64,24 +64,27 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
     }
   }, [resolvedTheme])
 
-  // const filesObject = useMemo(() => {
-  //   return coding_question?.coding_question_files.reduce((obj: FilesObject, file) => {
-  //     if (file.path !== null && file.content !== null) {
-  //       obj[file.path] = { code: file.content, id: file.id, path: file.path, name: file.name, language: file.language }
-  //     }
-  //     return obj
-  //   }, {})
-  // }, [])
+  useEffect(() => {
+    if (!isMounted) return
+    if (
+      !coding_question ||
+      !coding_question.coding_question_files_code ||
+      coding_question.coding_question_files_code.length === 0
+    ) {
+      console.error('Error: Invalid coding question data.')
+    }
+  }, [isMounted, coding_question])
 
-  const files = {
-    'index.js': {
-      code: `console.log('Hello World')`,
-      language: 'javascript',
+  const filesObject = {
+    '/add.ts': {
+      code: coding_question.coding_question_files_code[0].code || 'null',
+    },
+    '/add.test.ts': {
+      code: coding_question.coding_question_files_code[0].tests || 'null',
     },
   }
 
   if (!isMounted) return null
-  if (!coding_question) return null
   return (
     <main
       id="content"
@@ -91,10 +94,10 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
       )}
     >
       <SandpackProvider
-        template={coding_question?.sandpack_template || 'vanilla'}
+        template={'test-ts'}
         theme={currentTheme === undefined ? 'auto' : (currentTheme as SandpackThemeProp)}
         className={'!size-full !overflow-hidden !flex !flex-col'}
-        files={files}
+        files={filesObject}
       >
         <SandpackLayout className={'!size-full !overflow-hidden !flex !flex-col !bg-transparent !border-none'}>
           <ResizablePanelGroup
@@ -137,10 +140,17 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
             <ResizablePanelTabs
               extraClassName={cn(isMobileBreakpoint && 'h-[500px]')}
               defaultSize={defaultSize[1]}
-              defaultValue="console"
-              tabs={CODE_result_tabs}
+              defaultValue="code"
+              tabs={CODE_editor_tabs}
             >
-              <MonacoEditor currentTheme={currentTheme} />
+              <CustomTabsContent value="code" className="p-0 size-full">
+                <SandpackFileExplorer />
+                <SandpackCodeEditor />
+                {/* <MonacoEditor currentTheme={currentTheme} /> */}
+              </CustomTabsContent>
+              <CustomTabsContent value="test_cases" className="p-0 size-full">
+                Test cases
+              </CustomTabsContent>
             </ResizablePanelTabs>
             <ResizeHandle />
 
@@ -148,19 +158,14 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
             <ResizablePanelTabs
               extraClassName={cn(isMobileBreakpoint && 'h-[500px]')}
               defaultSize={defaultSize[2]}
-              defaultValue="console"
+              defaultValue="tests"
               tabs={CODE_result_tabs}
             >
               <CustomTabsContent value="console" className="p-0 size-full">
-                <SandpackConsole className={'size-full'} standalone={false} />
+                <SandpackConsole className={'size-full'} standalone resetOnPreviewRestart showHeader={false} />
               </CustomTabsContent>
-              <CustomTabsContent value="browser" className="p-0 size-full">
-                <SandpackPreview
-                  showSandpackErrorOverlay={true}
-                  showNavigator={true}
-                  showOpenInCodeSandbox={false}
-                  className={'size-full'}
-                />
+              <CustomTabsContent value="tests" className="p-0 size-full">
+                <SandpackTests />
               </CustomTabsContent>
             </ResizablePanelTabs>
           </ResizablePanelGroup>

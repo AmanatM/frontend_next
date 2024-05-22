@@ -22,7 +22,7 @@ export const useSaveFiles = () => {
 
       if (!updatedFiles) return
 
-      const { status, error } = await supabase.from('user_saved_coding_question_files').upsert(updatedFiles)
+      const { status, error } = await supabase.from('user_saved_question_files').upsert(updatedFiles)
       if (error) throw error
       console.log(status)
       return status

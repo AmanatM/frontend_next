@@ -19,7 +19,6 @@ import { Separator } from '@/components/ui/separator'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { TypographySmall } from '@/components/typography'
 import { useSandpack } from '@codesandbox/sandpack-react'
-import { FilesObject } from '../ui/[questionId]/_components/UserInterfaceContainer'
 
 type ResizablePanelTabsProps = {
   children: React.ReactNode
@@ -45,6 +44,8 @@ export function ResizablePanelTabs({
   const isMobileBreakpoint = useIsMobileBreakpoint()
   const { sandpack } = useSandpack()
   const panelRef = useRef<ImperativePanelHandle>(null)
+
+  console.log(sandpack.files) //Debug
 
   const handleTabChange = (newTab: string) => {
     if (panelRef.current?.isCollapsed()) {

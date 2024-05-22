@@ -6,7 +6,6 @@ export const JavascriptIcon = ({ size }: CodeIconProps) => (
   <svg
     stroke="currentColor"
     fill="currentColor"
-    stroke-width="0"
     viewBox="0 0 512 512"
     height={size ? size : 14}
     widths={size ? size : 14}
@@ -21,7 +20,6 @@ export const HTMLIcon = ({ size }: CodeIconProps) => (
   <svg
     stroke="currentColor"
     fill="currentColor"
-    stroke-width="0"
     viewBox="0 0 24 24"
     height={size ? size : 14}
     widths={size ? size : 14}
@@ -35,7 +33,6 @@ export const CSSIcon = ({ size }: CodeIconProps) => (
   <svg
     stroke="currentColor"
     fill="currentColor"
-    stroke-width="0"
     viewBox="0 0 24 24"
     height={size ? size : 14}
     widths={size ? size : 14}

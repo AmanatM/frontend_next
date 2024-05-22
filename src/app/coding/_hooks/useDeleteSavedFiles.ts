@@ -8,10 +8,7 @@ export const useDeleteSavedFiles = () => {
   return useMutation({
     mutationFn: async ({ idsToDelete }: { idsToDelete: string[] | undefined }) => {
       if (!idsToDelete) return
-      const { data, error } = await supabase
-        .from('user_saved_coding_question_files')
-        .delete()
-        .in('file_id', idsToDelete)
+      const { data, error } = await supabase.from('user_saved_question_files').delete().in('file_id', idsToDelete)
       if (error) {
         throw new Error(error.message)
       }

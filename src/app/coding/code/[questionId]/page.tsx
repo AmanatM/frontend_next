@@ -5,7 +5,7 @@ import CodingQuestionContainer from './_components/CodingQuestionContainer'
 async function getCodingQuestionById({ questionId, client }: { questionId: string; client: TypedSupabaseClient }) {
   const { data: codingQuestion, error } = await client
     .from('coding_questions')
-    .select(`*`)
+    .select(`*, coding_question_files_code(*)`)
     .eq('id', questionId)
     .single()
 

@@ -5,7 +5,7 @@ import UserInterfaceContainer from './_components/UserInterfaceContainer'
 async function getCodingQuestionById({ questionId, client }: { questionId: string; client: TypedSupabaseClient }) {
   const { data: codingQuestion, error } = await client
     .from('coding_questions')
-    .select(`*,coding_question_files(*)`)
+    .select(`*,coding_question_files_ui(*)`)
     .eq('id', questionId)
     .single()
 
@@ -21,7 +21,6 @@ export default async function CodingQuestion({ params }: { params: { questionId:
   const questionId = params.questionId
 
   const codingQuestion = await getCodingQuestionById({ questionId, client: supabase })
-  const questionType = codingQuestion?.question_type || 'user_interface'
 
   return (
     <>

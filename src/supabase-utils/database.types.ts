@@ -9,7 +9,42 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      coding_question_files: {
+      coding_question_files_code: {
+        Row: {
+          code: string | null
+          created_at: string
+          id: string
+          language: string | null
+          question_id: string | null
+          tests: string | null
+        }
+        Insert: {
+          code?: string | null
+          created_at?: string
+          id?: string
+          language?: string | null
+          question_id?: string | null
+          tests?: string | null
+        }
+        Update: {
+          code?: string | null
+          created_at?: string
+          id?: string
+          language?: string | null
+          question_id?: string | null
+          tests?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "coding_question_files_code_question_id_fkey"
+            columns: ["question_id"]
+            isOneToOne: false
+            referencedRelation: "coding_questions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      coding_question_files_ui: {
         Row: {
           content: string | null
           created_at: string | null
@@ -137,7 +172,7 @@ export type Database = {
           },
         ]
       }
-      user_saved_coding_question_files: {
+      user_saved_question_files: {
         Row: {
           content: string | null
           created_at: string
@@ -170,7 +205,7 @@ export type Database = {
             foreignKeyName: "user_saved_coding_question_files_file_id_fkey"
             columns: ["file_id"]
             isOneToOne: false
-            referencedRelation: "coding_question_files"
+            referencedRelation: "coding_question_files_ui"
             referencedColumns: ["id"]
           },
           {
