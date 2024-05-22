@@ -92,13 +92,13 @@ export const CODE_editor_tabs = [
 
 export const CODE_result_tabs = [
   {
+    value: 'tests',
+    label: 'Run Tests',
+    icon: <Play size={14} />,
+  },
+  {
     value: 'console',
     label: 'Console',
     icon: <SquareChevronRight size={15} />,
-  },
-  {
-    value: 'tests',
-    label: 'Test',
-    icon: <Play size={14} />,
   },
 ]

@@ -17,7 +17,7 @@ import { useIsMobileBreakpoint } from '@/hooks/useIsMobileBreakpoint'
 import { TypographyH4 } from '@/components/typography'
 
 import { useTheme } from 'next-themes'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { MarkdownRenderer } from '@/components/markdown'
 
 import { User } from '@supabase/auth-js/dist/module/lib/types'
@@ -35,7 +35,12 @@ import { CODE_description_tabs, CODE_editor_tabs, CODE_result_tabs } from '@/app
 import Submissions from './Submissions'
 import MonacoEditor from '@/app/coding/_components/MonacoEditor'
 import { BottomToolbar_code } from './BottomToolBar_code'
-import { ErrorBoundary } from 'next/dist/client/components/error-boundary'
+import {
+  getPanelElement,
+  getPanelGroupElement,
+  getResizeHandleElement,
+  ImperativePanelGroupHandle,
+} from 'react-resizable-panels'
 
 type CodingQuestionProps = {
   idFromParams: string
@@ -50,6 +55,8 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
   const [defaultSize, setDefaultSize] = useState<number[]>([40, 60])
   const [isMounted, setIsMounted] = useState(false)
   const [currentTheme, setCurrentTheme] = useState<'light' | 'dark' | undefined>(undefined)
+
+  const groupRef = useRef(null)
 
   useEffect(() => {
     setIsMounted(true)
@@ -101,6 +108,7 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
       >
         <SandpackLayout className={'!size-full !overflow-hidden !flex !flex-col !bg-transparent !border-none'}>
           <ResizablePanelGroup
+            id={'group'}
             direction={isMobileBreakpoint ? 'vertical' : 'horizontal'}
             className={cn('relative size-full grow', isMobileBreakpoint && 'pb-16 space-y-2')}
             onResize={() => {
