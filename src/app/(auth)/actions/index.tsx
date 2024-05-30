@@ -1,8 +1,6 @@
 'use server'
 
 import { createClientServer } from '@/supabase-utils/supabase-server'
-import { Provider } from '@supabase/supabase-js'
-import { redirect } from 'next/navigation'
 
 const getURL = () => {
   let url =
@@ -23,15 +21,12 @@ export async function loginWithEmailAndPassword(data: { email: string; password:
   return JSON.stringify(result)
 }
 
-export async function signUpWithEmailAndPassword({
-  email,
-  password,
-  redirectURL,
-}: {
+type signUpWithEmailAndPasswordParams = {
   email: string
   password: string
   redirectURL: string
-}) {
+}
+export async function signUpWithEmailAndPassword({ email, password, redirectURL }: signUpWithEmailAndPasswordParams) {
   const supabase = await createClientServer()
 
   const result = await supabase.auth.signUp({
@@ -41,6 +36,7 @@ export async function signUpWithEmailAndPassword({
       emailRedirectTo: `${getURL()}auth/confirm?next=${redirectURL}`,
     },
   })
+
   return JSON.stringify(result)
 }
 
@@ -48,7 +44,7 @@ export async function sendResetPasswordEmail(email: string) {
   const supabase = await createClientServer()
 
   const result = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${getURL()}auth/confirm?next=/password-reset`,
+    redirectTo: `${getURL()}auth/confirm?next=/auth/password-reset`,
   })
   return JSON.stringify(result)
 }

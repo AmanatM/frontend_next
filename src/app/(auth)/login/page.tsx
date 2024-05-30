@@ -7,7 +7,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { toast } from 'sonner'
-import { AuthTokenResponse } from '@supabase/supabase-js'
+import { AuthResponse, AuthTokenResponse } from '@supabase/supabase-js'
 import { loginWithEmailAndPassword, signUpWithEmailAndPassword } from '../actions'
 import { Button } from '@/components/custom/button'
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
@@ -32,6 +32,7 @@ export default function Login() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const redirectUrl = searchParams.get('redirectTo') || '/'
+  const filteredRedirectUrl = redirectUrl.startsWith('/auth') ? '/' : redirectUrl
   const supabase = useSupabaseBrowser()
 
   const form = useForm({
@@ -41,18 +42,17 @@ export default function Login() {
 
   const handleSignUp = async (credentials: z.infer<typeof FormSchema>) => {
     startTransition(async () => {
-      const { error } = JSON.parse(
+      const { data, error } = JSON.parse(
         await signUpWithEmailAndPassword({
           email: credentials.email,
           password: credentials.password,
           redirectURL: redirectUrl,
         }),
-      ) as AuthTokenResponse
-
+      ) as AuthResponse
       if (error) {
-        toast.error(error.code === 'user_already_exists' ? 'User already exists' : 'Failed to create account')
+        toast.error(error?.code === 'user_already_exists' ? 'User already exists' : 'Failed to create account')
       } else {
-        router.replace(`/email-verification?email=${credentials.email}`)
+        router.replace(`/auth/email-verification?email=${credentials.email}`)
       }
     })
   }
@@ -65,7 +65,7 @@ export default function Login() {
         toast.error('Failed to sign in')
       } else {
         toast.success('Signed in')
-        router.replace(redirectUrl)
+        router.replace(filteredRedirectUrl)
       }
     })
   }
@@ -82,7 +82,7 @@ export default function Login() {
     await supabase.auth.signInWithOAuth({
       provider: 'github',
       options: {
-        redirectTo: `${window.location.origin}/auth/callback?redirectTo=${redirectUrl}`,
+        redirectTo: `${window.location.origin}/auth/callback?redirectTo=${filteredRedirectUrl}`,
       },
     })
   }
@@ -91,7 +91,7 @@ export default function Login() {
     await supabase.auth.signInWithOAuth({
       provider: 'apple',
       options: {
-        redirectTo: `${window.location.origin}/auth/callback?redirectTo=${redirectUrl}`,
+        redirectTo: `${window.location.origin}/auth/callback?redirectTo=${filteredRedirectUrl}`,
       },
     })
   }
@@ -148,7 +148,7 @@ export default function Login() {
               )}
             />
             {!isSignUp && (
-              <Link className="text-left text-sm underline cursor-pointer text-primary" href="/forgot-password">
+              <Link className="text-left text-sm underline cursor-pointer text-primary" href="/auth/forgot-password">
                 Forgot password?
               </Link>
             )}

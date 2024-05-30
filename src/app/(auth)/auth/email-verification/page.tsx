@@ -5,6 +5,7 @@ import { Card } from '@/components/ui/card'
 import { createClientServer } from '@/supabase-utils/supabase-server'
 import { Mail } from 'lucide-react'
 import { Metadata } from 'next'
+import Link from 'next/link'
 import { redirect, useSearchParams } from 'next/navigation'
 
 export default function EmailVerification() {
@@ -17,7 +18,10 @@ export default function EmailVerification() {
         <div className="flex flex-col space-y-4 text-left mb-4">
           <Mail className="mx-auto w-12 h-12 text-primary" />
           <p className="text-xl font-semibold tracking-tight text-center">Verification link sent to:</p>
-          <p className="text-xl font-semibold tracking-tight text-center">{email}</p>
+          <p className="text-xl font-semibold tracking-tight text-center">{email}</p>{' '}
+          <Link className="text-center text-sm underline cursor-pointer text-primary" href="/login">
+            Back to login
+          </Link>
         </div>
       </Card>
     </div>
