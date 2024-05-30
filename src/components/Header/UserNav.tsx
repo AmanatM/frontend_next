@@ -38,18 +38,18 @@ export function UserNav({ user }: { user: User | null }) {
 
   if (!user)
     return (
-      <Button asChild variant="outline">
-        <Link href={`/login?redirectTo=${pathname}`}>Login</Link>
+      <Button asChild variant="ghost" className={'hidden md:flex'}>
+        <Link href={`/login?redirectTo=${pathname}`}>Sign in / up</Link>
       </Button>
     )
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-9 w-9 rounded-full">
-          <Avatar className="h-9 w-9">
+        <Button variant="ghost" size={'icon'} className="relative rounded-full">
+          <Avatar className="h-9 w-9 ">
             <AvatarImage alt="Avatar" />
             <AvatarFallback>
-              <UserRound className="text-muted-foreground" size={18} />
+              <UserRound className="text-muted-foreground " size={18} />
             </AvatarFallback>
           </Avatar>
         </Button>

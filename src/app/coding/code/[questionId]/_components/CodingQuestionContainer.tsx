@@ -4,13 +4,8 @@ import {
   SandpackConsole,
   SandpackThemeProp,
   SandpackLayout,
-  SandpackPreview,
-  SandpackFile,
-  SandpackFileExplorer,
   SandpackTests,
-  SandpackCodeEditor,
   SandpackStack,
-  SandpackCodeViewer,
 } from '@codesandbox/sandpack-react'
 import { cn } from '@/lib/utils'
 import { ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
@@ -18,17 +13,11 @@ import { useIsMobileBreakpoint } from '@/hooks/useIsMobileBreakpoint'
 import { TypographyH4 } from '@/components/typography'
 
 import { useTheme } from 'next-themes'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { MarkdownRenderer } from '@/components/markdown'
 
 import { User } from '@supabase/auth-js/dist/module/lib/types'
-import {
-  CodingQuestion,
-  SandpackFile_CODE,
-  Question_CODE,
-  SandpackFile_UI,
-  QuestionFile_CODE,
-} from '@/supabase-utils/types'
+import { Question_CODE } from '@/supabase-utils/types'
 import { CustomTabsContent } from '@/app/coding/_components/CustomTabComponents'
 import { ResizeHandle } from '@/app/coding/_components/ResizableHandleCustom'
 import { ResizablePanelTabs } from '@/app/coding/_components/ResizablePanelTabs'
@@ -36,12 +25,7 @@ import { CODE_description_tabs, CODE_editor_tabs, CODE_result_tabs } from '@/app
 import Submissions from './Submissions'
 import { MonacoEditorSandpack, MonacoEditorView } from '@/app/coding/_components/MonacoEditor'
 import { BottomToolbar_code } from './BottomToolBar_code'
-import {
-  getPanelElement,
-  getPanelGroupElement,
-  getResizeHandleElement,
-  ImperativePanelGroupHandle,
-} from 'react-resizable-panels'
+import { ImperativePanelGroupHandle } from 'react-resizable-panels'
 
 type CodingQuestionProps = {
   idFromParams: string
@@ -157,7 +141,7 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
             <ResizeHandle />
 
             {/* Editor and Preview Panels */}
-            <ResizablePanel defaultSize={defaultSize[1]}>
+            <ResizablePanel defaultSize={defaultSize[1]} minSize={15}>
               <ResizablePanelGroup direction="vertical" ref={ref}>
                 {/* Editor Panel*/}
                 <ResizablePanelTabs

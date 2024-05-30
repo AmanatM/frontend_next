@@ -7,7 +7,7 @@ type MenuLinks = {
 
 export const top_menu_links: MenuLinks[] = [
   {
-    title: 'Dashboard',
+    title: 'Home',
     url: { pathname: '/' },
   },
   {

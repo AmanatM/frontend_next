@@ -1,4 +1,4 @@
-import { Terminal } from 'lucide-react'
+import { FlaskConical, Terminal } from 'lucide-react'
 import { UserNav } from './UserNav'
 import Link from 'next/link'
 import { top_menu_links } from '@/config/top_bar_links'
@@ -6,6 +6,7 @@ import { ThemeSwitch } from './theme-switch'
 import { SearchBox } from './SearchBox'
 import { MobileMenu } from './mobile-menu'
 import { createClientServer } from '@/supabase-utils/supabase-server'
+import { LogoIcon } from '@/app/icons/logo-icons'
 
 export async function MenuTopBar() {
   const supabase = createClientServer()
@@ -13,11 +14,11 @@ export async function MenuTopBar() {
 
   return (
     <header className="h-14 sticky z-50 top-0 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container px-4 md:px-8 flex h-full max-w-screen-2xl items-center">
-        <div className="mr-4 flex text-sm">
-          <Link href="/" className="mr-10 flex items-center space-x-2">
-            <Terminal className="h-6 w-6" />
-            <span className="font-bold text-lg inline-block">Front</span>
+      <div className="container px-3 md:px-8 flex h-full max-w-screen-2xl items-center">
+        <div className="mr-0 md:mr-4 flex text-sm">
+          <Link href="/" className="mr-10 flex items-center space-x-4">
+            <LogoIcon size={35} />
+            <span className="font-bold text-base md:text-lg inline-block">WebCodersLab</span>
           </Link>
 
           <nav className="hidden md:flex items-center gap-6 text-sm">
@@ -28,7 +29,7 @@ export async function MenuTopBar() {
             ))}
           </nav>
         </div>
-        <div className="ml-auto flex items-center space-x-4">
+        <div className="ml-auto flex items-center space-x-3 md:space-x-4">
           <SearchBox user={user} />
           <ThemeSwitch />
           <UserNav user={user} />

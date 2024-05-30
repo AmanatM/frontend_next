@@ -39,8 +39,8 @@ export function ThemeSwitch() {
       className="rounded-full"
       onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
     >
-      <Sun size={20} className="flex dark:hidden" />
-      <Moon size={20} className="hidden dark:flex" />
+      <Sun size={20} className="flex dark:hidden text-muted-foreground" />
+      <Moon size={20} className="hidden dark:flex text-muted-foreground" />
     </Button>
   )
 }

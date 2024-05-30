@@ -8,13 +8,14 @@ import { Toaster } from '@/components/ui/sonner'
 import { SandpackCSS } from '@/components/sandpack-styles'
 import { MenuTopBar } from '@/components/Header/Header'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import { Analytics } from '@vercel/analytics/react'
 import Providers from '@/providers/Providers'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Learn Frontend Interactively',
-  description: 'Free platform to learn frontend interactively',
+  title: 'Web Coders Lab - Learn web development for free',
+  description: 'Free platform to learn web development interactively',
 }
 
 export const viewport: Viewport = {
@@ -34,7 +35,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <link rel="icon" href="/favicon.svg" sizes="any" />
+        <link rel="icon" href="/icon?<generated>" type="image/<generated>" sizes="<generated>" />
+
         <SandpackCSS />
       </head>
       <body className={inter.className}>
@@ -54,6 +57,7 @@ export default function RootLayout({
           </ThemeProvider>
         </Providers>
         <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   )
