@@ -45,14 +45,14 @@ export default function Login() {
         await signUpWithEmailAndPassword({
           email: credentials.email,
           password: credentials.password,
+          redirectURL: redirectUrl,
         }),
       ) as AuthTokenResponse
 
       if (error) {
         toast.error(error.code === 'user_already_exists' ? 'User already exists' : 'Failed to create account')
       } else {
-        toast.success('Verification email sent. Please check your inbox')
-        router.replace(redirectUrl)
+        router.replace(`/email-verification?email=${credentials.email}`)
       }
     })
   }
