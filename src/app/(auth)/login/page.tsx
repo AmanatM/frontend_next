@@ -8,7 +8,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { toast } from 'sonner'
 import { AuthTokenResponse } from '@supabase/supabase-js'
-import { loginWithEmailAndPassword, signInWithOAuth, signUpWithEmailAndPassword } from '../actions'
+import { loginWithEmailAndPassword, signUpWithEmailAndPassword } from '../actions'
 import { Button } from '@/components/custom/button'
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
@@ -59,12 +59,12 @@ export default function Login() {
   }
 
   async function signInWithGithub() {
-    const { data, error } = await supabase.auth.signInWithOAuth({
+    await supabase.auth.signInWithOAuth({
       provider: 'github',
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
     })
-    if (error) {
-      toast.error('Failed to sign in with GitHub')
-    }
   }
 
   return (
@@ -131,13 +131,7 @@ export default function Login() {
               </div>
             </div>
 
-            <Button
-              onClick={signInWithGithub}
-              loading={isPending}
-              variant="ghost"
-              type="button"
-              className="space-x-1 border border-input"
-            >
+            <Button onClick={signInWithGithub} variant="ghost" type="button" className="space-x-1 border border-input">
               <Github size={17} /> <span>GitHub</span>
             </Button>
           </form>
