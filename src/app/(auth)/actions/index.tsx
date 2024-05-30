@@ -23,22 +23,14 @@ export async function loginWithEmailAndPassword(data: { email: string; password:
   return JSON.stringify(result)
 }
 
-export async function signUpWithEmailAndPassword({
-  email,
-  password,
-  redirectUrl,
-}: {
-  email: string
-  password: string
-  redirectUrl: string
-}) {
+export async function signUpWithEmailAndPassword({ email, password }: { email: string; password: string }) {
   const supabase = await createClientServer()
 
   const result = await supabase.auth.signUp({
     email: email,
     password: password,
     options: {
-      emailRedirectTo: `${getURL()}auth/confirm?next=${redirectUrl}`,
+      emailRedirectTo: `${getURL()}`,
     },
   })
   return JSON.stringify(result)

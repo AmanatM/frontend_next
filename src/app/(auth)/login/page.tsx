@@ -14,8 +14,9 @@ import { Form, FormControl, FormField, FormItem, FormMessage } from '@/component
 import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/custom/password-input'
 import { Card } from '@/components/ui/card'
-import { Github } from 'lucide-react'
+import { Apple, Github } from 'lucide-react'
 import useSupabaseBrowser from '@/supabase-utils/supabase-client'
+import { AppleLogo } from '@/app/icons/custom-icons'
 
 const FormSchema = z.object({
   email: z.string().min(1, { message: 'Please enter your email' }).email({ message: 'Invalid email address' }),
@@ -44,14 +45,14 @@ export default function Login() {
         await signUpWithEmailAndPassword({
           email: credentials.email,
           password: credentials.password,
-          redirectUrl: redirectUrl,
         }),
       ) as AuthTokenResponse
 
       if (error) {
         toast.error(error.code === 'user_already_exists' ? 'User already exists' : 'Failed to create account')
       } else {
-        router.replace(`/email-verification?${redirectUrl}&email=${credentials.email}`)
+        toast.success('Verification email sent. Please check your inbox')
+        router.replace(redirectUrl)
       }
     })
   }
@@ -86,8 +87,17 @@ export default function Login() {
     })
   }
 
+  async function signInWithApple() {
+    await supabase.auth.signInWithOAuth({
+      provider: 'apple',
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback?redirectTo=${redirectUrl}`,
+      },
+    })
+  }
+
   return (
-    <div className="mx-auto flex justify-center items-center h-screen px-3">
+    <div className="mx-auto flex justify-center items-center h-full px-3">
       <Card className="p-6 max-w-full w-[500px]">
         <div className="flex flex-col space-y-2 text-left mb-4">
           <Link href="/" className="text-2xl font-semibold tracking-tight">
@@ -137,6 +147,11 @@ export default function Login() {
                 </FormItem>
               )}
             />
+            {!isSignUp && (
+              <Link className="text-left text-sm underline cursor-pointer text-primary" href="/forgot-password">
+                Forgot password?
+              </Link>
+            )}
             <Button loading={isPending} type="submit">
               {isSignUp ? 'Create Account' : 'Login'}
             </Button>
@@ -149,10 +164,19 @@ export default function Login() {
                 <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
               </div>
             </div>
-
-            <Button onClick={signInWithGithub} variant="ghost" type="button" className="space-x-1 border border-input">
-              <Github size={17} /> <span>GitHub</span>
-            </Button>
+            <div className="flex flex-col gap-2">
+              <Button
+                onClick={signInWithGithub}
+                variant="ghost"
+                type="button"
+                className="space-x-1 border border-input"
+              >
+                <Github size={17} /> <span>GitHub</span>
+              </Button>
+              <Button onClick={signInWithApple} variant="ghost" type="button" className="space-x-1 border border-input">
+                <AppleLogo size={17} /> <span>Apple</span>
+              </Button>
+            </div>
           </form>
         </Form>
       </Card>
