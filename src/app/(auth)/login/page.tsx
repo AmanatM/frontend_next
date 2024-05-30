@@ -38,24 +38,43 @@ export default function Login() {
     defaultValues: { email: '', password: '' },
   })
 
-  const handleAuth = async (credentials: z.infer<typeof FormSchema>) => {
+  const handleSignUp = async (credentials: z.infer<typeof FormSchema>) => {
     startTransition(async () => {
-      const action = isSignUp ? signUpWithEmailAndPassword : loginWithEmailAndPassword
-      const { error } = JSON.parse(await action(credentials)) as AuthTokenResponse
+      const { error } = JSON.parse(
+        await signUpWithEmailAndPassword({
+          email: credentials.email,
+          password: credentials.password,
+          redirectUrl: redirectUrl,
+        }),
+      ) as AuthTokenResponse
 
       if (error) {
-        toast.error(
-          isSignUp
-            ? error.code === 'user_already_exists'
-              ? 'User already exists'
-              : 'Failed to create account'
-            : 'Failed to sign in',
-        )
+        toast.error(error.code === 'user_already_exists' ? 'User already exists' : 'Failed to create account')
       } else {
-        toast.success(isSignUp ? 'Successfully created account 🎉' : 'Signed in')
+        router.replace(`/email-verification?${redirectUrl}&email=${credentials.email}`)
+      }
+    })
+  }
+
+  const handleSignIn = async (credentials: z.infer<typeof FormSchema>) => {
+    startTransition(async () => {
+      const { error } = JSON.parse(await loginWithEmailAndPassword(credentials)) as AuthTokenResponse
+
+      if (error) {
+        toast.error('Failed to sign in')
+      } else {
+        toast.success('Signed in')
         router.replace(redirectUrl)
       }
     })
+  }
+
+  const handleSubmit = async (credentials: z.infer<typeof FormSchema>) => {
+    if (isSignUp) {
+      await handleSignUp(credentials)
+    } else {
+      await handleSignIn(credentials)
+    }
   }
 
   async function signInWithGithub() {
@@ -93,7 +112,7 @@ export default function Login() {
           </p>
         </div>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(handleAuth)} className="grid space-y-6">
+          <form onSubmit={form.handleSubmit(handleSubmit)} className="grid space-y-6">
             <FormField
               control={form.control}
               name="email"
