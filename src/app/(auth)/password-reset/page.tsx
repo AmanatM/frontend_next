@@ -14,74 +14,69 @@ import { toast } from 'sonner'
 import { AuthError } from '@supabase/supabase-js'
 import useSupabaseBrowser from '@/supabase-utils/supabase-client'
 import { Mail } from 'lucide-react'
-import { sendResetPasswordEmail } from '../actions'
+import { PasswordInput } from '@/components/custom/password-input'
+import { useRouter } from 'next/navigation'
 
 const FormSchema = z.object({
-  email: z.string().min(1, { message: 'Please enter your email' }).email({ message: 'Invalid email address' }),
+  password: z
+    .string()
+    .min(1, { message: 'Please enter your password' })
+    .min(7, { message: 'Password must be at least 7 characters long' }),
 })
 
-export default function ForgotPassword() {
+export default function PasswordReset() {
   const [isPending, startTransition] = useTransition()
   const [emailSent, setEmailSent] = useState(false)
   const supabase = useSupabaseBrowser()
+  const router = useRouter()
 
   const form = useForm({
     resolver: zodResolver(FormSchema),
-    defaultValues: { email: '' },
+    defaultValues: { password: '' },
   })
 
   const handlePasswordReset = async (credentials: z.infer<typeof FormSchema>) => {
     startTransition(async () => {
-      const { error }: { error: AuthError } = JSON.parse(await sendResetPasswordEmail(credentials.email))
+      const { data, error } = await supabase.auth.updateUser({
+        password: credentials.password,
+      })
 
       if (!error) {
         setEmailSent(true)
-        toast.success('Password reset link sent. Please check your inbox')
-      }
-    })
-  }
+        toast.success('New password set')
+        router.replace('/')
 
-  if (emailSent) {
-    return (
-      <div className="mx-auto flex justify-center items-center h-full px-3">
-        <Card className="p-6 max-w-full w-[500px]">
-          <div className="flex flex-col space-y-4 text-left mb-4">
-            <Mail className="mx-auto w-12 h-12 text-primary" />
-            <p className="text-xl font-semibold tracking-tight text-center">
-              An email containing the password reset instructions will be sent if an associated account exists
-            </p>
-            <Link className="text-center text-sm underline cursor-pointer text-primary" href="/login">
-              Back to login
-            </Link>
-          </div>
-        </Card>
-      </div>
-    )
+        return
+      }
+
+      toast.error(error?.message ?? 'An error occurred')
+      console.log({ data, error })
+    })
   }
 
   return (
     <div className="mx-auto flex justify-center items-center h-full px-3">
       <Card className="p-6 max-w-full w-[500px]">
         <div className="flex flex-col space-y-2 text-left mb-4">
-          <p className="text-2xl font-semibold tracking-tight text-center">Forgot Password</p>
-          <p className="mt-4 text-sm text-muted-foreground text-center">Enter your email to recive reset link</p>
+          <p className="text-2xl font-semibold tracking-tight text-center">Password Reset</p>
+          <p className="mt-4 text-sm text-muted-foreground text-center">Enter your new password below</p>
         </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(handlePasswordReset)} className="grid space-y-6">
             <FormField
               control={form.control}
-              name="email"
+              name="password"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input placeholder="Email" {...field} />
+                    <PasswordInput placeholder="New Password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <Button loading={isPending} type="submit">
-              Send reset link
+              Reset Password & Login
             </Button>
             <Link className="text-center text-sm underline cursor-pointer text-primary" href="/login">
               Back to login

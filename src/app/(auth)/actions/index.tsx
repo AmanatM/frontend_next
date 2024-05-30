@@ -44,13 +44,14 @@ export async function signUpWithEmailAndPassword({
   return JSON.stringify(result)
 }
 
-// export async function signInWithGithub({ redirectURL }: { redirectURL: string }) {
-//   const supabase = await createClientServer()
+export async function sendResetPasswordEmail(email: string) {
+  const supabase = await createClientServer()
 
-//   const { data, error } = await supabase.auth.signInWithOAuth({
-//     provider: 'github',
-//   })
-// }
+  const result = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${getURL()}auth/confirm?next=/password-reset`,
+  })
+  return JSON.stringify(result)
+}
 
 export async function logout() {
   const supabase = await createClientServer()
