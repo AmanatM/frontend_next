@@ -22,6 +22,9 @@ export default function EmailVerification() {
           <Link className="text-center text-sm underline cursor-pointer text-primary" href="/login">
             Back to login
           </Link>
+          <TypographyMuted className="tracking-tight text-center">
+            Note: If user already exist you won&apos;t get an email
+          </TypographyMuted>{' '}
         </div>
       </Card>
     </div>

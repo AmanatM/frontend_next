@@ -4,7 +4,7 @@ import { Progress } from './ui/progress'
 
 const mockData = [
   {
-    title: 'HTML & CSS',
+    title: 'User Interface',
     completed: 22,
     totalAmount: 89,
   },
@@ -14,7 +14,7 @@ const mockData = [
     totalAmount: 120,
   },
   {
-    title: 'Other',
+    title: 'Tutorials',
     completed: 0,
     totalAmount: 32,
   },
@@ -22,6 +22,7 @@ const mockData = [
 
 function ProgressSimple({ user }: { user: User | null }) {
   if (!user) return null
+
   return (
     <Card className="grid md:grid-cols-3 grid-cols-1 gap-y-6 gap-x-6 px-6 py-4">
       {mockData.map((data, index) => (

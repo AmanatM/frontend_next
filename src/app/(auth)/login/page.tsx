@@ -49,6 +49,7 @@ export default function Login() {
           redirectURL: redirectUrl,
         }),
       ) as AuthResponse
+
       if (error) {
         toast.error(error?.code === 'user_already_exists' ? 'User already exists' : 'Failed to create account')
       } else {

@@ -23,7 +23,7 @@ function Sidebar({ className, user }: SidebarProps) {
       <div className="relative flex h-full w-full flex-col">
         {/* Navigation links */}
         <div className="border-b md:border-none bg-background transition-[max-height,padding] duration-300 overflow-auto">
-          <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">Dashboard</h2>
+          {/* <h2 className="mb-2 px-4 text-lg font-semibold tracking-tight">Dashboard</h2> */}
 
           <nav className="grid gap-1 px-2">
             {side_nav_links.map((link, index) => {
