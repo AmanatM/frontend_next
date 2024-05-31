@@ -39,9 +39,9 @@ function ProgressSimple({ user }: { user: User | null }) {
       totalAmount: getQuestionCount({ type: 'javascript' }),
     },
     {
-      title: 'Tutorials',
-      completed: 0,
-      totalAmount: 2,
+      title: 'Total',
+      completed: codingQuestions?.filter(question => question.user_completed_code_question.length > 0).length || 0,
+      totalAmount: codingQuestions?.length || 0,
     },
   ]
 
