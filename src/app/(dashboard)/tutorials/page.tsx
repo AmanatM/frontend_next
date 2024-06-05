@@ -10,9 +10,9 @@ export const metadata: Metadata = {
 }
 
 export default async function Tutorials() {
-  const { posts, total } = await getPaginatedPosts({ page: 1, limit: postsPerPage })
+  // const { posts, total } = await getPaginatedPosts({ page: 1, limit: postsPerPage })
 
-  if (!posts) return null
+  // if (!posts) return null
 
   return (
     <DashboardContainer className="space-y-8">
@@ -21,9 +21,9 @@ export default async function Tutorials() {
         <TypographyMuted>Interactive tutorials</TypographyMuted>
       </div>
       <div className="grid gap-6 lg:grid-cols-2 align-baseline">
-        {posts.map(tutorial => (
+        {/* {posts.map(tutorial => (
           <TutorialCard key={tutorial.slug} {...tutorial} />
-        ))}
+        ))} */}
       </div>
     </DashboardContainer>
   )
