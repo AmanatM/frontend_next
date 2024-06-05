@@ -1,16 +1,18 @@
-import { DashboardContainer } from '@/components/dashboard-container'
-import TutorialCard from '@/app/(dashboard)/tutorials/_components/TutorialCard'
-import { TypographyH3, TypographyMuted } from '@/components/typography'
+import { DashboardContainer } from "@/components/dashboard-container"
+import TutorialCard from "@/app/(dashboard)/tutorials/_components/TutorialCard"
+import { TypographyH3, TypographyMuted } from "@/components/typography"
 
-import { Metadata } from 'next'
-import { getPaginatedPosts, postsPerPage } from '@/tutorials'
+import { Metadata } from "next"
+import { getPaginatedPosts, postsPerPage } from "@/tutorials"
 
 export const metadata: Metadata = {
-  title: 'Tutorials',
+  title: "Tutorials",
 }
 
 export default async function Tutorials() {
   const { posts, total } = await getPaginatedPosts({ page: 1, limit: postsPerPage })
+
+  if (!posts) return null
 
   return (
     <DashboardContainer className="space-y-8">
