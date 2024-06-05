@@ -1,4 +1,5 @@
 import { readdir } from "fs/promises"
+import path from "path"
 
 export const categories = ["CSS"] as const
 export type Category = (typeof categories)[number]
@@ -16,11 +17,8 @@ export const postsPerPage = 3 as const
 
 export async function getPosts(): Promise<TutorialsType[]> {
   // Retreive slugs from post routes
-  const slugs = (await readdir(process.cwd() + "/src/app/tutorials", { withFileTypes: true })).filter(dirent =>
-    dirent.isDirectory(),
-  )
-  console.log(process.cwd())
-  console.log("sdfjsldkfjlsd")
+  const postsDirectory = path.join(process.cwd(), "src/app/tutorials/")
+  const slugs = (await readdir(postsDirectory, { withFileTypes: true })).filter(dirent => dirent.isDirectory())
 
   // Retreive metadata from MDX files
   const posts = await Promise.all(
@@ -31,7 +29,7 @@ export async function getPosts(): Promise<TutorialsType[]> {
   )
 
   // Sort posts from newest to oldest
-  posts.sort((a, b) => +new Date(b.publishDate) - +new Date(a.publishDate))
+  // posts.sort((a, b) => +new Date(b.publishDate) - +new Date(a.publishDate))
 
   return posts
 }
