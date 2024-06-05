@@ -1,4 +1,4 @@
-import type { Config } from "tailwindcss";
+import type { Config } from "tailwindcss"
 
 const config = {
   darkMode: ["class"],
@@ -68,9 +68,16 @@ const config = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
+    hljs: {
+      theme: "atom-one-dark",
+    },
   },
-  plugins: [require("tailwindcss-animate"),
-  require('@tailwindcss/typography')],
-} satisfies Config;
+  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography"), require("tailwind-highlightjs")],
+  safelist: [
+    {
+      pattern: /hljs+/,
+    },
+  ],
+} satisfies Config
 
-export default config;
+export default config

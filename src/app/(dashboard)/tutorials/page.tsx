@@ -1,15 +1,16 @@
 import { DashboardContainer } from '@/components/dashboard-container'
 import TutorialCard from '@/app/(dashboard)/tutorials/_components/TutorialCard'
 import { TypographyH3, TypographyMuted } from '@/components/typography'
-import { getBlogPosts } from '@/lib/tutorials'
+
 import { Metadata } from 'next'
+import { getPaginatedPosts, postsPerPage } from '@/tutorials'
 
 export const metadata: Metadata = {
   title: 'Tutorials',
 }
 
-export default function Tutorials() {
-  let allBlogs = getBlogPosts()
+export default async function Tutorials() {
+  const { posts, total } = await getPaginatedPosts({ page: 1, limit: postsPerPage })
 
   return (
     <DashboardContainer className="space-y-8">
@@ -18,7 +19,7 @@ export default function Tutorials() {
         <TypographyMuted>Interactive tutorials</TypographyMuted>
       </div>
       <div className="grid gap-6 lg:grid-cols-2 align-baseline">
-        {allBlogs.map(tutorial => (
+        {posts.map(tutorial => (
           <TutorialCard key={tutorial.slug} {...tutorial} />
         ))}
       </div>
