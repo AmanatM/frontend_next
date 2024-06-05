@@ -30,14 +30,14 @@ const CodingQuestions = () => {
 
   if (filteredCodingQuestions && codingQuestions)
     return (
-      <div className="flex flex-col space-y-2">
+      <Card className="flex flex-col">
         {filteredCodingQuestions.map(question => (
           <Link
             key={question.id}
             href={`/coding/${question.question_type === 'user_interface' ? '/ui/' : '/code/'}${question.id}`}
-            className="flex"
+            className="flex border-b"
           >
-            <Card className="size-full space-y-2 px-6 py-4 bg-primary-foreground rounded-sm">
+            <div className="size-full space-y-2 px-6 py-4 hover:backdrop-brightness-90">
               <div className="flex flex-row space-x-4">
                 <TypographyP>{question.title}</TypographyP>
                 {question.user_completed_code_question.length > 0 && (
@@ -46,7 +46,7 @@ const CodingQuestions = () => {
                   </Badge>
                 )}
               </div>
-              <CardDescription>{question.short_description}</CardDescription>
+              <TypographyMuted>{question.short_description}</TypographyMuted>
               <div>
                 <div className="flex space-x-4 text-sm text-muted-foreground">
                   <div className="flex items-center min-w-[140px]">
@@ -76,10 +76,10 @@ const CodingQuestions = () => {
                   </div>
                 </div>
               </div>
-            </Card>
+            </div>
           </Link>
         ))}
-      </div>
+      </Card>
     )
 }
 
