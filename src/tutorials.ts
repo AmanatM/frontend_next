@@ -1,4 +1,6 @@
 import { readdir } from "fs/promises"
+import path from "path"
+import matter from "gray-matter"
 
 export const categories = ["CSS"] as const
 export type Category = (typeof categories)[number]
@@ -15,14 +17,17 @@ export interface TutorialsType {
 export const postsPerPage = 3 as const
 
 export async function getPosts(): Promise<TutorialsType[]> {
-  // Retreive slugs from post routes
-  const slugs = (await readdir("./src/app/tutorials", { withFileTypes: true })).filter(dirent => dirent.isDirectory())
+  // Resolve the path to the tutorials directory
+  const tutorialsDir = path.join(process.cwd(), "src/app/tutorials")
+  const slugs = (await readdir(tutorialsDir, { withFileTypes: true })).filter(dirent => dirent.isDirectory())
 
-  // Retreive metadata from MDX files
+  // Retrieve metadata from MDX files
   const posts = await Promise.all(
     slugs.map(async ({ name }) => {
       console.log(name)
-      const { metadata } = await import(`./app/tutorials/${name}/page.mdx`)
+      const filePath = path.join(tutorialsDir, name, "page.mdx")
+      const fileContent = await import(`file://${filePath}`)
+      const { metadata } = fileContent
       return { slug: name, ...metadata }
     }),
   )
@@ -51,7 +56,7 @@ export async function getPaginatedPosts({
 }): Promise<{ posts: TutorialsType[]; total: number }> {
   const allPosts = await getPosts()
 
-  // Get a subset of posts pased on page and limit
+  // Get a subset of posts based on page and limit
   const paginatedPosts = allPosts.slice((page - 1) * limit, page * limit)
 
   return {
@@ -71,7 +76,7 @@ export async function getPaginatedPostsByCategory({
 }): Promise<{ posts: TutorialsType[]; total: number }> {
   const allCategoryPosts = await getPostsByCategory({ category })
 
-  // Get a subset of posts pased on page and limit
+  // Get a subset of posts based on page and limit
   const paginatedCategoryPosts = allCategoryPosts.slice((page - 1) * limit, page * limit)
 
   return {
