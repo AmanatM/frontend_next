@@ -6,15 +6,14 @@ import rehypeRaw from "rehype-raw"
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter"
 import { vscDarkPlus } from "react-syntax-highlighter/dist/cjs/styles/prism"
 import Image from "next/image"
+import CodeHighlighter from "./universalCodeHighliter"
 
 const markdownComponents = {
   code({ node, inline, className, children, ...props }: any) {
     const match = /language-(\w+)/.exec(className || "")
 
     return !inline && match ? (
-      <SyntaxHighlighter style={vscDarkPlus} PreTag="div" language={match[1]} {...props} className={"!m-0"}>
-        {String(children).replace(/\n$/, "")}
-      </SyntaxHighlighter>
+      <CodeHighlighter language={match[1]} code={children} />
     ) : (
       <code className={className} {...props}>
         {children}

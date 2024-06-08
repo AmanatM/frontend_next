@@ -60,7 +60,7 @@ const SearchFilter = () => {
             />
           </div>
         </div>
-        <div className="flex gap-x-4">
+        <div className="flex gap-x-4 flex-wrap">
           <MultiSelect
             options={frameworksFilterValues}
             onValueChange={setSelectedFrameworks}

@@ -5,20 +5,30 @@ export const metadata = {
   interactive: true,
 
 shortDescription:
-"Back in the day, centering an element was one of the trickiest things in CSS. As the language has evolved, we have been given lots of new tools we can use… But how do we pick the best option? When do we use Flexbox, or CSS Grid, or something else? Let's dig into it.",
+"Learn various techniques to center a div both horizontally and vertically using CSS. This guide covers different methods, including flexbox, grid, and traditional techniques.",
 }
 
-import Custom from "./components/custom"
+import CodeWithPreview from "./components/codeWithPreview"
 
 # How to Center a Div in CSS
 
-Centering a div in CSS is a common task for web developers. There are multiple methods to achieve this, depending on whether you want to center the div horizontally, vertically, or both. This guide will walk you through various techniques to center a div using CSS.
+Centering a div is a common task in web development, but it can be achieved in several ways depending on your needs and the specific layout you’re working with. In this post, we’ll explore different methods to center a div both horizontally and vertically.
 
-<Custom />
+## Using Flexbox
 
-## Centering Horizontally
+Flexbox is a powerful layout tool that makes centering elements straightforward.
 
-### Using `margin: auto`
+Horizontally and Vertically Centering
+
+<CodeWithPreview
+  code={`.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}`}
+/>
+
+## Using `margin: auto`
 
 The `margin: auto` method is a straightforward way to center a block-level element horizontally.
 
