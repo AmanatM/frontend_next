@@ -10,8 +10,8 @@ import { Badge } from "@/components/ui/badge"
 function TutorialCard({ ...props }: TutorialsType) {
   console.log(props)
   return (
-    <Link href={`/tutorials/${props.slug}`}>
-      <Card className="h-full flex flex-col">
+    <Card className="h-full flex flex-col hover:bg-muted">
+      <Link href={`/tutorials/${props.slug}`} className="">
         <CardHeader className="pb-0">
           <div className="space-y-3">
             <CardTitle className="flex items-center">
@@ -39,8 +39,8 @@ function TutorialCard({ ...props }: TutorialsType) {
             </Badge>
           )}
         </CardFooter>
-      </Card>
-    </Link>
+      </Link>
+    </Card>
   )
 }
 

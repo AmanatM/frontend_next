@@ -26,7 +26,15 @@ const Custom: React.FC = () => {
         </div>
         <div className="lg:w-1/2">
           <h2 className="text-2xl font-semibold mb-4">Interactive CSS Width Slider</h2>
-          <input type="range" min="0" max="100" value={width} onChange={handleSliderChange} className="w-full mb-4" />
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={width}
+            onChange={handleSliderChange}
+            className="w-full mb-4"
+            aria-label="Slider"
+          />
           <div
             className="bg-blue-300 p-10 mx-auto transition-all duration-300 ease-in-out"
             style={{ width: `${width}%` }}

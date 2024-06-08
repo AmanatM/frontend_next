@@ -1,29 +1,29 @@
-'use client'
+"use client"
 
-import { useState, useTransition } from 'react'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useRouter, useSearchParams } from 'next/navigation'
-import Link from 'next/link'
-import { toast } from 'sonner'
-import { AuthResponse, AuthTokenResponse } from '@supabase/supabase-js'
-import { loginWithEmailAndPassword, signUpWithEmailAndPassword } from '../actions'
-import { Button } from '@/components/custom/button'
-import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { PasswordInput } from '@/components/custom/password-input'
-import { Card } from '@/components/ui/card'
-import { Apple, Github } from 'lucide-react'
-import useSupabaseBrowser from '@/supabase-utils/supabase-client'
-import { AppleLogo } from '@/app/icons/custom-icons'
+import { useState, useTransition } from "react"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useRouter, useSearchParams } from "next/navigation"
+import Link from "next/link"
+import { toast } from "sonner"
+import { AuthResponse, AuthTokenResponse } from "@supabase/supabase-js"
+import { loginWithEmailAndPassword, signUpWithEmailAndPassword } from "../actions"
+import { Button } from "@/components/custom/button"
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { PasswordInput } from "@/components/custom/password-input"
+import { Card } from "@/components/ui/card"
+import { Apple, Github } from "lucide-react"
+import useSupabaseBrowser from "@/supabase-utils/supabase-client"
+import { AppleLogo } from "@/app/icons/custom-icons"
 
 const FormSchema = z.object({
-  email: z.string().min(1, { message: 'Please enter your email' }).email({ message: 'Invalid email address' }),
+  email: z.string().min(1, { message: "Please enter your email" }).email({ message: "Invalid email address" }),
   password: z
     .string()
-    .min(1, { message: 'Please enter your password' })
-    .min(7, { message: 'Password must be at least 7 characters long' }),
+    .min(1, { message: "Please enter your password" })
+    .min(7, { message: "Password must be at least 7 characters long" }),
 })
 
 export default function Login() {
@@ -31,13 +31,13 @@ export default function Login() {
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
   const searchParams = useSearchParams()
-  const redirectUrl = searchParams.get('redirectTo') || '/'
-  const filteredRedirectUrl = redirectUrl.startsWith('/auth') ? '/' : redirectUrl
+  const redirectUrl = searchParams.get("redirectTo") || "/"
+  const filteredRedirectUrl = redirectUrl.startsWith("/auth") ? "/" : redirectUrl
   const supabase = useSupabaseBrowser()
 
   const form = useForm({
     resolver: zodResolver(FormSchema),
-    defaultValues: { email: '', password: '' },
+    defaultValues: { email: "", password: "" },
   })
 
   const handleSignUp = async (credentials: z.infer<typeof FormSchema>) => {
@@ -51,7 +51,7 @@ export default function Login() {
       ) as AuthResponse
 
       if (error) {
-        toast.error(error?.code === 'user_already_exists' ? 'User already exists' : 'Failed to create account')
+        toast.error(error?.code === "user_already_exists" ? "User already exists" : "Failed to create account")
       } else {
         router.replace(`/auth/email-verification?email=${credentials.email}`)
       }
@@ -63,9 +63,9 @@ export default function Login() {
       const { error } = JSON.parse(await loginWithEmailAndPassword(credentials)) as AuthTokenResponse
 
       if (error) {
-        toast.error('Failed to sign in')
+        toast.error("Failed to sign in")
       } else {
-        toast.success('Signed in')
+        toast.success("Signed in")
         router.replace(filteredRedirectUrl)
       }
     })
@@ -81,7 +81,7 @@ export default function Login() {
 
   async function signInWithGithub() {
     await supabase.auth.signInWithOAuth({
-      provider: 'github',
+      provider: "github",
       options: {
         redirectTo: `${window.location.origin}/auth/callback?redirectTo=${filteredRedirectUrl}`,
       },
@@ -90,7 +90,7 @@ export default function Login() {
 
   async function signInWithApple() {
     await supabase.auth.signInWithOAuth({
-      provider: 'apple',
+      provider: "apple",
       options: {
         redirectTo: `${window.location.origin}/auth/callback?redirectTo=${filteredRedirectUrl}`,
       },
@@ -102,19 +102,19 @@ export default function Login() {
       <Card className="p-6 max-w-full w-[500px]">
         <div className="flex flex-col space-y-2 text-left mb-4">
           <Link href="/" className="text-2xl font-semibold tracking-tight">
-            {isSignUp ? 'Create Account' : 'Login'}
+            {isSignUp ? "Create Account" : "Login"}
           </Link>
           <p className="mt-4 text-sm text-muted-foreground">
             {isSignUp ? (
               <>
-                Already have an account?{' '}
+                Already have an account?{" "}
                 <span className="underline cursor-pointer text-primary" onClick={() => setIsSignUp(false)}>
                   Login
                 </span>
               </>
             ) : (
               <>
-                Don&apos;t have an account?{' '}
+                Don&apos;t have an account?{" "}
                 <span className="underline cursor-pointer text-primary" onClick={() => setIsSignUp(true)}>
                   Create Account
                 </span>
@@ -130,7 +130,7 @@ export default function Login() {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input placeholder="Email" {...field} />
+                    <Input placeholder="Email" {...field} autoComplete="email" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -142,7 +142,11 @@ export default function Login() {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <PasswordInput placeholder="Password" {...field} />
+                    <PasswordInput
+                      placeholder="Password"
+                      {...field}
+                      autoComplete={isSignUp ? "new-password" : "current-password"}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -154,7 +158,7 @@ export default function Login() {
               </Link>
             )}
             <Button loading={isPending} type="submit">
-              {isSignUp ? 'Create Account' : 'Login'}
+              {isSignUp ? "Create Account" : "Login"}
             </Button>
 
             <div className="relative">
