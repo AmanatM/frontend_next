@@ -2,7 +2,7 @@ import { CircleIcon, WandSparkles } from "lucide-react"
 
 import Link from "next/link"
 import ActionButtons from "./ActionButtons"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { TypographyH3, TypographyH4, TypographyP, TypographySmall } from "@/components/typography"
 import { TutorialsType } from "@/tutorials"
 import { Badge } from "@/components/ui/badge"
@@ -11,23 +11,19 @@ function TutorialCard({ ...props }: TutorialsType) {
   console.log(props)
   return (
     <Link href={`/tutorials/${props.slug}`}>
-      <Card>
-        <CardHeader className="grid grid-cols-[1fr_40px] items-start gap-4 space-y-0">
+      <Card className="h-full flex flex-col">
+        <CardHeader className="pb-0">
           <div className="space-y-3">
             <CardTitle className="flex items-center">
               <TypographyP>{props.title}</TypographyP>
-              {props.interactive && (
-                <Badge className="flex gap-x-2 ml-auto">
-                  <TypographySmall>Interactive</TypographySmall>
-                  <WandSparkles size={16} />
-                </Badge>
-              )}
             </CardTitle>
-            <CardDescription>{props.shortDescription}</CardDescription>
           </div>
-          <ActionButtons slug={props.slug} />
+          {/* <ActionButtons slug={props.slug} /> */}
         </CardHeader>
-        <CardContent>
+        <CardContent className="py-4">
+          <CardDescription>{props.shortDescription}</CardDescription>
+        </CardContent>
+        <CardFooter className="mt-auto pt-0 flex justify-between">
           <div className="flex space-x-4 text-sm text-muted-foreground">
             {props.categories.map(category => (
               <div className="flex items-center" key={category}>
@@ -36,7 +32,13 @@ function TutorialCard({ ...props }: TutorialsType) {
               </div>
             ))}
           </div>
-        </CardContent>
+          {props.interactive && (
+            <Badge variant={"outline"} className="flex gap-x-2 text-muted-foreground">
+              <TypographySmall className="font-normal">Interactive</TypographySmall>
+              <WandSparkles size={16} />
+            </Badge>
+          )}
+        </CardFooter>
       </Card>
     </Link>
   )

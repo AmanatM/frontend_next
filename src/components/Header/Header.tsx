@@ -1,12 +1,12 @@
-import { FlaskConical, Terminal } from 'lucide-react'
-import { UserNav } from './UserNav'
-import Link from 'next/link'
-import { top_menu_links } from '@/config/top_bar_links'
-import { ThemeSwitch } from './theme-switch'
-import { SearchBox } from './SearchBox'
-import { MobileMenu } from './mobile-menu'
-import { createClientServer } from '@/supabase-utils/supabase-server'
-import { LogoIcon } from '@/app/icons/logo-icons'
+import { FlaskConical, Terminal } from "lucide-react"
+import { UserNav } from "./UserNav"
+import Link from "next/link"
+import { top_menu_links } from "@/config/top_bar_links"
+import { ThemeSwitch } from "./theme-switch"
+import { SearchBox } from "./SearchBox"
+import { MobileMenu } from "./mobile-menu"
+import { createClientServer } from "@/supabase-utils/supabase-server"
+import { LogoIcon } from "@/app/icons/logo-icons"
 
 export async function MenuTopBar() {
   const supabase = createClientServer()
@@ -14,7 +14,7 @@ export async function MenuTopBar() {
 
   return (
     <header className="h-14 sticky z-50 top-0 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container px-3 md:px-8 flex h-full max-w-screen-2xl items-center">
+      <div className="px-3 md:px-8 flex h-full items-center">
         <div className="mr-0 md:mr-4 flex text-sm">
           <Link href="/" className="mr-10 flex items-center space-x-4">
             <LogoIcon size={35} />
