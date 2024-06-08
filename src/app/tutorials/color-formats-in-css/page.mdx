@@ -1,32 +1,33 @@
 export const metadata = {
-  title: "Color Formats in CSS",
+  title: "Understanding CSS Color Formats",
   publishDate: "2024-01-09T00:00:00Z",
   categories: ["CSS"],
   interactive: false,
   shortDescription:
-    "CSS gives us so many options when it comes to expressing color—we can use hex codes, rgb, hsl, and more. Which option should we choose? This turns out to be a surprisingly important decision! In this article, we'll take a tour of color formats in CSS, and see which option will serve us best.",
+    "CSS offers various ways to express color, including hex codes, RGB, HSL, and more. Choosing the right format is crucial. This article explores the different color formats in CSS and determines which one is best for different scenarios.",
 }
 
-# Color Formats in CSS
+import SimpleStaticCodeEditor from "@/components/simple-editor"
 
-CSS gives us many options when it comes to expressing color—we can use hex codes, rgb, hsl, and more. Which option should we choose? This turns out to be a surprisingly important decision! In this article, we'll take a tour of color formats in CSS, and see which option will serve us best.
+# Understanding CSS Color Formats
 
-![](https://dmoybqscixrzkyjnhtrj.supabase.co/storage/v1/object/public/blog/photo-1517180102446-f3ece451e9d8.webp?t=2024-06-08T02%3A58%3A16.541Z)
+CSS has a whole slew of different color formats: hex codes, rgb(), hsl(), lch(), and more.
 
-## Introduction
+Which one should we use? It might seem like an inconsequential decision, but there are some pretty important differences between them. And, honestly, I think most of us are prioritizing the wrong things. 😅
 
-Color is a fundamental part of web design, and CSS provides several ways to specify color values. Understanding the differences and use cases for each format can help you make better decisions in your projects.
+In this tutorial, I’ll take you on a tour of the different options. We’ll see how they work, how we can decipher them, and how we can use them to our advantage. Later, I’ll show you how modern CSS lets us make on-the-fly adjustments if we pick the right color format.
 
-## Hex Codes
+## Named Colors
 
-Hex codes are one of the most common ways to specify colors in CSS. They are compact and widely recognized.
+So, this isn’t really a color format, but it’s a good place to start!
 
-<CodeHeader text="CSS" />
+HTML comes with 140 named colors. These are special keyword values like dodgerblue, hotpink, and tomato:
 
-```css
-.element {
-  color: #ff5733;
-}
-```
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+<SimpleStaticCodeEditor
+  html={`<p>Hello world</p>`}
+  css={`
+    p {
+      color: tomato;
+    }
+  `}
+/>

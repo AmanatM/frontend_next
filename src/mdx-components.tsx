@@ -4,7 +4,7 @@ import CodeHighlighter from "./components/universalCodeHighliter"
 
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
-    h1: props => <h1 {...props} className="mb-4 text-4xl font-bold" />,
+    h1: props => <h1 {...props} className="mb-12 text-3xl font-bold" />,
     p: props => <p {...props} className="mb-4" />,
     code({ node, inline, className, children, ...props }: any) {
       const match = /language-(\w+)/.exec(className || "")
