@@ -9,14 +9,17 @@ import React, { useMemo } from "react"
 import { getCodingQuestions } from "../_queries/getCodingQuestions"
 import useSupabaseBrowser from "@/supabase-utils/supabase-client"
 import { Badge } from "@/components/ui/badge"
-import { useSearchParams } from "next/navigation"
+import { usePathname, useSearchParams } from "next/navigation"
 import useIsClient from "@/hooks/useIsClient"
+import { Button } from "@/components/custom/button"
 
 const CodingQuestions = () => {
   const supabase = useSupabaseBrowser()
-  const params = useSearchParams()
-  const type = params.get("type")
-  const search = params.get("search")
+  const searchParams = useSearchParams()
+  const pathname = usePathname()
+
+  const type = searchParams.get("type")
+  const search = searchParams.get("search")
 
   const { data: codingQuestions, isSuccess } = useQuery({
     queryKey: ["codingQuestions"],
@@ -37,10 +40,20 @@ const CodingQuestions = () => {
     return codingQuestions
   }, [codingQuestions, type, search])
 
+  const resetFilters = () => {
+    const sp = new URLSearchParams(searchParams)
+    sp.delete("type")
+    sp.delete("search")
+    window.history.replaceState(null, "", `${pathname}?${sp.toString()}`)
+  }
+
   if ((filteredCodingQuestions ?? []).length <= 0) {
     return (
       <Card className="flex flex-col py-6 items-center">
         <TypographyP>No questions found</TypographyP>
+        <Button variant="secondary" size="sm" className="mt-4" onClick={resetFilters}>
+          Reset Filters
+        </Button>
       </Card>
     )
   }
