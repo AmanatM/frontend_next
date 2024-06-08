@@ -35,7 +35,7 @@ const CodeWithPreview = ({ code }: { code: string }) => {
             }}
           />
         </div>
-        <div className="size-full bg-[#1e1e1e] rounded-md flex justify-center items-center min-h-full relative">
+        <div className="size-full bg-[#1e1e1e] rounded-md flex justify-center items-center relative  min-h-[150px]">
           <div
             className={cn("bg-slate-50 rounded-md text-neutral-900", "flex items-center justify-center")}
             style={{
