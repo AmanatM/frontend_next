@@ -10,7 +10,7 @@ type CodeHighlighterProps = {
   customStyle?: CSSProperties | undefined
 }
 
-export default function CodeHighlighter({ code, language, style, customStyle }: CodeHighlighterProps) {
+export default function CodeHighlighter({ code, language, style, customStyle, ...props }: CodeHighlighterProps) {
   const highlightStyle = style ? style : vscDarkPlus
   return (
     <SyntaxHighlighter
@@ -20,6 +20,7 @@ export default function CodeHighlighter({ code, language, style, customStyle }: 
       customStyle={{
         ...customStyle,
       }}
+      {...props}
     >
       {code}
     </SyntaxHighlighter>

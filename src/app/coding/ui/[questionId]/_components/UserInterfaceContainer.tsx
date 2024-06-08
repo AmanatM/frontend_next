@@ -1,4 +1,4 @@
-'use client'
+"use client"
 import {
   SandpackProvider,
   SandpackConsole,
@@ -6,25 +6,25 @@ import {
   SandpackLayout,
   SandpackPreview,
   SandpackFile,
-} from '@codesandbox/sandpack-react'
-import { cn } from '@/lib/utils'
-import { ResizablePanelGroup } from '@/components/ui/resizable'
-import { useIsMobileBreakpoint } from '@/hooks/useIsMobileBreakpoint'
-import { TypographyH4 } from '@/components/typography'
+} from "@codesandbox/sandpack-react"
+import { cn } from "@/lib/utils"
+import { ResizablePanelGroup } from "@/components/ui/resizable"
+import { useIsMobileBreakpoint } from "@/hooks/useIsMobileBreakpoint"
+import { TypographyH4 } from "@/components/typography"
 
-import { useTheme } from 'next-themes'
-import { useEffect, useMemo, useState } from 'react'
-import { MarkdownRenderer } from '@/components/markdown'
-import { descriptionTabs, browserTabs } from '../../../utils/tabs-data'
-import { BottomToolbar_ui } from './BottomToolBar_ui'
-import { CustomTabsContent } from '../../../_components/CustomTabComponents'
-import { ResizeHandle } from '../../../_components/ResizableHandleCustom'
-import { ResizablePanelTabs } from '../../../_components/ResizablePanelTabs'
-import SavedCode from './SavedCode'
-import { User } from '@supabase/auth-js/dist/module/lib/types'
-import { CodingQuestion, SandpackFile_UI, Question_UI } from '@/supabase-utils/types'
-import SolutionTab from './SolutionTab'
-import CodeEditorTab from './CodeEditorTab'
+import { useTheme } from "next-themes"
+import { useEffect, useMemo, useState } from "react"
+import { MarkdownRenderer } from "@/components/markdown"
+import { descriptionTabs, browserTabs } from "../../../utils/tabs-data"
+import { BottomToolbar_ui } from "./BottomToolBar_ui"
+import { CustomTabsContent } from "../../../_components/CustomTabComponents"
+import { ResizeHandle } from "../../../../../components/ResizableHandleCustom"
+import { ResizablePanelTabs } from "../../../_components/ResizablePanelTabs"
+import SavedCode from "./SavedCode"
+import { User } from "@supabase/auth-js/dist/module/lib/types"
+import { CodingQuestion, SandpackFile_UI, Question_UI } from "@/supabase-utils/types"
+import SolutionTab from "./SolutionTab"
+import CodeEditorTab from "./CodeEditorTab"
 
 type CodingQuestionProps = {
   idFromParams: string
@@ -38,7 +38,7 @@ export default function UserInterfaceContainer({ idFromParams, user, coding_ques
 
   const [defaultSize, setDefaultSize] = useState<number[]>([30, 40, 30])
   const [isMounted, setIsMounted] = useState(false)
-  const [currentTheme, setCurrentTheme] = useState<'light' | 'dark' | undefined>(undefined)
+  const [currentTheme, setCurrentTheme] = useState<"light" | "dark" | undefined>(undefined)
   const [isSolution, setIsSolution] = useState(false)
 
   useEffect(() => {
@@ -46,10 +46,10 @@ export default function UserInterfaceContainer({ idFromParams, user, coding_ques
   }, [])
 
   useEffect(() => {
-    if (resolvedTheme === 'dark') {
-      setCurrentTheme('dark')
-    } else if (resolvedTheme === 'light') {
-      setCurrentTheme('light')
+    if (resolvedTheme === "dark") {
+      setCurrentTheme("dark")
+    } else if (resolvedTheme === "light") {
+      setCurrentTheme("light")
     } else {
       setCurrentTheme(undefined)
     }
@@ -72,20 +72,20 @@ export default function UserInterfaceContainer({ idFromParams, user, coding_ques
     <main
       id="content"
       className={cn(
-        'flex size-full pt-3 px-3 overflow-scroll flex-col',
-        isMobileBreakpoint ? '!min-h-[calc(100dvh-3.5rem)]' : '!h-[calc(100dvh-3.5rem)]',
+        "flex size-full pt-3 px-3 overflow-scroll flex-col",
+        isMobileBreakpoint ? "!min-h-[calc(100dvh-3.5rem)]" : "!h-[calc(100dvh-3.5rem)]",
       )}
     >
       <SandpackProvider
-        template={coding_question?.sandpack_template || 'vannilla'}
-        theme={currentTheme === undefined ? 'auto' : (currentTheme as SandpackThemeProp)}
-        className={'!size-full !overflow-hidden !flex !flex-col'}
+        template={coding_question?.sandpack_template || "vannilla"}
+        theme={currentTheme === undefined ? "auto" : (currentTheme as SandpackThemeProp)}
+        className={"!size-full !overflow-hidden !flex !flex-col"}
         files={filesObject}
       >
-        <SandpackLayout className={'!size-full !overflow-hidden !flex !flex-col !bg-transparent !border-none'}>
+        <SandpackLayout className={"!size-full !overflow-hidden !flex !flex-col !bg-transparent !border-none"}>
           <ResizablePanelGroup
-            direction={isMobileBreakpoint ? 'vertical' : 'horizontal'}
-            className={cn('relative size-full grow', isMobileBreakpoint && 'pb-16 space-y-2')}
+            direction={isMobileBreakpoint ? "vertical" : "horizontal"}
+            className={cn("relative size-full grow", isMobileBreakpoint && "pb-16 space-y-2")}
             onResize={() => {
               if (isMobileBreakpoint) {
                 setDefaultSize([100, 100, 100])
@@ -98,7 +98,7 @@ export default function UserInterfaceContainer({ idFromParams, user, coding_ques
             <ResizablePanelTabs defaultSize={defaultSize[0]} defaultValue="description" tabs={descriptionTabs}>
               <CustomTabsContent value="description" className="p-4 space-y-4 justify-center">
                 <TypographyH4>{coding_question?.title}</TypographyH4>
-                <article className={'prose dark:prose-invert prose-pre:p-0'}>
+                <article className={"prose dark:prose-invert prose-pre:p-0"}>
                   <MarkdownRenderer>{coding_question?.description}</MarkdownRenderer>
                 </article>
               </CustomTabsContent>
@@ -108,7 +108,7 @@ export default function UserInterfaceContainer({ idFromParams, user, coding_ques
                   setIsSolution={setIsSolution}
                   isSolution={isSolution}
                 />
-                <article className={'prose dark:prose-invert prose-pre:p-0'}>
+                <article className={"prose dark:prose-invert prose-pre:p-0"}>
                   <MarkdownRenderer>{coding_question?.solution}</MarkdownRenderer>
                 </article>
               </CustomTabsContent>
@@ -131,7 +131,7 @@ export default function UserInterfaceContainer({ idFromParams, user, coding_ques
 
             {/* Preview Panel*/}
             <ResizablePanelTabs
-              extraClassName={cn(isMobileBreakpoint && 'h-[500px]')}
+              extraClassName={cn(isMobileBreakpoint && "h-[500px]")}
               defaultSize={defaultSize[2]}
               defaultValue="browser"
               tabs={browserTabs}
@@ -141,11 +141,11 @@ export default function UserInterfaceContainer({ idFromParams, user, coding_ques
                   showSandpackErrorOverlay={true}
                   showNavigator={true}
                   showOpenInCodeSandbox={false}
-                  className={'size-full'}
+                  className={"size-full"}
                 />
               </CustomTabsContent>
               <CustomTabsContent value="console" className="p-0 size-full">
-                <SandpackConsole className={'size-full'} standalone={false} />
+                <SandpackConsole className={"size-full"} standalone={false} />
               </CustomTabsContent>
             </ResizablePanelTabs>
           </ResizablePanelGroup>

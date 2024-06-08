@@ -1,4 +1,4 @@
-'use client'
+"use client"
 import {
   SandpackProvider,
   SandpackConsole,
@@ -6,26 +6,26 @@ import {
   SandpackLayout,
   SandpackTests,
   SandpackStack,
-} from '@codesandbox/sandpack-react'
-import { cn } from '@/lib/utils'
-import { ResizablePanel, ResizablePanelGroup } from '@/components/ui/resizable'
-import { useIsMobileBreakpoint } from '@/hooks/useIsMobileBreakpoint'
-import { TypographyH4 } from '@/components/typography'
+} from "@codesandbox/sandpack-react"
+import { cn } from "@/lib/utils"
+import { ResizablePanel, ResizablePanelGroup } from "@/components/ui/resizable"
+import { useIsMobileBreakpoint } from "@/hooks/useIsMobileBreakpoint"
+import { TypographyH4 } from "@/components/typography"
 
-import { useTheme } from 'next-themes'
-import { useEffect, useRef, useState } from 'react'
-import { MarkdownRenderer } from '@/components/markdown'
+import { useTheme } from "next-themes"
+import { useEffect, useRef, useState } from "react"
+import { MarkdownRenderer } from "@/components/markdown"
 
-import { User } from '@supabase/auth-js/dist/module/lib/types'
-import { Question_CODE } from '@/supabase-utils/types'
-import { CustomTabsContent } from '@/app/coding/_components/CustomTabComponents'
-import { ResizeHandle } from '@/app/coding/_components/ResizableHandleCustom'
-import { ResizablePanelTabs } from '@/app/coding/_components/ResizablePanelTabs'
-import { CODE_description_tabs, CODE_editor_tabs, CODE_result_tabs } from '@/app/coding/utils/tabs-data'
-import Submissions from './Submissions'
-import { MonacoEditorSandpack, MonacoEditorView } from '@/app/coding/_components/MonacoEditor'
-import { BottomToolbar_code } from './BottomToolBar_code'
-import { ImperativePanelGroupHandle } from 'react-resizable-panels'
+import { User } from "@supabase/auth-js/dist/module/lib/types"
+import { Question_CODE } from "@/supabase-utils/types"
+import { CustomTabsContent } from "@/app/coding/_components/CustomTabComponents"
+import { ResizeHandle } from "@/components/ResizableHandleCustom"
+import { ResizablePanelTabs } from "@/app/coding/_components/ResizablePanelTabs"
+import { CODE_description_tabs, CODE_editor_tabs, CODE_result_tabs } from "@/app/coding/utils/tabs-data"
+import Submissions from "./Submissions"
+import { MonacoEditorSandpack, MonacoEditorView } from "@/app/coding/_components/MonacoEditor"
+import { BottomToolbar_code } from "./BottomToolBar_code"
+import { ImperativePanelGroupHandle } from "react-resizable-panels"
 
 type CodingQuestionProps = {
   idFromParams: string
@@ -39,7 +39,7 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
 
   const [defaultSize, setDefaultSize] = useState<number[]>([40, 60])
   const [isMounted, setIsMounted] = useState(false)
-  const [currentTheme, setCurrentTheme] = useState<'light' | 'dark' | undefined>(undefined)
+  const [currentTheme, setCurrentTheme] = useState<"light" | "dark" | undefined>(undefined)
 
   const ref = useRef<ImperativePanelGroupHandle>(null)
 
@@ -56,10 +56,10 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
   }, [])
 
   useEffect(() => {
-    if (resolvedTheme === 'dark') {
-      setCurrentTheme('dark')
-    } else if (resolvedTheme === 'light') {
-      setCurrentTheme('light')
+    if (resolvedTheme === "dark") {
+      setCurrentTheme("dark")
+    } else if (resolvedTheme === "light") {
+      setCurrentTheme("light")
     } else {
       setCurrentTheme(undefined)
     }
@@ -74,12 +74,12 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
   //   },
   // }
 
-  const tests = coding_question.coding_question_files_code[0].tests || ''
-  const code = coding_question.coding_question_files_code[0].code || ''
+  const tests = coding_question.coding_question_files_code[0].tests || ""
+  const code = coding_question.coding_question_files_code[0].code || ""
 
   const filesObject = {
-    '/add.ts': code,
-    '/add.test.ts': tests,
+    "/add.ts": code,
+    "/add.test.ts": tests,
   }
 
   if (!isMounted) return null
@@ -87,26 +87,26 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
     <main
       id="content"
       className={cn(
-        'flex size-full pt-3 px-3 overflow-scroll flex-col',
-        isMobileBreakpoint ? '!min-h-[calc(100dvh-3.5rem)]' : '!h-[calc(100dvh-3.5rem)]',
+        "flex size-full pt-3 px-3 overflow-scroll flex-col",
+        isMobileBreakpoint ? "!min-h-[calc(100dvh-3.5rem)]" : "!h-[calc(100dvh-3.5rem)]",
       )}
     >
       <SandpackProvider
-        template={'test-ts'}
-        theme={currentTheme === undefined ? 'auto' : (currentTheme as SandpackThemeProp)}
-        className={'!size-full !overflow-hidden !flex !flex-col'}
+        template={"test-ts"}
+        theme={currentTheme === undefined ? "auto" : (currentTheme as SandpackThemeProp)}
+        className={"!size-full !overflow-hidden !flex !flex-col"}
         files={filesObject}
         options={{
-          activeFile: '/add.ts',
-          visibleFiles: ['/add.ts'],
+          activeFile: "/add.ts",
+          visibleFiles: ["/add.ts"],
           autoReload: false,
         }}
       >
-        <SandpackLayout className={'!size-full !overflow-hidden !flex !flex-col !bg-transparent !border-none'}>
+        <SandpackLayout className={"!size-full !overflow-hidden !flex !flex-col !bg-transparent !border-none"}>
           <ResizablePanelGroup
-            id={'group'}
-            direction={isMobileBreakpoint ? 'vertical' : 'horizontal'}
-            className={cn('relative size-full grow', isMobileBreakpoint && 'pb-16 space-y-2')}
+            id={"group"}
+            direction={isMobileBreakpoint ? "vertical" : "horizontal"}
+            className={cn("relative size-full grow", isMobileBreakpoint && "pb-16 space-y-2")}
             onResize={() => {
               if (isMobileBreakpoint) {
                 setDefaultSize([100, 100])
@@ -119,7 +119,7 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
             <ResizablePanelTabs defaultSize={defaultSize[0]} defaultValue="description" tabs={CODE_description_tabs}>
               <CustomTabsContent value="description" className="p-4 space-y-4 justify-center">
                 <TypographyH4>{coding_question?.title}</TypographyH4>
-                <article className={'prose dark:prose-invert prose-pre:p-0'}>
+                <article className={"prose dark:prose-invert prose-pre:p-0"}>
                   <MarkdownRenderer>{coding_question?.description}</MarkdownRenderer>
                 </article>
               </CustomTabsContent>
@@ -129,7 +129,7 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
                   setIsSolution={setIsSolution}
                   isSolution={isSolution}
                 /> */}
-                <article className={'prose dark:prose-invert prose-pre:p-0'}>
+                <article className={"prose dark:prose-invert prose-pre:p-0"}>
                   <MarkdownRenderer>{coding_question?.solution}</MarkdownRenderer>
                 </article>
               </CustomTabsContent>
@@ -145,7 +145,7 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
               <ResizablePanelGroup direction="vertical" ref={ref}>
                 {/* Editor Panel*/}
                 <ResizablePanelTabs
-                  extraClassName={cn(isMobileBreakpoint && 'h-[500px]')}
+                  extraClassName={cn(isMobileBreakpoint && "h-[500px]")}
                   defaultSize={95}
                   defaultValue="code"
                   tabs={CODE_editor_tabs}
@@ -165,7 +165,7 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
 
                 {/* Preview Panel*/}
                 <ResizablePanelTabs
-                  extraClassName={cn(isMobileBreakpoint && 'h-[500px]')}
+                  extraClassName={cn(isMobileBreakpoint && "h-[500px]")}
                   defaultSize={5}
                   defaultValue="tests"
                   tabs={CODE_result_tabs}
@@ -173,7 +173,7 @@ export default function CodingQuestionContainer({ idFromParams, user, coding_que
                 >
                   <CustomTabsContent value="console" className="p-0 size-full">
                     <SandpackConsole
-                      className={'size-full'}
+                      className={"size-full"}
                       standalone={true}
                       resetOnPreviewRestart={true}
                       showHeader={false}

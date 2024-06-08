@@ -1,25 +1,14 @@
-'use client'
-import Editor from '@monaco-editor/react'
-import {
-  useActiveCode,
-  FileTabs,
-  useSandpack,
-  SandpackFileExplorer,
-  SandpackCodeEditor,
-  SandpackFile,
-} from '@codesandbox/sandpack-react'
-import { TypographyMuted, TypographyP } from '@/components/typography'
-import { cn } from '@/lib/utils'
-import { toast } from 'sonner'
-import { ResizablePanelTabs } from '../../../_components/ResizablePanelTabs'
-import { CustomTabsContent } from '../../../_components/CustomTabComponents'
-import { useIsMobileBreakpoint } from '@/hooks/useIsMobileBreakpoint'
+"use client"
+import { useActiveCode, useSandpack, SandpackCodeEditor } from "@codesandbox/sandpack-react"
+import { TypographyP } from "@/components/typography"
+import { cn } from "@/lib/utils"
+import { ResizablePanelTabs } from "../../../_components/ResizablePanelTabs"
+import { CustomTabsContent } from "../../../_components/CustomTabComponents"
+import { useIsMobileBreakpoint } from "@/hooks/useIsMobileBreakpoint"
 
-import language from 'react-syntax-highlighter/dist/esm/languages/hljs/1c'
-import { Braces, Code } from 'lucide-react'
-import { getIconForLanguage } from '../../../utils/getIconForLanguage'
-import { MonacoEditorSandpack } from '../../../_components/MonacoEditor'
-import { FilesObjectWithSandpack } from '@/supabase-utils/types'
+import { getIconForLanguage } from "../../../utils/getIconForLanguage"
+import { MonacoEditorSandpack } from "../../../_components/MonacoEditor"
+import { FilesObjectWithSandpack } from "@/supabase-utils/types"
 
 /**
  * Renders a ResizablePanelTabs component with a Monaco Editor.
@@ -40,8 +29,8 @@ function CodeEditorTab({
   const { code, updateCode } = useActiveCode()
   const { sandpack } = useSandpack()
 
-  const fileExtenstion = sandpack.activeFile.split('.').pop()
-  const resolvedLanguage = fileExtenstion === 'js' ? 'javascript' : fileExtenstion
+  const fileExtenstion = sandpack.activeFile.split(".").pop()
+  const resolvedLanguage = fileExtenstion === "js" ? "javascript" : fileExtenstion
 
   const isMobileBreakpoint = useIsMobileBreakpoint()
 
@@ -68,9 +57,9 @@ function CodeEditorTab({
           <div className="size-full">
             {/* <SandpackFileExplorer /> */}
             {/* <FileTabs /> */}
-            <div className={cn('items-center text-center py-1 bg-orange-600', isSolution ? 'block' : 'hidden')}>
+            <div className={cn("items-center text-center py-1 bg-orange-600", isSolution ? "block" : "hidden")}>
               <TypographyP className="text-center ">
-                You are viewing the solution code.{' '}
+                You are viewing the solution code.{" "}
                 <span onClick={handleResetCode} className="cursor-pointer underline">
                   Reset code
                 </span>
