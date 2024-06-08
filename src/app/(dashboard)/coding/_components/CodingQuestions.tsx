@@ -10,11 +10,13 @@ import { getCodingQuestions } from "../_queries/getCodingQuestions"
 import useSupabaseBrowser from "@/supabase-utils/supabase-client"
 import { Badge } from "@/components/ui/badge"
 import { useSearchParams } from "next/navigation"
+import useIsClient from "@/hooks/useIsClient"
 
 const CodingQuestions = () => {
   const supabase = useSupabaseBrowser()
   const params = useSearchParams()
   const type = params.get("type")
+  const search = params.get("search")
 
   const { data: codingQuestions, isSuccess } = useQuery({
     queryKey: ["codingQuestions"],
@@ -22,11 +24,26 @@ const CodingQuestions = () => {
   })
 
   const filteredCodingQuestions = useMemo(() => {
-    if (type && codingQuestions) {
-      return codingQuestions.filter(question => question.question_type === type)
+    if (codingQuestions) {
+      return codingQuestions.filter(question => {
+        const matchesType = !type || question.question_type === type
+        const matchesSearch =
+          !search ||
+          question.title.toLowerCase().includes(search.toLowerCase()) ||
+          (question.short_description && question.short_description.toLowerCase().includes(search.toLowerCase()))
+        return matchesType && matchesSearch
+      })
     }
     return codingQuestions
-  }, [codingQuestions, type])
+  }, [codingQuestions, type, search])
+
+  if ((filteredCodingQuestions ?? []).length <= 0) {
+    return (
+      <Card className="flex flex-col py-6 items-center">
+        <TypographyP>No questions found</TypographyP>
+      </Card>
+    )
+  }
 
   if (filteredCodingQuestions && codingQuestions)
     return (
