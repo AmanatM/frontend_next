@@ -112,7 +112,13 @@ export function BottomToolbar_ui({
       </div>
       <div className="flex space-x-2">
         <ToggleCompleteButton questionId={questionId} user={user} />
-        <Button variant={"outline"} size={"sm"} className={cn("flex align-center space-x-2")} onClick={handleSaveCode}>
+        <Button
+          variant={"outline"}
+          size={"sm"}
+          className={cn("flex align-center space-x-2")}
+          onClick={handleSaveCode}
+          aria-label="Save Code"
+        >
           <Save size={15} />
           {!isMobileBreakpoint && <div>Save</div>}
         </Button>

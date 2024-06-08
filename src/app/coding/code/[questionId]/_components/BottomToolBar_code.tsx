@@ -61,7 +61,13 @@ export function BottomToolbar_code({
       </div>
       <div className="flex space-x-2">
         <ToggleCompleteButton questionId={questionId} user={user} />
-        <Button variant={"outline"} size={"sm"} className={cn("flex align-center space-x-2")} onClick={runCode}>
+        <Button
+          variant={"outline"}
+          size={"sm"}
+          className={cn("flex align-center space-x-2")}
+          onClick={runCode}
+          aria-label="Run Code"
+        >
           <Play size={15} />
           {!isMobileBreakpoint && <div>Run</div>}
         </Button>

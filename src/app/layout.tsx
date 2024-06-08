@@ -23,8 +23,6 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   userScalable: true,
-  // Also supported by less commonly used
-  // interactiveWidget: 'resizes-visual',
 }
 
 export default function RootLayout({
@@ -36,7 +34,6 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="icon" href="/favicon.svg" sizes="any" />
-        <link rel="icon" href="/icon?<generated>" type="image/<generated>" sizes="<generated>" />
 
         <SandpackCSS />
       </head>
