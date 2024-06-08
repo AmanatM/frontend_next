@@ -3,20 +3,19 @@ export const metadata = {
   publishDate: "2024-01-09T00:00:00Z",
   categories: ["CSS"],
   interactive: true,
-
-shortDescription:
-"Learn various techniques to center a div both horizontally and vertically using CSS. This guide covers different methods, including flexbox, grid, and traditional techniques.",
+  shortDescription:
+    "Learn different techniques to center a div both horizontally and vertically using CSS. This guide covers various methods, including flexbox, grid, and traditional techniques.",
 }
 
 import CodeWithPreview from "./components/codeWithPreview"
 
 # How to Center a Div in CSS
 
-Centering a div is a common task in web development, but it can be achieved in several ways depending on your needs and the specific layout you’re working with. In this post, we’ll explore different methods to center a div both horizontally and vertically.
+Centering a div is a common task in web development, and there are multiple ways to achieve it depending on your requirements and the layout you're working with. In this post, we'll explore different methods to center a div both horizontally and vertically.
 
 ## Using Flexbox
 
-Flexbox is a powerful layout tool that makes centering elements straightforward.
+Flexbox is a powerful layout tool that simplifies centering elements.
 
 Horizontally and Vertically Centering
 
@@ -26,16 +25,101 @@ Horizontally and Vertically Centering
   justify-content: center;
   align-items: center;
 }`}
+  containerStyle="flex items-center justify-center"
 />
 
-## Using `margin: auto`
+## Using CSS Grid
 
-The `margin: auto` method is a straightforward way to center a block-level element horizontally.
+CSS Grid is another modern layout system that provides flexible centering options.
 
-```css
-.container {
-  width: 50%;
-  margin: 0 auto;
-  background-color: lightblue;
+Horizontally and Vertically Centered:
+
+<CodeWithPreview
+  code={`.container {
+  display: grid;
+  place-items: center;
 }
-```
+`}
+  containerStyle="grid place-content-center"
+/>
+
+## Using Absolute Positioning
+
+You can also center a div using absolute positioning. This method is useful when you need to center an element within a parent container.
+
+This method involves manual calculation.
+
+<CodeWithPreview
+  code={`.container {
+  position: relative;
+}
+.child {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}`}
+  containerStyle="relative"
+  childStyle="absolute top-1/2 left-1/2  -translate-y-1/2 -translate-x-1/2"
+/>
+
+Here, transform: translate(-50%, -50%) moves the div back to the
+Here, transform: translate(-50%, -50%) moves the div back into the center after positioning it at 50% from the top and left of the container.
+
+## Using Margin Auto
+
+Another simple way to center a div horizontally is by using the margin property. This method is useful when you need to center a block-level element within its parent container.
+
+Horizontally Centered:
+
+<CodeWithPreview
+  code={`
+.child {
+  margin: 0 auto;
+}`}
+  childStyle="mx-auto my-0"
+  headerSingleColumn={true}
+/>
+
+This method works when you know the width of the div and want to center it within a block-level container.
+
+## Centering Text
+
+Text is unique in CSS and requires different techniques for manipulation. The methods discussed in this post cannot be used to center individual characters within a paragraph.
+
+For instance, if we attempt to center a paragraph using Flexbox, the entire block of text will be centered, not the individual characters:
+
+<CodeWithPreview
+  code={`.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}`}
+  containerStyle="min-h-[300px] flex justify-center items-center p-2 text-sm"
+  childContent={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac ante vel nunc ultrices ultricies."}
+
+childStyle="h-auto w-3/4"
+headerSingleColumn={true}
+/>
+
+While Flexbox positions the paragraph in the center of the viewport, it doesn't influence the alignment of the individual characters, which stay aligned to the left.
+
+To center the text, we should apply the text-align property.
+
+<CodeWithPreview
+  code={`.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center; 
+}`}
+  containerStyle="min-h-[300px] flex justify-center items-center p-2 text-sm text-center"
+  childContent={"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac ante vel nunc ultrices ultricies."}
+
+childStyle="h-auto w-3/4"
+headerSingleColumn={true}
+/>
+
+## Conclusion
+
+Centering a div can be done in various ways, each suited for different scenarios. Flexbox and CSS Grid offer the most straightforward and versatile solutions, while traditional methods like absolute positioning, margin auto, and text-align can also be useful. Understanding these techniques ensures you can handle any centering challenge in your web projects.
