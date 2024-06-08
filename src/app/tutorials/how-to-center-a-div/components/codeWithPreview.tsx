@@ -1,22 +1,50 @@
 "use client"
 import CodeHighlighter from "@/components/universalCodeHighliter"
+import { cn } from "@/lib/utils"
 import React, { useState } from "react"
+import { Slider } from "@/components/ui/slider"
 
 const CodeWithPreview = ({ code }: { code: string }) => {
-  const [width, setWidth] = useState(50)
-
-  const handleSliderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setWidth(Number(event.target.value))
-  }
+  const [width, setWidth] = useState([100])
+  const [height, setHeight] = useState([100])
 
   return (
     <div className="py-6 px-4 rounded-md">
-      <div className="flex flex-col md:flex-row md:gap-x-4">
-        <div className="md:w-1/2 mb-6 md:mb-0">
-          <CodeHighlighter code={code} language={"css"} />
+      <div className="grid grid-cols-1 md:grid-cols-2 md:gap-x-4 gap-y-4 mb-12">
+        <div>
+          <div>
+            Container width: <span>{width + "%"}</span>
+          </div>
+          <Slider defaultValue={width} onValueChange={setWidth} min={30} />
         </div>
-        <div className="md:w-1/2 bg-[#171717] rounded-md ">
-          <div className="bg-slate-50 h-full rounded-md text-neutral-900">Preview</div>
+        <div>
+          <div>
+            Container height: <span>{height + "%"}</span>
+          </div>
+          <Slider defaultValue={height} onValueChange={setHeight} min={30} />
+        </div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 md:gap-x-4 gap-y-4 mb-8 md:mb-4">
+        <div className="size-full">
+          <CodeHighlighter
+            code={code}
+            language={"css"}
+            customStyle={{
+              height: "100%",
+              background: "#1e1e1e",
+            }}
+          />
+        </div>
+        <div className="size-full bg-[#1e1e1e] rounded-md flex justify-center items-center min-h-full relative">
+          <div
+            className={cn("bg-slate-50 rounded-md text-neutral-900", "flex items-center justify-center")}
+            style={{
+              width: `${width}%`,
+              height: `${height}%`,
+            }}
+          >
+            <div className="border border-stone-950 h-24 w-24 flex justify-center items-center">Child </div>
+          </div>
         </div>
       </div>
     </div>
