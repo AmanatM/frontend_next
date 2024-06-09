@@ -10,6 +10,7 @@ import { MenuTopBar } from "@/components/Header/Header"
 import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Analytics } from "@vercel/analytics/react"
 import Providers from "@/providers/Providers"
+import { env } from "process"
 
 const inter = Inter({ subsets: ["latin"] })
 
