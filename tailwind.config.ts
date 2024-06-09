@@ -78,6 +78,9 @@ const config = {
       pattern: /hljs+/,
     },
   ],
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
 } satisfies Config
 
 export default config
