@@ -60,7 +60,7 @@ const CodingQuestions = () => {
 
   if (filteredCodingQuestions && codingQuestions)
     return (
-      <Card className="flex flex-col">
+      <Card className="flex flex-col overflow-clip">
         {filteredCodingQuestions.map(question => (
           <Link
             key={question.id}

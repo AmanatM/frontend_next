@@ -121,24 +121,6 @@ export type Database = {
         }
         Relationships: []
       }
-      tutorials: {
-        Row: {
-          created_at: string
-          id: string
-          title: string | null
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          title?: string | null
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          title?: string | null
-        }
-        Relationships: []
-      }
       user_completed_code_question: {
         Row: {
           created_at: string
@@ -216,14 +198,7 @@ export type Database = {
             referencedColumns: ["id"]
           },
           {
-            foreignKeyName: "user_saved_coding_question_files_user_id_fkey"
-            columns: ["user_id"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "user_saved_coding_question_files_user_id_fkey1"
+            foreignKeyName: "user_saved_question_files_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "users"
