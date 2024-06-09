@@ -1,0 +1,109 @@
+export const metadata = {
+  title: "Understanding CSS Flexbox",
+  publishDate: "2024-06-09T02:02:51.119Z",
+  categories: ["CSS"],
+  interactive: true,
+  shortDescription:
+    "Flexbox is a powerful layout module in CSS that allows you to design complex layouts with ease. Let’s dive into the fundamentals and practical applications of Flexbox.",
+}
+import SimpleStaticCodeEditor from "@/components/mdx-components/simple-editor"
+
+# Understanding CSS Flexbox
+
+Flexbox is a powerful layout module in CSS that allows you to design complex layouts with ease. Let’s dive into the fundamentals and practical applications of Flexbox.
+
+Flex Container and Flex Items
+
+To start using Flexbox, you need a flex container. Flex items are the children of the flex container. Here’s a basic example:
+
+```css
+.container {
+  display: flex;
+}
+
+.item {
+  flex: 1;
+}
+```
+
+In this example, .container is a flex container, and .item elements are flex items.
+
+Main Axis and Cross Axis
+
+Flexbox layout is based on two axes: the main axis and the cross axis. By default, the main axis runs horizontally.
+
+<SimpleStaticCodeEditor
+  html={`<div class="container"><div class="item">1</div><div class="item">2</div></div>`}
+  css={`
+    .container {
+      display: flex;
+      justify-content: center;
+    }
+    .item {
+      flex: 1;
+      background: lightblue;
+      padding: 10px;
+      margin: 5px;
+    }
+  `}
+/>
+
+In this example, justify-content: center centers the flex items along the main axis.
+
+## Flex Properties
+
+Here are some commonly used flex properties:
+
+- `flex-direction`: Specifies the direction of the flex items (row, column, row-reverse, column-reverse).
+- `justify-content`: Aligns items along the main axis (flex-start, center, flex-end, space-between, space-around).
+- `align-items`: Aligns items along the cross axis (flex-start, center, flex-end, stretch).
+- `align-self`: Aligns a single item along the cross axis.
+- `flex-wrap`: Specifies whether the flex items should wrap if they exceed the container width.
+- `flex-grow`: Specifies how much a flex item should grow relative to the other items.
+- `flex-shrink`: Specifies how much a flex item should shrink relative to the other items.
+- `flex-basis`: Specifies the initial size of a flex item.
+
+```css
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+```
+
+## Advanced Flexbox Techniques
+
+Flexbox allows for more advanced layouts. Here’s an example of a card layout using Flexbox:
+
+<SimpleStaticCodeEditor
+  html={`
+    <div class="card">
+      <div class="card-header">Header</div>
+      <div class="card-body">Body</div>
+      <div class="card-footer">Footer</div>
+    </div>
+  `}
+  css={`
+    .card {
+      display: flex;
+      flex-direction: column;
+      width: 300px;
+      border: 1px solid #ccc;
+    }
+    .card-header,
+    .card-body,
+    .card-footer {
+      padding: 10px;
+    }
+    .card-header {
+      background: #f8f9fa;
+    }
+    .card-footer {
+      background: #f8f9fa;
+      margin-top: auto;
+    }
+  `}
+/>
+
+With Flexbox, creating responsive and adaptable layouts becomes much simpler.

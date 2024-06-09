@@ -3,9 +3,136 @@ export const metadata = {
   publishDate: "2024-06-09T02:00:25.430Z",
   categories: ["CSS"],
   interactive: true,
-  shortDescription: "This is a tutorial on How To Create Responsive Layouts with CSS Grid.",
+  shortDescription:
+    "Learn how to create responsive layouts with CSS Grid that adapt to different screen sizes. CSS Grid is a powerful tool for building flexible web layouts. Let's explore how to use CSS Grid to design responsive layouts.",
 }
+
+import SimpleStaticCodeEditor from "@/components/mdx-components/simple-editor"
+import CodeWithPreview from "@/components/mdx-components/codeWithPreview"
 
 # How To Create Responsive Layouts with CSS Grid
 
-This is the content for the How To Create Responsive Layouts with CSS Grid tutorial.
+CSS Grid Layout is a powerful tool for creating responsive and flexible web layouts. In this tutorial, we'll explore how to use CSS Grid to design a responsive layout that adapts to different screen sizes.
+
+## Basic Grid Setup
+
+To get started with CSS Grid, you need a grid container. Inside the grid container, you'll place your grid items. Here's a basic example:
+
+```css
+.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.item {
+  background-color: lightblue;
+  padding: 20px;
+  border: 1px solid #ccc;
+}
+```
+
+```html
+<div class="container">
+  <div class="item">Item 1</div>
+  <div class="item">Item 2</div>
+  <div class="item">Item 3</div>
+  <div class="item">Item 4</div>
+  <div class="item">Item 5</div>
+  <div class="item">Item 6</div>
+</div>
+```
+
+In this example, .container is the grid container with three equal-width columns, and .item represents the grid items.
+
+## Creating a Responsive Layout
+
+To make your layout responsive, you can use media queries to adjust the grid configuration based on the screen size. Here’s an example:
+
+<CodeWithPreview
+  code={`.container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.item {
+background-color: lightblue;
+padding: 20px;
+border: 1px solid #ccc;
+}
+
+@media (max-width: 800px) {
+.container {
+grid-template-columns: repeat(2, 1fr);
+}
+}
+
+@media (max-width: 500px) {
+.container {
+grid-template-columns: 1fr;
+}
+}`}
+containerStyle="grid place-content-center"
+containerStyle="grid place-content-center"
+/>
+
+With these media queries, the grid layout adjusts to two columns on screens smaller than 800px and to a single column on screens smaller than 500px.
+
+## Using Grid Areas
+
+CSS Grid allows you to define grid areas for more complex layouts. Here’s an example of a layout with different sections:
+
+```css
+.container {
+  display: grid;
+  grid-template-areas:
+    "header header"
+    "sidebar content"
+    "footer footer";
+  gap: 10px;
+}
+
+.header {
+  grid-area: header;
+  background-color: lightcoral;
+  padding: 20px;
+}
+
+.sidebar {
+  grid-area: sidebar;
+  background-color: lightgreen;
+  padding: 20px;
+}
+
+.content {
+  grid-area: content;
+  background-color: lightblue;
+  padding: 20px;
+}
+
+.footer {
+  grid-area: footer;
+  background-color: lightgray;
+  padding: 20px;
+}
+```
+
+```html
+<div class="container">
+  <div class="header">Header</div>
+  <div class="sidebar">Sidebar</div>
+  <div class="content">Content</div>
+  <div class="footer">Footer</div>
+</div>
+```
+
+This layout defines specific areas for the header, sidebar, content, and footer, making it easy to create structured and organized layouts.
+
+## Conclusion
+
+CSS Grid is a versatile layout system that enables you to create responsive and adaptive designs with ease. By using grid properties and media queries, you can build layouts that look great on any screen size.
+
+Explore more about CSS Grid and start building your own responsive layouts today!
+
+Feel free to ask for more tutorials or specific topics you need help with!

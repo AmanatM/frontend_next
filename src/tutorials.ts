@@ -13,7 +13,7 @@ export interface TutorialsType {
   shortDescription: string
 }
 
-export const postsPerPage = 3 as const
+export const postsPerPage = 10 as const
 
 export async function getPosts(): Promise<TutorialsType[]> {
   // Retreive slugs from post routes

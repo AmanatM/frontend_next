@@ -1,0 +1,57 @@
+export const metadata = {
+  title: "How To Use CSS Variables",
+  publishDate: "2024-06-09T02:33:02.326Z",
+  categories: ["CSS"],
+  interactive: false,
+  shortDescription: "Learn how to use CSS Variables to manage design consistency and make updates easier.",
+}
+
+# How To Use CSS Variables
+
+CSS Variables, also known as custom properties, allow you to store values that you can reuse throughout your stylesheet. They provide a way to manage design consistency and make updates easier.
+
+### Declaring CSS Variables
+
+CSS Variables are declared using the -- prefix and are usually defined within a :root selector to make them globally accessible.
+
+```css
+:root {
+  --main-bg-color: lightblue;
+  --main-text-color: #333;
+}
+```
+
+## Using CSS Variables
+
+To use a CSS Variable, use the var() function.
+
+```css
+body {
+  background-color: var(--main-bg-color);
+  color: var(--main-text-color);
+}
+```
+
+## Advantages of CSS Variables
+
+CSS Variables make it easier to maintain and update your styles. For example, changing the value of --main-bg-color will update the background color across all elements that use this variable.
+
+## Responsive Design with CSS Variables
+
+You can also use CSS Variables in media queries to create responsive designs.
+
+```css
+:root {
+  --padding: 20px;
+}
+
+@media (max-width: 600px) {
+  :root {
+    --padding: 10px;
+  }
+}
+
+.container {
+  padding: var(--padding);
+}
+```

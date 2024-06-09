@@ -20,16 +20,7 @@ const createPage = (title: string): void => {
   }
 
   // Define the content for the page.mdx file with metadata
-  const pageContent = `---
-title: "${title}"
-publishDate: "${new Date().toISOString()}"
-categories: ["CSS"]
-interactive: true
-shortDescription: "This is a tutorial on ${title}."
----
-
-import React from 'react';
-
+  const pageContent = `
 export const metadata = {
   title: "${title}",
   publishDate: "${new Date().toISOString()}",

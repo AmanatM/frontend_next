@@ -3,17 +3,18 @@
 import { SandpackProvider, tabButton } from "@codesandbox/sandpack-react"
 
 import { useEffect, useMemo, useRef, useState } from "react"
-import { ResizablePanel, ResizablePanelGroup } from "./ui/resizable"
-import { Tabs, TabsContent, TabsList } from "./ui/tabs"
-import { Button } from "./ui/button"
+import { ResizablePanel, ResizablePanelGroup } from "../ui/resizable"
+import { Tabs, TabsContent, TabsList } from "../ui/tabs"
+import { Button } from "../ui/button"
 import { cn } from "@/lib/utils"
-import { TypographySmall } from "./typography"
-import { Card } from "./ui/card"
+import { TypographySmall } from "../typography"
+import { Card } from "../ui/card"
 import { ResizeHandle } from "@/components/ResizableHandleCustom"
 import { Code, RotateCcw } from "lucide-react"
 import { getIconForLanguage } from "@/app/coding/utils/getIconForLanguage"
 import { Editor, Monaco } from "@monaco-editor/react"
 import { useIsMobileBreakpoint } from "@/hooks/useIsMobileBreakpoint"
+import React from "react"
 
 type SimpleCodeEditorProps = {
   html?: string
@@ -97,7 +98,7 @@ export default function SimpleCodeEditor({ html = "", css = "", js = "" }: Simpl
     >
       <ResizablePanelGroup
         direction={isMobileBreakpoint ? "vertical" : "horizontal"}
-        className={cn("flex items-stretch", isMobileBreakpoint && "min-h-150px gap-y-2")}
+        className={cn("flex items-stretch", isMobileBreakpoint && "min-h-150px max-h-40px gap-y-2")}
       >
         <ResizablePanel
           className={cn(isMobileBreakpoint && "h-150px !overflow-visible")}

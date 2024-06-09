@@ -72,7 +72,7 @@ export default function CodeWithPreview({
 function SizeSlider({ value, setValue, label }: { value: number; setValue: (value: number[]) => void; label: string }) {
   return (
     <div>
-      <div className="flex">
+      <div className="flex md:mb-6">
         <span>Container width: </span>
         <span className="ml-auto">{value + "%"}</span>
       </div>
