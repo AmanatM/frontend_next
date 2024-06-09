@@ -19,7 +19,7 @@ function CodeWithPerspective({
   code,
   language = "css",
   childCount = 3,
-  maxChildrenCount = 5,
+  maxChildrenCount = 10,
   initialPerspective = false,
 }: CodeWithPerspectiveProps) {
   const [numberOfChildren, setNumberOfChildren] = useState(childCount)
@@ -79,7 +79,7 @@ function CodeWithPerspective({
 }
 
 function generateItemsForPerspective({
-  numberOfChildren = 3,
+  numberOfChildren,
   isPerspective,
 }: {
   numberOfChildren?: number
@@ -88,16 +88,13 @@ function generateItemsForPerspective({
   const itemHeight = 50
 
   const background = (
-    <div className="grid gap-2 items-center p-1 rounded-md outline-2 outline-dashed outline-muted-foreground ">
+    <div className="flex gap-2 items-center p-1 rounded-md outline-2 outline-dashed outline-muted-foreground ">
       {[...Array(numberOfChildren)].map((_, i) => (
         <div
           key={i}
           className={cn(
-            "relative",
+            "relative flex-1",
             isPerspective && "border-muted-foreground border-dotted border-2 rounded-md",
-            !isPerspective &&
-              i !== 0 && // Hide the first line
-              "after:absolute after:left-0 after:right-0 after:top-[-5px] after:w-full after:bg-muted-foreground after:h-[1px]",
           )}
           style={{
             height: `${itemHeight}px`,
@@ -108,19 +105,19 @@ function generateItemsForPerspective({
   )
 
   const front = (
-    <div className="grid gap-2 items-center p-1">
+    <div className="flex gap-2 items-center p-1">
       <AnimatePresence>
         <LayoutGroup>
           {[...Array(numberOfChildren)].map((_, i) => (
             <motion.div
               key={i}
-              className={cn("bg-gray-500 opacity-60 transition-all rounded-md rel")}
+              className={cn("bg-gray-500 opacity-60 transition-all rounded-md flex-1")}
               style={{
                 height: `${itemHeight}px`,
               }}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
               transition={{ duration: 0.4 }}
               layout
             ></motion.div>
