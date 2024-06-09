@@ -12,7 +12,7 @@ import { Card } from "./ui/card"
 import { ResizeHandle } from "@/components/ResizableHandleCustom"
 import { Code, RotateCcw } from "lucide-react"
 import { getIconForLanguage } from "@/app/coding/utils/getIconForLanguage"
-import { Editor, Monaco, EditorProps } from "@monaco-editor/react"
+import { Editor, Monaco } from "@monaco-editor/react"
 import { useIsMobileBreakpoint } from "@/hooks/useIsMobileBreakpoint"
 
 type SimpleCodeEditorProps = {
@@ -69,7 +69,7 @@ export default function SimpleCodeEditor({ html = "", css = "", js = "" }: Simpl
     })
   }
 
-  const editorRef = useRef<EditorProps | null>(null)
+  const editorRef = useRef(null)
 
   function handleEditorDidMounteditor(editor: any) {
     editorRef.current = editor
