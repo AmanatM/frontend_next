@@ -5,14 +5,14 @@ import PerspectiveCard from "@/components/mdx-components/perspective-card"
 import CodeHighlighter from "@/components/universalCodeHighliter"
 import { Slider } from "@/components/ui/slider"
 import { cn } from "@/lib/utils"
+import { AnimatePresence, LayoutGroup, motion } from "framer-motion"
 
 type CodeWithPerspectiveProps = {
   code: string
-  containerStyle?: string
   language?: string
   childCount?: number
   maxChildrenCount?: number
-  isPerspectiveActive?: boolean
+  initialPerspective?: boolean
 }
 
 function CodeWithPerspective({
@@ -20,24 +20,36 @@ function CodeWithPerspective({
   language = "css",
   childCount = 3,
   maxChildrenCount = 5,
-  isPerspectiveActive = false,
+  initialPerspective = false,
 }: CodeWithPerspectiveProps) {
   const [numberOfChildren, setNumberOfChildren] = useState(childCount)
 
-  const isCodeProvided = code && code.length > 0
+  const [isPerspective, setIsPerspective] = useState(initialPerspective || false)
 
+  const { background, front } = generateItemsForPerspective({
+    numberOfChildren: numberOfChildren,
+    isPerspective: isPerspective,
+  })
+
+  const isCodeProvided = code && code.length > 0
   const twoColsLayoutStyles = isCodeProvided ? "grid grid-cols-1 md:grid-cols-2 md:gap-x-4 gap-y-8" : "grid grid-cols-1"
 
   return (
-    <div className={cn("px-4 rounded-md my-24 py-10", isCodeProvided && "bg-card")}>
-      {/* Header  */}
+    <div className={cn("px-4 rounded-md my-16 py-10", isCodeProvided && "bg-card")}>
+      {/* Header Slider */}
       <div className={cn("mb-12")}>
-        <SizeSlider
-          value={numberOfChildren}
-          maxValue={maxChildrenCount}
-          setValue={setNumberOfChildren}
-          label="Number Of Children"
-        />
+        <div className="max-w-[350px] mx-auto">
+          <div className="flex md:mb-6">
+            <span>Number of Children</span>
+            <span className="ml-auto">{numberOfChildren}</span>
+          </div>
+          <Slider
+            defaultValue={[numberOfChildren]}
+            onValueChange={([value]) => setNumberOfChildren(value)}
+            min={1}
+            max={maxChildrenCount}
+          />
+        </div>
       </div>
 
       {/* Code and preview  */}
@@ -54,33 +66,71 @@ function CodeWithPerspective({
           </div>
         )}
         <div className={cn(isCodeProvided ? "px-0 md:px-6" : "py-10")}>
-          <PerspectiveCard numberOfChildren={numberOfChildren} isPerspectiveActive={isPerspectiveActive} />
+          <PerspectiveCard
+            isPerspectiveActive={isPerspective}
+            onPerspectiveChange={setIsPerspective}
+            backElement={background}
+            frontElement={front}
+          />
         </div>
       </div>
     </div>
   )
 }
 
-function SizeSlider({
-  value,
-  maxValue,
-  setValue,
-  label,
+function generateItemsForPerspective({
+  numberOfChildren = 3,
+  isPerspective,
 }: {
-  value: number
-  maxValue: number
-  setValue: (value: number) => void
-  label: string
+  numberOfChildren?: number
+  isPerspective?: boolean
 }) {
-  return (
-    <div className="max-w-[350px] mx-auto">
-      <div className="flex md:mb-6">
-        <span>{label}</span>
-        <span className="ml-auto">{value.toString()}</span>
-      </div>
-      <Slider defaultValue={[value]} onValueChange={([value]) => setValue(value)} min={1} max={maxValue} />
+  const itemHeight = 50
+
+  const background = (
+    <div className="grid gap-2 items-center p-1 rounded-md outline-2 outline-dashed outline-muted-foreground ">
+      {[...Array(numberOfChildren)].map((_, i) => (
+        <div
+          key={i}
+          className={cn(
+            "relative",
+            isPerspective && "border-muted-foreground border-dotted border-2 rounded-md",
+            !isPerspective &&
+              i !== 0 && // Hide the first line
+              "after:absolute after:left-0 after:right-0 after:top-[-5px] after:w-full after:bg-muted-foreground after:h-[1px]",
+          )}
+          style={{
+            height: `${itemHeight}px`,
+          }}
+        ></div>
+      ))}
     </div>
   )
+
+  const front = (
+    <div className="grid gap-2 items-center p-1">
+      <AnimatePresence>
+        <LayoutGroup>
+          {[...Array(numberOfChildren)].map((_, i) => (
+            <motion.div
+              key={i}
+              className={cn("bg-gray-500 opacity-60 transition-all rounded-md rel")}
+              style={{
+                height: `${itemHeight}px`,
+              }}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              transition={{ duration: 0.4 }}
+              layout
+            ></motion.div>
+          ))}
+        </LayoutGroup>
+      </AnimatePresence>
+    </div>
+  )
+
+  return { background, front }
 }
 
 export default CodeWithPerspective
