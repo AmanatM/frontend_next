@@ -10,6 +10,7 @@ type CodeWithPreviewProps = {
   childStyle?: string
   headerSingleColumn?: boolean
   childContent?: React.ReactNode | string
+  language?: string
 }
 
 export default function CodeWithPreview({
@@ -18,6 +19,7 @@ export default function CodeWithPreview({
   childStyle,
   headerSingleColumn,
   childContent = "Child",
+  language = "css",
 }: CodeWithPreviewProps) {
   const [containerWidth, setContainerWidth] = useState([100])
   const [containerHight, setContainerHeight] = useState([100])
@@ -39,7 +41,7 @@ export default function CodeWithPreview({
         <div className="size-full">
           <CodeHighlighter
             code={code}
-            language={"css"}
+            language={language}
             customStyle={{
               height: "100%",
               background: "#1e1e1e",

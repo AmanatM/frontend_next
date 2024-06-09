@@ -9,17 +9,26 @@ export const metadata = {
 
 import SimpleStaticCodeEditor from "@/components/mdx-components/simple-editor"
 import CodeWithPreview from "@/components/mdx-components/codeWithPreview"
-import PerspectiveCard from "@/components/mdx-components/perspective-card"
+import CodeWithPerspective from "./_components/codeWithPerspective"
 
 # How To Create Responsive Layouts with CSS Grid
 
 CSS Grid Layout is a powerful tool for creating responsive and flexible web layouts. In this tutorial, we'll explore how to use CSS Grid to design a responsive layout that adapts to different screen sizes.
 
+<CodeWithPerspective
+
+isPerspectiveActive={true}/>
+
 ## Basic Grid Setup
 
 To get started with CSS Grid, you need a grid container. Inside the grid container, you'll place your grid items. Here's a basic example:
 
-<PerspectiveCard />
+<CodeWithPerspective
+  code={`.container {
+  display: grid;
+}       
+`}
+/>
 
 ```css
 .container {
@@ -76,7 +85,6 @@ grid-template-columns: repeat(2, 1fr);
 grid-template-columns: 1fr;
 }
 }`}
-containerStyle="grid place-content-center"
 containerStyle="grid place-content-center"
 />
 
