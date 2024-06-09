@@ -1,19 +1,18 @@
 "use client"
 
-import { SandpackProvider } from "@codesandbox/sandpack-react"
+import { SandpackProvider, tabButton } from "@codesandbox/sandpack-react"
 
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { ResizablePanel, ResizablePanelGroup } from "./ui/resizable"
-import CodeHighlighter from "./universalCodeHighliter"
 import { Tabs, TabsContent, TabsList } from "./ui/tabs"
 import { Button } from "./ui/button"
 import { cn } from "@/lib/utils"
 import { TypographySmall } from "./typography"
-import { Card, CardContent, CardHeader } from "./ui/card"
+import { Card } from "./ui/card"
 import { ResizeHandle } from "@/components/ResizableHandleCustom"
 import { Code, RotateCcw } from "lucide-react"
 import { getIconForLanguage } from "@/app/coding/utils/getIconForLanguage"
-import { Editor } from "@monaco-editor/react"
+import { Editor, Monaco, EditorProps } from "@monaco-editor/react"
 import { useIsMobileBreakpoint } from "@/hooks/useIsMobileBreakpoint"
 
 type SimpleCodeEditorProps = {
@@ -22,7 +21,7 @@ type SimpleCodeEditorProps = {
   js?: string
 }
 
-const SimpleCodeEditor = ({ html = "", css = "", js = "" }: SimpleCodeEditorProps) => {
+export default function SimpleCodeEditor({ html = "", css = "", js = "" }: SimpleCodeEditorProps) {
   const isMobileBreakpoint = useIsMobileBreakpoint()
 
   const [files, setFiles] = useState<{ [key: string]: { code: string } }>({
@@ -31,7 +30,6 @@ const SimpleCodeEditor = ({ html = "", css = "", js = "" }: SimpleCodeEditorProp
     "script.js": { code: js },
   })
 
-  console.log(files)
   const [activeFile, setActiveFile] = useState("index.html")
 
   const [layoutSize, setLayoutSize] = useState([65, 35])
@@ -43,7 +41,11 @@ const SimpleCodeEditor = ({ html = "", css = "", js = "" }: SimpleCodeEditorProp
           <style>
           body {
               font-family: sans-serif; 
-      background-color: white;
+              background-color: white;
+              width: 100%;
+              height: 100%;
+              max-width: 100%;
+              max-height: 100%;
           }
   
  ${files["style.css"].code}
@@ -66,6 +68,22 @@ const SimpleCodeEditor = ({ html = "", css = "", js = "" }: SimpleCodeEditorProp
       "script.js": { code: js },
     })
   }
+
+  const editorRef = useRef<EditorProps | null>(null)
+
+  function handleEditorDidMounteditor(editor: any) {
+    editorRef.current = editor
+  }
+
+  function formatCode() {
+    if (editorRef.current) {
+      editorRef.current.getAction("editor.action.formatDocument").run()
+    }
+  }
+
+  useEffect(() => {
+    formatCode()
+  }, [activeFile])
 
   return (
     <SandpackProvider
@@ -113,12 +131,13 @@ const SimpleCodeEditor = ({ html = "", css = "", js = "" }: SimpleCodeEditorProp
               </TabsList>
               <TabsContent value="editor" className="size-full">
                 <Editor
+                  onMount={handleEditorDidMounteditor}
+                  saveViewState={false}
                   width="100%"
                   height="100%"
                   language={getFileExtension(activeFile)}
                   defaultValue={files[activeFile].code}
                   value={files[activeFile].code}
-                  path={"/" + activeFile}
                   theme="vs-dark"
                   onChange={value => {
                     setFiles({ ...files, [activeFile]: { code: value || "" } })
@@ -127,9 +146,20 @@ const SimpleCodeEditor = ({ html = "", css = "", js = "" }: SimpleCodeEditorProp
                     minimap: { enabled: false },
                     fontSize: 12,
                     fontFamily: 'Menlo, Monaco, "Courier New", monospace',
-                    scrollBeyondLastLine: true,
+                    scrollBeyondLastLine: false,
                     fixedOverflowWidgets: true,
                     tabSize: 2,
+
+                    automaticLayout: true,
+                    overviewRulerLanes: 0, // Disable the overview ruler
+                    mouseWheelScrollSensitivity: 0, // Disable mouse wheel scrolling
+                    renderWhitespace: "none", // Do not render whitespace
+                    readOnly: false, // Make editor read-only if needed
+                    scrollbar: {
+                      horizontal: "hidden", // Hide horizontal scrollbar
+                      vertical: "hidden", // Hide vertical scrollbar
+                      alwaysConsumeMouseWheel: false, // Prevent editor from consuming the mouse wheel events
+                    },
                   }}
                   className="min-h-[250px]"
                 />
@@ -159,5 +189,3 @@ const SimpleCodeEditor = ({ html = "", css = "", js = "" }: SimpleCodeEditorProp
     </SandpackProvider>
   )
 }
-
-export default SimpleCodeEditor

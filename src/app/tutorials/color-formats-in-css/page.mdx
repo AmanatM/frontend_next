@@ -24,10 +24,94 @@ So, this isn’t really a color format, but it’s a good place to start!
 HTML comes with 140 named colors. These are special keyword values like dodgerblue, hotpink, and tomato:
 
 <SimpleStaticCodeEditor
-  html={`<p>Hello world</p>`}
+  html={`<p>Hello world </p>`}
   css={`
     p {
       color: red;
     }
   `}
 />
+
+Named colors are great when you need a placeholder color. For example, if you’re building a prototype and need temporary values, or if you’re writing educational content. In terms of readability, nothing beats color: red.
+
+However, we generally don’t use named colors in production applications. The 140 colors just aren’t enough.
+
+## RGB
+
+Alright, this is our first “real” color format. Here’s how we use it:
+
+```css
+body {
+  color: rgb(255 0 0);
+}
+```
+
+rgb stands for red, green, blue. Your display is really just a collection of millions of tiny red, green, and blue LEDs. The rgb color format lets us tweak the brightness of those lights directly.
+
+Each value — red, green, blue — is referred to as a channel. Each channel goes from 0 to 255. By mixing these channels in different amounts, we can create over 16 million different colors.
+
+The neat thing about RGB color is that it’s based on the physics of light. We can mix red, green, and blue light together to create any color. Crank them all to 255, and we get white. Set them all to 0, and we’re left with black.
+
+The rgb color format also allows us to specify a 4th optional value for the alpha channel, to control transparency:
+
+<SimpleStaticCodeEditor
+
+html={`<div class="translucent-box"></div>`}
+css={`.translucent-box {
+  background: rgb(255 0 0 / 0.5);
+  width: 70%;
+  margin: 0 auto;
+  height: 70px;
+}
+`}
+/>
+
+The alpha channel ranges from 0 (fully invisible) to 1 (fully opaque). Anything in-between produces a translucent color.
+
+## Hex Codes
+
+This is probably the most commonly-used color format on the web. It looks like this:
+
+```css
+body {
+  color: #ff0000;
+}
+```
+
+A 6-digit hex code contains three 2-digit values, one for each channel (red, green, blue). Instead of using a 10-digit decimal system, it uses a 16-digit hexadecimal system.
+
+Fundamentally, hex codes are the same as RGB values. We’re providing a value for red, green, and blue.
+
+You can also include an alpha channel with 8-digit hex codes:
+
+```css
+.translucent-box {
+  background: #ffff0080;
+}
+```
+
+In this example, we’re specifying 80 as the alpha channel, which is equivalent to 128 in a decimal system. As a result, this box is 50% opaque.
+
+## HSL
+
+HSL stands for Hue, Saturation, and Lightness. It’s an intuitive way to think about color:
+
+```css
+.box {
+  background-color: hsl(0deg 100% 50%);
+}
+```
+
+This format takes three values:
+
+- Hue: The pigment, ranging from 0 to 360 degrees.
+- Saturation: The intensity of the pigment, from 0% to 100%.
+- Lightness: The brightness of the color, from 0% to 100%.
+
+HSL allows us to specify transparency using the / delimiter:
+
+```css
+.translucent-box {
+  background: hsl(0deg 100% 50% / 0.5);
+}
+```
