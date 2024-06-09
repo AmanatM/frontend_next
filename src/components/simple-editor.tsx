@@ -69,7 +69,7 @@ export default function SimpleCodeEditor({ html = "", css = "", js = "" }: Simpl
     })
   }
 
-  const editorRef = useRef(null)
+  const editorRef = useRef<any | null>(null)
 
   function handleEditorDidMounteditor(editor: any) {
     editorRef.current = editor
