@@ -20,13 +20,26 @@ import ComponentGroup from "@/components/mdx-components/component-group"
 Flexbox is a powerful layout module in CSS that allows you to design complex layouts with ease. Let’s dive into the fundamentals and practical applications of Flexbox.
 
 <ComponentGroup
-  sliderData={{
-    title: "Number Of children",
-    initialValue: 4,
-    minValue: 1,
-    maxValue: 10,
-    withCode: true,
-  }}
+  groupData={[
+    {
+      type: "slider",
+      title: "Children count",
+      initialValue: 5,
+      minValue: 1,
+      maxValue: 10,
+      name: "childrenCount",
+    },
+    {
+      type: "toggle",
+      initialValue: true,
+      name: "toggle3D",
+    },
+    {
+      type: "custom",
+      initialValue: "Custom Text",
+      name: "customText",
+    },
+  ]}
   withCode={true}
   code={`.item {
 flex: 1;

@@ -27,7 +27,9 @@ export function PerspectiveCard({
   backElement,
   className,
 }: PerspectiveCardProps) {
-  const isControlled = isPerspectiveActive !== undefined && onPerspectiveChange !== undefined
+  const { isInGroup: isControlled, customData } = useContainerContext()
+
+  console.log(customData)
 
   const [internalIsPerspective, setInternalIsPerspective] = useState(isPerspectiveActive ?? false)
 
@@ -84,8 +86,11 @@ export function PerspectiveCard({
 }
 
 export function PairedItemsPerspectiveCard() {
-  const { sliderValue } = useContainerContext()
-  const { frontElement, backElement } = generatePairedItemsForPerspective({ numberOfChildren: sliderValue[0] })
+  const { isInGroup, sliderState } = useContainerContext()
+
+  const { frontElement, backElement } = generatePairedItemsForPerspective({
+    numberOfChildren: sliderState?.[0] ?? 4,
+  })
 
   return <PerspectiveCard frontElement={frontElement} backElement={backElement} />
 }
