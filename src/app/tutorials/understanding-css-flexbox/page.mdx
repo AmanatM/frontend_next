@@ -7,13 +7,33 @@ export const metadata = {
     "Flexbox is a powerful layout module in CSS that allows you to design complex layouts with ease. Let’s dive into the fundamentals and practical applications of Flexbox.",
 }
 import SimpleStaticCodeEditor from "@/components/mdx-components/simple-editor"
-import CodeWithPerspective from "./_components/codeWithPerspective"
+import { CodeWithPerspective } from "@/components/mdx-components/codeWithPerspective"
+import {
+  generatePairedItemsForPerspective,
+  PairedItemsPerspectiveCard,
+} from "@/components/mdx-components/perspective-card"
+
+import ComponentGroup from "@/components/mdx-components/component-group"
 
 # Understanding CSS Flexbox
 
 Flexbox is a powerful layout module in CSS that allows you to design complex layouts with ease. Let’s dive into the fundamentals and practical applications of Flexbox.
 
-<CodeWithPerspective initialPerspective={true} maxChildrenCount={10} childCount={6} />
+<ComponentGroup
+  sliderData={{
+    title: "Number Of children",
+    initialValue: 4,
+    minValue: 1,
+    maxValue: 10,
+    withCode: true,
+  }}
+  withCode={true}
+  code={`.item {
+flex: 1;
+}`}
+>
+  <PairedItemsPerspectiveCard />
+</ComponentGroup>
 
 To start using Flexbox, you need a flex container. Flex items are the children of the flex container. Here’s a basic example:
 

@@ -9,27 +9,38 @@ export const metadata = {
 
 import SimpleStaticCodeEditor from "@/components/mdx-components/simple-editor"
 import CodeWithPreview from "@/components/mdx-components/codeWithPreview"
-import CodeWithPerspective from "./_components/codeWithPerspective"
+
+import ComponentGroup from "@/components/mdx-components/component-group"
+import { PairedItemsPerspectiveCard } from "@/components/mdx-components/perspective-card"
 
 # How To Create Responsive Layouts with CSS Grid
 
 CSS Grid Layout is a powerful tool for creating responsive and flexible web layouts. In this tutorial, we'll explore how to use CSS Grid to design a responsive layout that adapts to different screen sizes.
 
-<CodeWithPerspective
-
-initialPerspective={true}/>
+<ComponentGroup>
+  <PairedItemsPerspectiveCard />
+</ComponentGroup>
 
 ## Basic Grid Setup
 
 To get started with CSS Grid, you need a grid container. Inside the grid container, you'll place your grid items. Here's a basic example:
 
-<CodeWithPerspective
+<ComponentGroup
   code={`.container {
   display: grid;
 }       
 `}
-/>
+sliderData={{
+  title: "Number Of children",
+  initialValue: 5,
+  minValue: 1,
+  maxValue: 5,
+  withCode: true,
+}}
+>
+  <PairedItemsPerspectiveCard />
 
+</ComponentGroup>
 ```css
 .container {
   display: grid;
@@ -38,11 +49,12 @@ To get started with CSS Grid, you need a grid container. Inside the grid contain
 }
 
 .item {
-  background-color: lightblue;
-  padding: 20px;
-  border: 1px solid #ccc;
+background-color: lightblue;
+padding: 20px;
+border: 1px solid #ccc;
 }
-```
+
+````
 
 ```html
 <div class="container">
@@ -53,7 +65,7 @@ To get started with CSS Grid, you need a grid container. Inside the grid contain
   <div class="item">Item 5</div>
   <div class="item">Item 6</div>
 </div>
-```
+````
 
 In this example, .container is the grid container with three equal-width columns, and .item represents the grid items.
 
