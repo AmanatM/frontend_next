@@ -11,8 +11,6 @@ import { useContainerContext } from "./component-group"
  * Props for the PerspectiveCard component.
  */
 type PerspectiveCardProps = {
-  isPerspectiveActive?: boolean
-  onPerspectiveChange?: (isPerspective: boolean) => void
   frontElement: JSX.Element
   backElement: JSX.Element
   className?: string
@@ -20,35 +18,16 @@ type PerspectiveCardProps = {
 /**
  * A card component that provides a perspective effect when toggled.
  */
-export function PerspectiveCard({
-  isPerspectiveActive,
-  onPerspectiveChange,
-  frontElement,
-  backElement,
-  className,
-}: PerspectiveCardProps) {
-  const { isInGroup: isControlled, customData } = useContainerContext()
+export function PerspectiveCard({ frontElement, backElement, className }: PerspectiveCardProps) {
+  const [internalIsPerspective, setInternalIsPerspective] = useState(false)
 
-  console.log(customData)
-
-  const [internalIsPerspective, setInternalIsPerspective] = useState(isPerspectiveActive ?? false)
-
-  // Update internal state if prop changes
-  useEffect(() => {
-    if (isControlled) {
-      setInternalIsPerspective(isPerspectiveActive!)
-    }
-  }, [isPerspectiveActive, isControlled])
-
-  const handleToggle = useCallback(() => {
-    if (isControlled) {
-      onPerspectiveChange!(!isPerspectiveActive)
-    } else {
-      setInternalIsPerspective(prev => !prev)
-    }
-  }, [isControlled, isPerspectiveActive, onPerspectiveChange])
-
-  const isPerspective = isControlled ? isPerspectiveActive : internalIsPerspective
+  // const handleToggle = useCallback(() => {
+  //   if (isInGroup) {
+  //     setStateValueByName("isPerspective", !valueFromContext)
+  //   } else {
+  //     setInternalIsPerspective(prev => !prev)
+  //   }
+  // }, [isInGroup, setStateValueByName, valueFromContext])
 
   return (
     <div
@@ -59,7 +38,7 @@ export function PerspectiveCard({
         <div
           className={cn(
             "w-full absolute top-0 left-0 z-10 transition duration-200",
-            isPerspective && "skew-y-12 translate-x-[10%] scale-x-90 ",
+            internalIsPerspective && "skew-y-12 translate-x-[10%] scale-x-90 ",
           )}
         >
           {backElement}
@@ -70,14 +49,14 @@ export function PerspectiveCard({
           <div
             className={cn(
               "w-full transition duration-200 z-20 relative",
-              isPerspective && "skew-y-12 translate-x-[-10%] scale-x-90",
+              internalIsPerspective && "skew-y-12 translate-x-[-10%] scale-x-90",
             )}
           >
             {frontElement}
           </div>
         </div>
         <div className="flex justify-center space-x-2 mt-10">
-          <Switch id="airplane-mode" checked={isPerspective} onCheckedChange={handleToggle} />
+          <Switch id="airplane-mode" checked={internalIsPerspective} onCheckedChange={setInternalIsPerspective} />
           <Label htmlFor="airplane-mode">3D View</Label>
         </div>
       </div>
@@ -85,18 +64,28 @@ export function PerspectiveCard({
   )
 }
 
-export function PairedItemsPerspectiveCard() {
-  const { isInGroup, sliderState } = useContainerContext()
+export function PairedItemsPerspectiveCard({
+  childrenStyles,
+  containerStyles,
+}: {
+  childrenStyles: string
+  containerStyles: string
+}) {
+  const { getStateValueByName, isInGroup } = useContainerContext()
+  console.log("isInGroup", isInGroup)
+  const valueFromContext = getStateValueByName("numberOfChildren")
 
   const { frontElement, backElement } = generatePairedItemsForPerspective({
-    numberOfChildren: sliderState?.[0] ?? 4,
+    numberOfChildren: isInGroup ? valueFromContext : 2,
+    childrenStyles: childrenStyles,
+    containerStyles: containerStyles,
   })
 
   return <PerspectiveCard frontElement={frontElement} backElement={backElement} />
 }
 
 export function generatePairedItemsForPerspective({
-  numberOfChildren,
+  numberOfChildren = 2,
   isPerspective,
   containerStyles = "grid gap-2 items-center p-1 rounded-md",
   childrenStyles = "relative h-10 after:content-['Unstyled'] after:text-gray-400",

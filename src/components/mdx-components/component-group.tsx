@@ -13,17 +13,10 @@ type SliderProps = {
   addPercentageSign?: boolean
 }
 
-type ToggleProps = {
-  title: string
-  initialValue: number
-  isPercentage?: boolean
-}
-
 type GroupDataItem = {
-  type: "slider" | "toggle" | "custom"
   name: string
-} & SliderProps &
-  ToggleProps
+  value: any
+}
 
 // Create the context with a default value
 const ContainerContext = createContext<ContainerContextType | undefined>(undefined)
@@ -35,16 +28,22 @@ export const useContainerContext = (): ContainerContextType & {
   const context = useContext(ContainerContext)
   const isInGroup = context === undefined
 
-  return {
-    ...context,
-    isInGroup,
+  if (!context) {
+    return {
+      code: "codeState",
+      groupData: [],
+      getStateValueByName: (name: string) => {},
+      setStateValueByName: (name: string, newValue: any) => {},
+      isInGroup: false,
+    }
   }
+
+  return { ...context, isInGroup: true }
 }
 
 // Define the props for the Container component
 interface ContainerProps {
   children: ReactNode
-  withCode?: boolean
   code?: string
   groupData?: GroupDataItem[]
 }
@@ -52,29 +51,35 @@ interface ContainerProps {
 // Define the context type
 type ContainerContextType = {
   code?: string
-  sliderState?: number[]
-  setSliderState?: (value: number[]) => void
-  customData?: GroupDataItem[]
+  groupData?: GroupDataItem[]
+  getStateValueByName: (name: string) => GroupDataItem | undefined
+  setStateValueByName: (name: string, newValue: any) => void
 }
 
 // Container component that provides the context
-const ComponentGroup: React.FC<ContainerProps> = ({ children, withCode = false, code, groupData }) => {
-  const [codeValue, setCodeValue] = useState(code || "")
+const ComponentGroup: React.FC<ContainerProps> = ({ children, code, groupData }) => {
+  const [codeState, setCodeState] = useState(code || "")
+  const [groupDataState, setGroupDataState] = useState(groupData ?? [])
 
-  const sliderData = groupData?.find(data => data.type === "slider") || undefined
-  const toggleData = groupData?.find(data => data.type === "toggle") || undefined
-  const customData = groupData?.filter(data => data.type === "custom") || undefined
+  const withCode = codeState && codeState.length > 0
 
-  const [sliderState, setSliderState] = useState(sliderData ? [sliderData.initialValue] : [4])
-  const [toggleState, setToggleState] = useState()
-  const [customDataState, setCustomDataState] = useState(customData || null)
+  const getStateValueByName = (name: string) => {
+    const item = groupDataState.find(data => data.name === name)
+    return item ? item.value : undefined
+  }
+
+  const setStateValueByName = (name: string, newValue: any) => {
+    setGroupDataState(prevState => prevState.map(data => (data.name === name ? { ...data, value: newValue } : data)))
+  }
+
+  const sliderValue = getStateValueByName("numberOfChildren")
+  console.log(sliderValue)
 
   const value = {
-    codeValue,
-    setCodeValue,
-    sliderState,
-    setSliderState,
-    customData: customDataState,
+    code: codeState,
+    groupData: groupDataState,
+    getStateValueByName,
+    setStateValueByName,
   }
 
   return (
@@ -84,24 +89,19 @@ const ComponentGroup: React.FC<ContainerProps> = ({ children, withCode = false, 
         <div className="mb-14">
           {/* Slider */}
           <div className={cn("max-w-[350px] mx-auto ")}>
-            {sliderData && (
-              <GroupSlider
-                initialValue={sliderData.initialValue}
-                value={sliderState}
-                addPercentageSign={sliderData.addPercentageSign}
-                setValue={setSliderState}
-                title={sliderData.title}
-                minValue={sliderData.minValue}
-                maxValue={sliderData.maxValue}
-              />
-            )}
+            <Slider
+              defaultValue={[sliderValue]}
+              onValueChange={value => setStateValueByName("numberOfChildren", value[0])}
+              min={1}
+              max={10}
+            />
           </div>
         </div>
 
         {/* Main Content  */}
         <div className={cn("grid grid-cols-1 md:grid-cols-2 md:gap-x-4 gap-y-14", !withCode && "!grid-cols-1")}>
           {/* Code Editor  */}
-          {withCode && code && (
+          {code && (
             <div className="size-full flex flex-col justify-start">
               <CodeHighlighter
                 code={code}
@@ -117,6 +117,8 @@ const ComponentGroup: React.FC<ContainerProps> = ({ children, withCode = false, 
 
           <div className={cn(withCode ? "px-0 md:px-6" : "py-10")}>{children}</div>
         </div>
+        {/* Footer  */}
+        <div className="flex justify-center mt-10"></div>
       </div>
     </ContainerContext.Provider>
   )
