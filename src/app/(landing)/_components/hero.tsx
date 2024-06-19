@@ -1,6 +1,5 @@
-import { TypographyH1, TypographyLead, TypographyP } from "@/components/typography"
+import { TypographyH1, TypographyLead } from "@/components/typography"
 import { Button } from "@/components/ui/button"
-import { User } from "@supabase/supabase-js"
 import Link from "next/link"
 
 export default function Hero() {

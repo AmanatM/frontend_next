@@ -10,8 +10,8 @@ import { Badge } from "@/components/ui/badge"
 function TutorialCard({ ...props }: TutorialsType) {
   console.log(props)
   return (
-    <Card className=" hover:bg-muted">
-      <Link href={`/tutorials/${props.slug}`} className="h-full flex flex-col">
+    <Card className="hover:bg-muted">
+      <Link href={`/tutorials/${props.slug}`} className="flex h-full flex-col">
         <CardHeader className="pb-0">
           <div className="space-y-3">
             <CardTitle className="flex items-center">
@@ -23,7 +23,7 @@ function TutorialCard({ ...props }: TutorialsType) {
         <CardContent className="py-4">
           <CardDescription>{props.shortDescription}</CardDescription>
         </CardContent>
-        <CardFooter className="mt-auto pt-0 flex justify-between">
+        <CardFooter className="mt-auto flex justify-between pt-0">
           <div className="flex space-x-4 text-sm text-muted-foreground">
             {props.categories.map(category => (
               <div className="flex items-center" key={category}>
