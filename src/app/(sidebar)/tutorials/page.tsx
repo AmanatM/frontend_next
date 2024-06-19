@@ -1,5 +1,5 @@
 import { DashboardContainer } from "@/components/dashboard-container"
-import TutorialCard from "@/app/(dashboard)/tutorials/_components/TutorialCard"
+import TutorialCard from "./_components/TutorialCard"
 import { TypographyH3, TypographyMuted } from "@/components/typography"
 
 import { Metadata } from "next"

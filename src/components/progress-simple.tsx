@@ -5,8 +5,9 @@ import { Progress } from "./ui/progress"
 import { createClientServer } from "@/supabase-utils/supabase-server"
 import useSupabaseBrowser from "@/supabase-utils/supabase-client"
 import { useQuery } from "@tanstack/react-query"
-import { getCodingQuestions } from "@/app/(dashboard)/coding/_queries/getCodingQuestions"
+
 import { useMemo } from "react"
+import { getCodingQuestions } from "@/app/(sidebar)/coding/_queries/getCodingQuestions"
 
 function ProgressSimple({ user }: { user: User | null }) {
   const supabase = useSupabaseBrowser()

@@ -1,4 +1,4 @@
-import { UrlObject } from 'url'
+import { UrlObject } from "url"
 
 type MenuLinks = {
   title: string
@@ -7,15 +7,15 @@ type MenuLinks = {
 
 export const top_menu_links: MenuLinks[] = [
   {
-    title: 'Home',
-    url: { pathname: '/' },
+    title: "Dashboard",
+    url: { pathname: "/dashboard" },
   },
   {
-    title: 'Coding',
-    url: { pathname: '/coding' },
+    title: "Coding",
+    url: { pathname: "/coding" },
   },
   {
-    title: 'Tutorials',
-    url: { pathname: '/tutorials' },
+    title: "Tutorials",
+    url: { pathname: "/tutorials" },
   },
 ]

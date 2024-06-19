@@ -1,5 +1,5 @@
-import { Home, LucideIcon, UserIcon, CodeXml, NotebookPen, Target } from 'lucide-react'
-import { UrlObject } from 'url'
+import { Home, LucideIcon, UserIcon, CodeXml, NotebookPen, Target } from "lucide-react"
+import { UrlObject } from "url"
 
 type INavLinks = {
   title: string
@@ -10,28 +10,28 @@ type INavLinks = {
 
 export const side_nav_links: INavLinks[] = [
   {
-    title: 'Home',
-    url: { pathname: '/' },
+    title: "Dashboard",
+    url: { pathname: "/dashboard" },
     icon: Home,
   },
   {
-    title: 'Coding',
-    url: { pathname: '/coding' },
+    title: "Coding",
+    url: { pathname: "/coding" },
     icon: CodeXml,
   },
   {
-    title: 'Tutorials',
-    url: { pathname: '/tutorials' },
+    title: "Tutorials",
+    url: { pathname: "/tutorials" },
     icon: NotebookPen,
   },
   {
-    title: 'Topics',
-    url: { pathname: '/topics' },
+    title: "Topics",
+    url: { pathname: "/topics" },
     icon: Target,
   },
   {
-    title: 'Profile',
-    url: { pathname: '/profile' },
+    title: "Profile",
+    url: { pathname: "/profile" },
     icon: UserIcon,
     private: true,
   },
