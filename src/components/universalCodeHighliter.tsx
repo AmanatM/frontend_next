@@ -18,6 +18,7 @@ export default function CodeHighlighter({ code, language, style, customStyle, ..
       language={language}
       className={"!m-0"}
       customStyle={{
+        background: "#1e1e1e",
         ...customStyle,
       }}
       {...props}

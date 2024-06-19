@@ -10,8 +10,8 @@ export const metadata = {
 import SimpleStaticCodeEditor from "@/components/mdx-components/simple-editor"
 import CodeWithPreview from "@/components/mdx-components/codeWithPreview"
 
-import ComponentGroup from "@/components/mdx-components/component-group"
-import { PairedItemsPerspectiveCard } from "@/components/mdx-components/perspective-card"
+import ComponentGroup from "@/components/mdx-components/blocks/component-group"
+import { CodeWithPerspective } from "@/components/mdx-components/codeWithPerspective"
 
 # How To Create Responsive Layouts with CSS Grid
 
@@ -21,7 +21,14 @@ CSS Grid Layout is a powerful tool for creating responsive and flexible web layo
 
 To get started with CSS Grid, you need a grid container. Inside the grid container, you'll place your grid items. Here's a basic example:
 
-<PairedItemsPerspectiveCard childrenStyles="h-10 w-10 flex-1" containerStyles="flex" />
+<CodeWithPerspective
+  code={`.parent {
+  display: grid;
+  height: 200px;
+}     `}
+  containerStyles="grid gap-y-1 h-[200px]"
+  childrenStyles=""
+/>
 
 ```css
 .container {
@@ -53,10 +60,6 @@ In this example, .container is the grid container with three equal-width columns
 ## Creating a Responsive Layout
 
 To make your layout responsive, you can use media queries to adjust the grid configuration based on the screen size. Here’s an example:
-
-<ComponentGroup>
-
-</ComponentGroup>
 
 With these media queries, the grid layout adjusts to two columns on screens smaller than 800px and to a single column on screens smaller than 500px.
 

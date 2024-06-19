@@ -2,32 +2,32 @@
 
 import React, { useCallback, useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
-import { Switch } from "../ui/switch"
-import { Label } from "../ui/label"
+import { Switch } from "../../ui/switch"
+import { Label } from "../../ui/label"
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion"
 import { useContainerContext } from "./component-group"
 
-/**
- * Props for the PerspectiveCard component.
- */
 type PerspectiveCardProps = {
   frontElement: JSX.Element
   backElement: JSX.Element
   className?: string
+  isPerspective?: boolean
+  setIsPerspective?: (value: any) => void
 }
-/**
- * A card component that provides a perspective effect when toggled.
- */
-export function PerspectiveCard({ frontElement, backElement, className }: PerspectiveCardProps) {
+
+export function PerspectiveCard({
+  frontElement,
+  backElement,
+  className,
+  isPerspective,
+  setIsPerspective,
+}: PerspectiveCardProps) {
   const [internalIsPerspective, setInternalIsPerspective] = useState(false)
 
-  // const handleToggle = useCallback(() => {
-  //   if (isInGroup) {
-  //     setStateValueByName("isPerspective", !valueFromContext)
-  //   } else {
-  //     setInternalIsPerspective(prev => !prev)
-  //   }
-  // }, [isInGroup, setStateValueByName, valueFromContext])
+  const isPerspectiveActive = isPerspective !== undefined ? isPerspective : internalIsPerspective
+  const setIsPerspectiveActive = setInternalIsPerspective
+
+  const isInternalToggleHidden = isPerspective === undefined
 
   return (
     <div
@@ -38,7 +38,7 @@ export function PerspectiveCard({ frontElement, backElement, className }: Perspe
         <div
           className={cn(
             "w-full absolute top-0 left-0 z-10 transition duration-200",
-            internalIsPerspective && "skew-y-12 translate-x-[10%] scale-x-90 ",
+            isPerspectiveActive && "skew-y-12 translate-x-[10%] scale-x-90 ",
           )}
         >
           {backElement}
@@ -49,16 +49,18 @@ export function PerspectiveCard({ frontElement, backElement, className }: Perspe
           <div
             className={cn(
               "w-full transition duration-200 z-20 relative",
-              internalIsPerspective && "skew-y-12 translate-x-[-10%] scale-x-90",
+              isPerspectiveActive && "skew-y-12 translate-x-[-10%] scale-x-90",
             )}
           >
             {frontElement}
           </div>
         </div>
-        <div className="flex justify-center space-x-2 mt-10">
-          <Switch id="airplane-mode" checked={internalIsPerspective} onCheckedChange={setInternalIsPerspective} />
-          <Label htmlFor="airplane-mode">3D View</Label>
-        </div>
+        {isInternalToggleHidden && (
+          <div className="flex justify-center space-x-2 mt-10">
+            <Switch id="airplane-mode" checked={isPerspectiveActive} onCheckedChange={setIsPerspectiveActive} />
+            <Label htmlFor="airplane-mode">3D View</Label>
+          </div>
+        )}
       </div>
     </div>
   )
@@ -67,13 +69,19 @@ export function PerspectiveCard({ frontElement, backElement, className }: Perspe
 export function PairedItemsPerspectiveCard({
   childrenStyles,
   containerStyles,
+  groupIsPerspectiveName,
+  groupValueName,
 }: {
-  childrenStyles: string
-  containerStyles: string
+  childrenStyles?: string
+  containerStyles?: string
+  groupIsPerspectiveName: string
+  groupValueName: string
 }) {
-  const { getStateValueByName, isInGroup } = useContainerContext()
-  console.log("isInGroup", isInGroup)
-  const valueFromContext = getStateValueByName("numberOfChildren")
+  const { getStateValueByName, isInGroup, getSetterByName } = useContainerContext()
+  const valueFromContext = getStateValueByName(groupValueName)
+
+  const toggledValue = getStateValueByName(groupIsPerspectiveName)
+  const setToggleValue = getSetterByName(groupIsPerspectiveName)
 
   const { frontElement, backElement } = generatePairedItemsForPerspective({
     numberOfChildren: isInGroup ? valueFromContext : 2,
@@ -81,14 +89,21 @@ export function PairedItemsPerspectiveCard({
     containerStyles: containerStyles,
   })
 
-  return <PerspectiveCard frontElement={frontElement} backElement={backElement} />
+  return (
+    <PerspectiveCard
+      frontElement={frontElement}
+      backElement={backElement}
+      isPerspective={toggledValue}
+      setIsPerspective={setToggleValue}
+    />
+  )
 }
 
 export function generatePairedItemsForPerspective({
   numberOfChildren = 2,
   isPerspective,
-  containerStyles = "grid gap-2 items-center p-1 rounded-md",
-  childrenStyles = "relative h-10 after:content-['Unstyled'] after:text-gray-400",
+  containerStyles = "grid gap-2 items-center rounded-md",
+  childrenStyles = "relative h-10 after:content-['Unstyled'] after:text-gray-400 after:text-xs",
 }: {
   numberOfChildren?: number
   isPerspective?: boolean
@@ -96,12 +111,12 @@ export function generatePairedItemsForPerspective({
   childrenStyles?: string
 }) {
   const backElement = (
-    <div className={cn(containerStyles, "rounded-md outline-2 outline-dashed outline-muted-foreground ")}>
+    <div className={cn("p-1 rounded-md outline-2 outline-dashed outline-muted-foreground", containerStyles)}>
       {[...Array(numberOfChildren)].map((_, i) => (
         <div
           key={i}
           className={cn(
-            "relative outline-muted-foreground border-dotted border-2 rounded-md after:hidden",
+            "relative outline-muted-foreground border-dotted border-2 rounded-md after:hidden ",
             childrenStyles,
           )}
         ></div>
@@ -110,7 +125,7 @@ export function generatePairedItemsForPerspective({
   )
 
   const frontElement = (
-    <div className={cn(containerStyles)}>
+    <div className={cn("p-1", containerStyles)}>
       <AnimatePresence initial={false}>
         <LayoutGroup>
           {[...Array(numberOfChildren)].map((_, i) => (
@@ -121,7 +136,6 @@ export function generatePairedItemsForPerspective({
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4 }}
-              layout
             ></motion.div>
           ))}
         </LayoutGroup>

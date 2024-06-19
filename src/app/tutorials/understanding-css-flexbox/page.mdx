@@ -8,30 +8,47 @@ export const metadata = {
 }
 import SimpleStaticCodeEditor from "@/components/mdx-components/simple-editor"
 import { CodeWithPerspective } from "@/components/mdx-components/codeWithPerspective"
+
 import {
   generatePairedItemsForPerspective,
   PairedItemsPerspectiveCard,
-} from "@/components/mdx-components/perspective-card"
+} from "@/components/mdx-components/blocks/perspective-card"
+import GroupSlider from "@/components/mdx-components/blocks/group-slider"
+import GroupToggle from "@/components/mdx-components/blocks/group-toggle"
+import GroupCodeView from "@/components/mdx-components/blocks/group-codeView"
 
-import ComponentGroup from "@/components/mdx-components/component-group"
+import ComponentGroup from "@/components/mdx-components/blocks/component-group"
 
 # Understanding CSS Flexbox
 
 Flexbox is a powerful layout module in CSS that allows you to design complex layouts with ease. Let’s dive into the fundamentals and practical applications of Flexbox.
 
 <ComponentGroup
-  code="CODE"
-  withCode
+  noBackground
   groupData={[
     {
-      name: "numberOfChildren",
-      value: 4,
-    }
+      name: "numberOfItems",
+      value: 3,
+    },
+    {
+      name: "isPerspective",
+      value: true,
+    },
   ]}
 >
-
-<PairedItemsPerspectiveCard />
+  <GroupSlider groupValueName="numberOfItems" title="Number Of Items" />
+  <PairedItemsPerspectiveCard groupValueName="numberOfItems" groupIsPerspectiveName="isPerspective" />
+  <GroupToggle groupValueName="isPerspective" title="3D View" />
 </ComponentGroup>
+
+<CodeWithPerspective
+  code={`.parent {
+  display: grid;
+  height: 200px;
+}     `}
+  containerStyles="grid gap-y-1 h-[200px]"
+  childrenStyles=""
+/>
 
 To start using Flexbox, you need a flex container. Flex items are the children of the flex container. Here’s a basic example:
 
