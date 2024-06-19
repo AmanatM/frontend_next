@@ -33,15 +33,13 @@
     --ring: 0 0% 3.9%;
 
     --radius: 0.5rem;
-
-    --text-gradient: linear-gradient(180deg, #555, #000);
   }
 
   .dark {
-    --background: 0 0% 5%;
+    --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
 
-    --card: 0 0% 3.9%;
+    --card: 0 0% 8%;
     --card-foreground: 0 0% 98%;
 
     --popover: 0 0% 3.9%;
@@ -65,12 +63,16 @@
     --border: 0 0% 14.9%;
     --input: 0 0% 14.9%;
     --ring: 0 0% 83.1%;
-
-    --text-gradient: linear-gradient(180deg, #fff, #adadad);
   }
 }
 
 @layer base {
+  :root {
+    --text-gradient: linear-gradient(180deg, #555, #000);
+  }
+  .dark {
+    --text-gradient: linear-gradient(180deg, #fff, #adadad);
+  }
   * {
     @apply border-border;
   }

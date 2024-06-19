@@ -5,7 +5,7 @@ export const TypographyH1 = React.forwardRef<HTMLDivElement, React.HTMLAttribute
   ({ className, ...props }, ref) => (
     <h1
       ref={ref}
-      className={cn("scroll-m-20 text-5xl font-bold tracking-tight bg-clip-text gradient-text object-fill", className)}
+      className={cn("gradient-text scroll-m-20 bg-clip-text object-fill text-5xl font-bold tracking-tight", className)}
       {...props}
     />
   ),
@@ -14,7 +14,7 @@ TypographyH1.displayName = "TypographyH1"
 
 export const TypographyH2 = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
-    <h2 ref={ref} className={cn("scroll-m-20 text-3xl font-semibold tracking-tight ", className)} {...props} />
+    <h2 ref={ref} className={cn("scroll-m-20 text-3xl font-semibold tracking-tight", className)} {...props} />
   ),
 )
 TypographyH2.displayName = "TypographyH2"
@@ -58,7 +58,7 @@ TypographyMuted.displayName = "TypographyMuted"
 
 export const TypographyLead = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
-    <p ref={ref} className={cn("text-xl text-muted-foreground font-normal leading-9", className)} {...props} />
+    <p ref={ref} className={cn("text-xl font-normal leading-9 text-muted-foreground", className)} {...props} />
   ),
 )
 TypographyLead.displayName = "TypographyLead"
