@@ -1,19 +1,19 @@
 "use client"
-import { useAnimate, useInView, useMotionValue } from "framer-motion"
+import { MotionValue, useAnimate, useInView, useMotionValue, useSpring, useTransform } from "framer-motion"
 import React, { useState, useEffect, useRef } from "react"
 import { useMotionTemplate, motion } from "framer-motion"
 import { cn } from "@/lib/utils"
 
 export const EvervaultCard = ({ text, className }: { text?: string; className?: string }) => {
-  let mouseX = useMotionValue(0)
-  let mouseY = useMotionValue(0)
-
-  const [ref, animate] = useAnimate()
+  let mouseX = useSpring(-400, { stiffness: 100, damping: 20 })
+  let mouseY = useSpring(-20, { stiffness: 100, damping: 20 })
 
   const [randomString, setRandomString] = useState("")
+
+  const ref = useRef<HTMLSpanElement>(null)
   const [hasAnimated, setHasAnimated] = useState(false)
 
-  const isInView = useInView(ref, { amount: 1, margin: "0px 0px -20% 0px" })
+  const isInView = useInView(ref, { amount: 1, margin: "0px 0px -20% 0px", once: true })
 
   useEffect(() => {
     let str = generateRandomString(1500)
@@ -22,13 +22,12 @@ export const EvervaultCard = ({ text, className }: { text?: string; className?: 
 
   useEffect(() => {
     if (isInView && !hasAnimated) {
-      let str = generateRandomString(1500)
-      setRandomString(str)
-      animate(mouseX, 500, { duration: 1.5, ease: "easeOut" })
+      mouseX.set(150)
+      mouseY.set(0)
 
       setHasAnimated(true)
     }
-  }, [isInView, hasAnimated, mouseX, animate])
+  }, [isInView, hasAnimated, mouseX, mouseY])
 
   function onMouseMove({
     currentTarget,
@@ -41,20 +40,12 @@ export const EvervaultCard = ({ text, className }: { text?: string; className?: 
   }) {
     let { left, top } = currentTarget.getBoundingClientRect()
 
-    animate(mouseX, clientX - left, { duration: 1 }).cancel()
-
     mouseX.set(clientX - left)
     mouseY.set(clientY - top)
-
-    const str = generateRandomString(1500)
-    setRandomString(str)
   }
 
   return (
-    <div
-      ref={ref}
-      className={cn("relative flex h-full w-full items-center justify-center bg-transparent p-0.5", className)}
-    >
+    <div className={cn("relative flex h-full w-full items-center justify-center bg-transparent p-0.5", className)}>
       <div
         onMouseMove={onMouseMove}
         className="group/card relative flex h-full w-full items-center justify-center overflow-hidden rounded-3xl bg-transparent"
@@ -73,26 +64,31 @@ export const EvervaultCard = ({ text, className }: { text?: string; className?: 
   )
 }
 
-export function CardPattern({ mouseX, mouseY, randomString, hasAnimated }: any) {
+type CardPatternProps = {
+  mouseX: MotionValue<any>
+  mouseY: MotionValue<any>
+  randomString: string
+  hasAnimated: boolean
+}
+export function CardPattern({ mouseX, mouseY, randomString, hasAnimated }: CardPatternProps) {
   let maskImage = useMotionTemplate`radial-gradient(250px at ${mouseX}px ${mouseY}px, white, transparent)`
-  let style = { maskImage, WebkitMaskImage: maskImage }
+  const opacity = hasAnimated ? 1 : 0
+  console.log(opacity)
+  let style = { maskImage, opacity }
 
   return (
     <div className="pointer-events-none">
       <div className="absolute inset-0 rounded-2xl [mask-image:linear-gradient(white,transparent)] group-hover/card:opacity-50"></div>
       <motion.div
-        className="absolute inset-0 rounded-2xl bg-gradient-to-r from-green-500 to-blue-700 opacity-0 backdrop-blur-xl transition duration-500"
-        animate={hasAnimated ? { opacity: 1 } : {}}
+        className="absolute inset-0 rounded-2xl bg-gradient-to-r from-green-500 to-blue-700 opacity-0 backdrop-blur-xl"
         style={style}
       />
-      <motion.div
-        className="absolute inset-0 rounded-2xl opacity-0 mix-blend-overlay"
-        animate={hasAnimated ? { opacity: 1 } : {}}
-        style={style}
-      >
-        <p className="absolute inset-x-0 h-full whitespace-pre-wrap break-words font-mono text-xs font-bold text-white transition duration-500">
-          {randomString}
-        </p>
+      <motion.div className="absolute inset-0 rounded-2xl opacity-0 mix-blend-overlay" style={style}>
+        {randomString && (
+          <p className="absolute inset-x-0 h-full whitespace-pre-wrap break-words font-mono text-xs font-bold text-white">
+            {randomString}
+          </p>
+        )}
       </motion.div>
     </div>
   )
