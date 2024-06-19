@@ -1,9 +1,12 @@
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid"
 
-import { BookOpen, CheckSquare, Code, Unlock } from "lucide-react"
+import { BookOpen, CheckSquare, Code, Unlock, Zap } from "lucide-react"
 import { TypographyH2 } from "@/components/typography"
 import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
+import Window from "@/components/blocks/window"
+import IconCircle from "@/components/blocks/icon-circle"
+import { Card } from "@/components/ui/card"
 
 export default function FeaturesGrid() {
   return (
@@ -16,7 +19,7 @@ export default function FeaturesGrid() {
             title={item.title}
             description={item.description}
             header={item.header}
-            className={cn("[&>p:text-lg]", item.className)}
+            className={item.className}
             icon={item.icon}
           />
         ))}
@@ -31,67 +34,92 @@ const items = [
     description: "Practice coding in real-time with instant feedback.",
     header: <SkeletonOne />,
     className: "md:col-span-2",
-    icon: <Code className="h-4 w-4 text-neutral-500" />,
+    icon: <Code className="h-4 w-4" />,
   },
   {
     title: "Interactive Tutorials",
     description: "Hands-on tutorials for HTML, CSS, JavaScript, and more.",
     header: <SkeletonTwo />,
     className: "md:col-span-1",
-    icon: <BookOpen className="h-4 w-4 text-neutral-500" />,
+    icon: <BookOpen className="h-4 w-4" />,
   },
   {
     title: "Quizzes & Challenges",
     description: "Test your knowledge with quizzes and coding challenges",
     header: <SkeletonThree />,
     className: "md:col-span-1",
-    icon: <CheckSquare className="h-4 w-4 text-neutral-500" />,
+    icon: <CheckSquare className="h-4 w-4" />,
   },
   {
     title: "Free Access",
     description: "Enjoy a wide range of tutorials and resources for free.",
     header: <SkeletonFour />,
     className: "md:col-span-2",
-    icon: <Unlock className="h-4 w-4 text-neutral-500" />,
+    icon: <Unlock className="h-4 w-4" />,
   },
 ]
 
 function SkeletonOne() {
   return (
-    <div className="dark:bg-dot-white/[0.2] bg-dot-black/[0.2] flex h-full min-h-[6rem] w-full flex-1 flex-col space-y-2 p-4">
-      <div className="mb-2 h-4 w-3/4 rounded-full bg-gray-100 dark:bg-neutral-900" />
-      <div className="mb-2 h-4 w-1/2 rounded-full bg-gray-100 dark:bg-neutral-900" />
-      <div className="mb-2 h-4 w-full rounded-full bg-gray-100 dark:bg-neutral-900" />
-      <div className="mb-2 h-4 w-2/3 rounded-full bg-gray-100 dark:bg-neutral-900" />
-      <div className="mb-2 h-4 w-1/4 rounded-full bg-gray-100 dark:bg-neutral-900" />
+    <div className="mx-auto flex justify-center">
+      <Window
+        header={{
+          grayscaleBtn: true,
+          title: "Code Editor",
+          icon: Code,
+        }}
+        className="relative top-3"
+      >
+        <div className="flex size-full gap-x-1 p-2">
+          <div className="h-full w-[100%] overflow-hidden rounded-sm bg-border md:w-1/3" />
+          <div className="h-full w-[100%] overflow-hidden rounded-sm bg-border md:w-1/3" />
+          <div className="h-full w-[100%] overflow-hidden rounded-sm bg-border md:w-1/3" />
+        </div>
+      </Window>
+
+      <div className="mx-4 flex self-center">
+        <IconCircle color="blue" />
+      </div>
+      <Window
+        header={{
+          grayscaleBtn: true,
+          title: "Preview",
+        }}
+        className="relative -top-3"
+      >
+        <div className="size-full overflow-hidden rounded border bg-popover p-1">
+          <span className="text-shadow-outline p-2 text-xl tracking-normal">Hello world!</span>
+          <div className="grid size-full grid-cols-3 grid-rows-2 gap-1 p-2">
+            <div className="col-span-2 border bg-popover"></div>
+            <div className="bg-border" />
+            <div className="bg-border" />
+            <div className="bg-border" />
+            <div className="bg-border" />
+            <div className="bg-border" />
+          </div>
+        </div>
+      </Window>
     </div>
   )
 }
 function SkeletonTwo() {
   return (
-    <div className="dark:bg-dot-white/[0.2] bg-dot-black/[0.2] flex h-full min-h-[6rem] w-full flex-1 flex-col space-y-2 p-4">
-      <div className="mb-2 h-6 w-full rounded bg-gray-100 dark:bg-neutral-900" />
-      <div className="mb-2 h-4 w-3/4 rounded bg-gray-100 dark:bg-neutral-900" />
-      <div className="mb-2 h-4 w-1/2 rounded bg-gray-100 dark:bg-neutral-900" />
-      <div className="mb-2 h-4 w-1/4 rounded bg-gray-100 dark:bg-neutral-900" />
+    <div className="flex size-full">
+      <Window />
     </div>
   )
 }
 function SkeletonThree() {
   return (
-    <div className="dark:bg-dot-white/[0.2] bg-dot-black/[0.2] flex h-full min-h-[6rem] w-full flex-1 flex-col space-y-2 p-4">
-      <div className="mb-2 h-4 w-full rounded bg-gray-100 dark:bg-neutral-900" />
-      <div className="mb-2 h-4 w-3/4 rounded bg-gray-100 dark:bg-neutral-900" />
-      <div className="mb-2 h-4 w-1/2 rounded bg-gray-100 dark:bg-neutral-900" />
+    <div className="max-h-full">
+      <Window />
     </div>
   )
 }
 function SkeletonFour() {
   return (
-    <div className="dark:bg-dot-white/[0.2] bg-dot-black/[0.2] flex h-full min-h-[6rem] w-full flex-1 flex-col items-center justify-center space-y-2 p-4">
-      <div className="mb-2 h-4 w-1/3 rounded bg-gray-100 dark:bg-neutral-900" />
-      <div className="mb-2 h-4 w-1/4 rounded bg-gray-100 dark:bg-neutral-900" />
-      <div className="mb-2 h-4 w-1/2 rounded bg-gray-100 dark:bg-neutral-900" />
+    <div className="max-h-full">
+      <Window />
     </div>
   )
 }

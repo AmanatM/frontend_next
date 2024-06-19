@@ -4,6 +4,7 @@ import svgToDataUri from "mini-svg-data-uri"
 
 // @ts-expect-error This is how Tailwind CSS is imported
 import flattenColorPalette from "tailwindcss/lib/util/flattenColorPalette"
+import { color } from "framer-motion"
 
 const config = {
   darkMode: ["class"],
@@ -25,7 +26,10 @@ const config = {
     },
     extend: {
       colors: {
-        border: "hsl(var(--border))",
+        border: {
+          DEFAULT: "hsl(var(--border))",
+          bright: "hsl(var(--border-bright))",
+        },
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
@@ -100,25 +104,43 @@ const config = {
   },
 } satisfies Config
 
-// This is a custom plugin that generates dot and grid line backgrounds
 function DotLineGenerator({ matchUtilities, theme }: any) {
   matchUtilities(
     {
-      "bg-grid": (value: any) => ({
-        backgroundImage: `url("${svgToDataUri(
-          `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none" stroke="${value}"><path d="M0 .5H31.5V32"/></svg>`,
-        )}")`,
-      }),
-      "bg-grid-small": (value: any) => ({
-        backgroundImage: `url("${svgToDataUri(
-          `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="8" height="8" fill="none" stroke="${value}"><path d="M0 .5H31.5V32"/></svg>`,
-        )}")`,
-      }),
-      "bg-dot": (value: any) => ({
-        backgroundImage: `url("${svgToDataUri(
-          `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="16" height="16" fill="none"><circle fill="${value}" id="pattern-circle" cx="10" cy="10" r="1.6257413380501518"></circle></svg>`,
-        )}")`,
-      }),
+      "bg-grid": (value: any, { modifier }: { modifier: string }) => {
+        const size = parseInt(modifier || "32", 10)
+        return {
+          backgroundImage: `url("${svgToDataUri(
+            `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" fill="none" stroke="${value}">
+              <path d="M0 0H${size}V${size}H0z" fill="none" stroke-width="1"/>
+              <path d="M0 .5H${size}.5V${size}"/>
+              <path d="M.5 0V${size}.5H${size}"/>
+            </svg>`,
+          )}")`,
+        }
+      },
+      "bg-grid-small": (value: any, { modifier }: { modifier: string }) => {
+        const size = parseInt(modifier || "14", 10)
+        return {
+          backgroundImage: `url("${svgToDataUri(
+            `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" fill="none" stroke="${value}">
+              <path d="M0 0H${size}V${size}H0z" fill="none" stroke-width="1"/>
+              <path d="M0 .5H${size}.5V${size}"/>
+              <path d="M.5 0V${size}.5H${size}"/>
+            </svg>`,
+          )}")`,
+        }
+      },
+      "bg-dot": (value: any, { modifier }: { modifier: string }) => {
+        const size = parseInt(modifier || "16", 10)
+        return {
+          backgroundImage: `url("${svgToDataUri(
+            `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}" fill="none">
+              <circle fill="${value}" cx="${size / 2}" cy="${size / 2}" r="${size / 10}"/>
+            </svg>`,
+          )}")`,
+        }
+      },
     },
     { values: flattenColorPalette(theme("backgroundColor")), type: "color" },
   )

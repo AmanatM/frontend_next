@@ -29,10 +29,14 @@
     --destructive-foreground: 0 0% 98%;
 
     --border: 0 0% 89.8%;
+    --border-bright: 0 0% 79%;
+
     --input: 0 0% 89.8%;
     --ring: 0 0% 3.9%;
 
     --radius: 0.5rem;
+
+    --text-gradient: linear-gradient(180deg, #555, #000);
   }
 
   .dark {
@@ -42,7 +46,7 @@
     --card: 0 0% 8%;
     --card-foreground: 0 0% 98%;
 
-    --popover: 0 0% 3.9%;
+    --popover: 0 0% 5%;
     --popover-foreground: 0 0% 98%;
 
     --primary: 0 0% 98%;
@@ -60,19 +64,17 @@
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 14.9%;
+    --border: 0 0% 13%;
+    --border-bright: 0 0% 27%;
+
     --input: 0 0% 14.9%;
     --ring: 0 0% 83.1%;
+
+    --text-gradient: linear-gradient(180deg, #fff, #adadad);
   }
 }
 
 @layer base {
-  :root {
-    --text-gradient: linear-gradient(180deg, #555, #000);
-  }
-  .dark {
-    --text-gradient: linear-gradient(180deg, #fff, #adadad);
-  }
   * {
     @apply border-border;
   }
@@ -93,5 +95,23 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+  }
+
+  .text-shadow-outline {
+    --border-color: theme("colors.border.bright");
+    line-height: 0.83;
+    display: inline-block;
+    width: 100%;
+    font-weight: bold;
+    color: theme("colors.popover.DEFAULT");
+    text-shadow:
+      -1px -1px 0 var(--border-color),
+      0 -1px 0 var(--border-color),
+      1px -1px 0 var(--border-color),
+      1px 0 0 var(--border-color),
+      1px 1px 0 var(--border-color),
+      0 1px 0 var(--border-color),
+      -1px 1px 0 var(--border-color),
+      -1px 0 0 var(--border-color);
   }
 }
