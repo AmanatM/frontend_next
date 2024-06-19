@@ -11,12 +11,13 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { UserRound } from "lucide-react"
+import { Home, HomeIcon, UserRound } from "lucide-react"
 import Link from "next/link"
 import { toast } from "sonner"
 import { logout } from "@/app/(auth)/actions"
 import { User } from "@supabase/supabase-js"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { TypographyMuted } from "../typography"
 
 export function UserNav({ user }: { user: User | null }) {
   const router = useRouter()
@@ -54,26 +55,35 @@ export function UserNav({ user }: { user: User | null }) {
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56" align="end" forceMount>
+      <DropdownMenuContent className="w-56 " align="end" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-light leading-none">{user.email}</p>
+            <TypographyMuted className="text-sm font-light leading-none">{user.email}</TypographyMuted>
           </div>
         </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem asChild className="cursor-pointer">
+        <DropdownMenuSeparator className="my-2" />
+        <DropdownMenuGroup className="space-y-1">
+          <DropdownMenuItem asChild className="cursor-pointer ">
             <Link href="/profile">Profile</Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild className="cursor-pointer">
             <Link href="/profile">Appearance</Link>
           </DropdownMenuItem>
         </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
-          Log out
-          <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
-        </DropdownMenuItem>
+        <DropdownMenuSeparator className="my-2" />
+
+        <DropdownMenuGroup className="space-y-1">
+          <DropdownMenuItem asChild className="cursor-pointer">
+            <Link href={"/"}>
+              Home page
+              <Home className="ml-auto opacity-60" size={16} />
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={handleLogout} className="cursor-pointer">
+            Log out
+            <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
+          </DropdownMenuItem>
+        </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
   )
