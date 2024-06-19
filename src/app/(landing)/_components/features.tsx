@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils"
 import Window from "@/components/blocks/window"
 import IconCircle from "@/components/blocks/icon-circle"
 import { Card } from "@/components/ui/card"
+import { EvervaultCard } from "@/components/ui/evervault-card"
 
 export default function FeaturesGrid() {
   return (
@@ -37,12 +38,13 @@ const items = [
     icon: <Code className="h-4 w-4" />,
   },
   {
-    title: "Interactive Tutorials",
-    description: "Hands-on tutorials for HTML, CSS, JavaScript, and more.",
-    header: <SkeletonTwo />,
+    title: "Free Access",
+    description: "Enjoy a wide range of tutorials and resources for free.",
     className: "md:col-span-1",
-    icon: <BookOpen className="h-4 w-4" />,
+    header: <SkeletonTwo />,
+    icon: <Unlock className="h-4 w-4" />,
   },
+
   {
     title: "Quizzes & Challenges",
     description: "Test your knowledge with quizzes and coding challenges",
@@ -51,11 +53,11 @@ const items = [
     icon: <CheckSquare className="h-4 w-4" />,
   },
   {
-    title: "Free Access",
-    description: "Enjoy a wide range of tutorials and resources for free.",
+    title: "Interactive Tutorials",
+    description: "Hands-on tutorials for HTML, CSS, JavaScript, and more.",
     header: <SkeletonFour />,
     className: "md:col-span-2",
-    icon: <Unlock className="h-4 w-4" />,
+    icon: <BookOpen className="h-4 w-4" />,
   },
 ]
 
@@ -104,8 +106,8 @@ function SkeletonOne() {
 }
 function SkeletonTwo() {
   return (
-    <div className="flex size-full">
-      <Window />
+    <div className="flex min-h-[150px] w-full justify-center">
+      <EvervaultCard text="free" className="" />
     </div>
   )
 }

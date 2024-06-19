@@ -19,7 +19,7 @@ export default function Window({ header, children = null, className }: WindowPro
   return (
     <div
       className={cn(
-        "flex h-full w-[250px] flex-col gap-y-2 overflow-hidden rounded-lg border bg-popover p-2",
+        "flex h-full w-[250px] flex-col gap-y-2 overflow-hidden rounded-lg border bg-popover p-2 shadow-lg shadow-black/5 dark:shadow-none",
         "max-h-full max-w-full",
         className,
       )}
