@@ -15,15 +15,15 @@ export async function MenuTopBar() {
   const logoLink = user ? "/dashboard" : "/"
 
   return (
-    <header className="h-14 sticky z-50 top-0 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="px-3 md:px-8 flex h-full items-center">
-        <div className="mr-0 md:mr-4 flex text-sm">
+    <header className="sticky top-0 z-50 h-14 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="flex h-full items-center px-3 md:px-8">
+        <div className="mr-0 flex text-sm md:mr-4">
           <Link href={logoLink} className="mr-10 flex items-center space-x-4">
             <LogoIcon size={35} />
-            <span className="font-bold text-base md:text-lg inline-block">WebCodersLab</span>
+            <span className="inline-block text-base font-bold md:text-lg">WebCodersLab</span>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-6 text-sm">
+          <nav className="hidden items-center gap-6 text-sm md:flex">
             {top_menu_links.map((link, index) => (
               <Link key={index} href={link.url} className="transition-colors hover:text-foreground/60">
                 {link.title}

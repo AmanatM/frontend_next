@@ -1,14 +1,10 @@
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid"
 
-import { BookOpen, CheckSquare, Code, Play, Unlock, Zap } from "lucide-react"
+import { BookOpen, CheckSquare, Code, Play, Unlock } from "lucide-react"
 import { TypographyH2 } from "@/components/typography"
-import { motion } from "framer-motion"
-import { cn } from "@/lib/utils"
 import Window from "@/components/blocks/window"
 import IconCircle from "@/components/blocks/icon-circle"
-import { Card } from "@/components/ui/card"
 import { EvervaultCard } from "@/components/ui/evervault-card"
-import { Skeleton } from "@/components/ui/skeleton"
 
 export default function FeaturesGrid() {
   return (
