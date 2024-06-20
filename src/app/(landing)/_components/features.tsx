@@ -13,7 +13,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 export default function FeaturesGrid() {
   return (
     <div>
-      <TypographyH2 className="mb-8 text-center">See What You Can Do</TypographyH2>
+      <TypographyH2 className="mb-14 text-center">See What You Can Do</TypographyH2>
       <BentoGrid className="mx-auto max-w-screen-lg md:auto-rows-[22rem]">
         {items.map((item, i) => (
           <BentoGridItem

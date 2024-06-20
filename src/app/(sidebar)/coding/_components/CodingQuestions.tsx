@@ -49,7 +49,7 @@ const CodingQuestions = () => {
 
   if ((filteredCodingQuestions ?? []).length <= 0) {
     return (
-      <Card className="flex flex-col py-6 items-center">
+      <Card className="flex flex-col items-center py-6">
         <TypographyP>No questions found</TypographyP>
         <Button variant="secondary" size="sm" className="mt-4" onClick={resetFilters}>
           Reset Filters
@@ -67,7 +67,7 @@ const CodingQuestions = () => {
             href={`/coding/${question.question_type === "user_interface" ? "/ui/" : "/code/"}${question.id}`}
             className="flex border-b"
           >
-            <div className="size-full space-y-2 px-6 py-4 hover:bg-muted">
+            <div className="size-full space-y-2 px-6 py-4">
               <div className="flex flex-row space-x-4">
                 <TypographyP>{question.title}</TypographyP>
                 {question.user_completed_code_question.length > 0 && (
@@ -79,7 +79,7 @@ const CodingQuestions = () => {
               <TypographyMuted>{question.short_description}</TypographyMuted>
               <div>
                 <div className="flex space-x-4 text-sm text-muted-foreground">
-                  <div className="flex items-center min-w-[140px]">
+                  <div className="flex min-w-[140px] items-center">
                     {question.question_type === "user_interface" ? (
                       <>
                         <AppWindow size={15} className={cn("mr-2")} />
