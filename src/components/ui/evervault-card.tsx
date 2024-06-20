@@ -5,7 +5,7 @@ import { useMotionTemplate, motion } from "framer-motion"
 import { cn } from "@/lib/utils"
 
 export const EvervaultCard = ({ text, className }: { text?: string; className?: string }) => {
-  let mouseX = useSpring(-400, { stiffness: 100, damping: 20 })
+  let mouseX = useSpring(-200, { stiffness: 100, damping: 20 })
   let mouseY = useSpring(-20, { stiffness: 100, damping: 20 })
 
   const [randomString, setRandomString] = useState("")
@@ -22,7 +22,7 @@ export const EvervaultCard = ({ text, className }: { text?: string; className?: 
 
   useEffect(() => {
     if (isInView && !hasAnimated) {
-      mouseX.set(150)
+      mouseX.set(200)
       mouseY.set(0)
 
       setHasAnimated(true)

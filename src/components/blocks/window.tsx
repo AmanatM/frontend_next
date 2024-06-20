@@ -50,8 +50,8 @@ function Header({ title, icon: Icon, grayscaleBtn, headerContent }: HeaderProps)
               <span key={i} className={cn("h-2 w-2 rounded-full bg-muted", !grayscaleBtn && color)}></span>
             ))}
           </div>
-          <div className="flex items-center gap-x-1 text-xs text-muted-foreground">
-            <span>{Icon ? <Icon size={14} /> : <Globe size={14} />}</span>
+          <div className="flex items-center gap-x-1 text-[10px] text-muted-foreground">
+            <span>{Icon ? <Icon size={13} /> : <Globe size={13} />}</span>
             <span>{title}</span>
           </div>
         </>
@@ -66,7 +66,7 @@ function Body({ children }: { children?: React.ReactNode }) {
   return (
     <div className={cn("z-20 flex min-h-[100px] flex-grow items-center justify-center", !children && "p-4")}>
       {!children ? (
-        <div className="dark:bg-dot-white/10 bg-dot-black/10 h-full min-h-[50px] w-full"></div>
+        <div className="h-full min-h-[50px] w-full bg-dot-black/10 dark:bg-dot-white/10"></div>
       ) : (
         <>{children}</>
       )}

@@ -9,14 +9,14 @@ type IconCircleProps = {
   icon?: LucideIcon
 }
 
-function IconCircle({ size = 18, strokeWidth = 1.5, color, icon: Icon }: IconCircleProps) {
+function IconCircle({ size = 19, strokeWidth = 2, color, icon: Icon }: IconCircleProps) {
   return (
     <div
       className={cn(
-        "flex h-9 w-9 items-center justify-center rounded-full border border-muted text-muted-foreground shadow-sm",
+        "flex h-10 w-10 items-center justify-center rounded-full border border-muted text-muted-foreground shadow-sm",
         color === "blue" && "border-blue-800/50 text-blue-800",
         color === "red" && "border-red-800/50 text-red-800",
-        color === "green" && "border-green-800/50 text-green-800",
+        color === "green" && "border-teal-600/50 text-teal-600",
         color === "yellow" && "border-yellow-800/50 text-yellow-800",
       )}
     >

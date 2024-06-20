@@ -25,7 +25,7 @@ export const BentoGridItem = ({
   return (
     <Card
       className={cn(
-        "group/bento row-span-1 flex flex-col justify-center gap-y-4 overflow-hidden bg-background p-4 transition duration-200",
+        "group/bento row-span-1 flex flex-col justify-center gap-y-6 overflow-hidden bg-background p-4 transition duration-200",
         className,
       )}
     >

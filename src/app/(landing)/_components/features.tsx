@@ -1,6 +1,6 @@
 import { BentoGrid, BentoGridItem } from "@/components/ui/bento-grid"
 
-import { BookOpen, CheckSquare, Code, Unlock, Zap } from "lucide-react"
+import { BookOpen, CheckSquare, Code, Play, Unlock, Zap } from "lucide-react"
 import { TypographyH2 } from "@/components/typography"
 import { motion } from "framer-motion"
 import { cn } from "@/lib/utils"
@@ -8,12 +8,13 @@ import Window from "@/components/blocks/window"
 import IconCircle from "@/components/blocks/icon-circle"
 import { Card } from "@/components/ui/card"
 import { EvervaultCard } from "@/components/ui/evervault-card"
+import { Skeleton } from "@/components/ui/skeleton"
 
 export default function FeaturesGrid() {
   return (
     <div>
       <TypographyH2 className="mb-8 text-center">See What You Can Do</TypographyH2>
-      <BentoGrid className="mx-auto max-w-screen-lg md:auto-rows-[20rem]">
+      <BentoGrid className="mx-auto max-w-screen-lg md:auto-rows-[22rem]">
         {items.map((item, i) => (
           <BentoGridItem
             key={i}
@@ -72,15 +73,14 @@ function SkeletonOne() {
         }}
         className="relative top-3"
       >
-        <div className="flex size-full gap-x-1 p-2">
-          <div className="h-full w-[100%] overflow-hidden rounded-sm bg-border md:w-1/3" />
-          <div className="h-full w-[100%] overflow-hidden rounded-sm bg-border md:w-1/3" />
-          <div className="h-full w-[100%] overflow-hidden rounded-sm bg-border md:w-1/3" />
+        <div className="flex size-full gap-x-2 p-2">
+          <div className="h-full w-[100%] overflow-hidden rounded-sm bg-border md:w-1/2" />
+          <div className="h-full w-[100%] overflow-hidden rounded-sm bg-border md:w-1/2" />
         </div>
       </Window>
 
       <div className="mx-4 flex self-center">
-        <IconCircle color="blue" />
+        <IconCircle color="green" icon={Play} />
       </div>
       <Window
         header={{
@@ -89,10 +89,10 @@ function SkeletonOne() {
         }}
         className="relative -top-3"
       >
-        <div className="size-full overflow-hidden rounded border bg-popover p-1">
-          <span className="text-shadow-outline p-2 text-xl tracking-normal">Hello world!</span>
-          <div className="grid size-full grid-cols-3 grid-rows-2 gap-1 p-2">
-            <div className="col-span-2 border bg-popover"></div>
+        <div className="size-full overflow-hidden rounded border bg-card p-1">
+          <span className="text-shadow-outline p-2 text-center text-2xl tracking-normal">Hello world!</span>
+          <div className="grid size-full grid-cols-3 grid-rows-2 gap-2 p-2">
+            <div className="col-span-2 bg-border" />
             <div className="bg-border" />
             <div className="bg-border" />
             <div className="bg-border" />
