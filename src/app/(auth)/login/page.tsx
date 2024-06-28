@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useTransition } from "react"
+import { Suspense, useState, useTransition } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -26,7 +26,7 @@ const FormSchema = z.object({
     .min(7, { message: "Password must be at least 7 characters long" }),
 })
 
-export default function Login() {
+function LoginComponent() {
   const [isSignUp, setIsSignUp] = useState(false)
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
@@ -186,5 +186,14 @@ export default function Login() {
         </Form>
       </Card>
     </div>
+  )
+}
+
+export default function Login() {
+  return (
+    // You could have a loading skeleton as the `fallback` too
+    <Suspense>
+      <LoginComponent />
+    </Suspense>
   )
 }
