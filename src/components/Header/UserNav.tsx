@@ -20,7 +20,6 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { TypographyMuted } from "../typography"
 
 export function UserNav({ user }: { user: User | null }) {
-  const router = useRouter()
   const pathname = usePathname()
 
   const handleLogout = async () => {

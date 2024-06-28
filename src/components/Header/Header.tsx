@@ -7,8 +7,9 @@ import { SearchBox } from "./SearchBox"
 import { MobileMenu } from "./mobile-menu"
 import { createClientServer } from "@/supabase-utils/supabase-server"
 import { LogoIcon } from "@/icons/logo-icons"
+import { Suspense } from "react"
 
-export async function MenuTopBar() {
+export async function Header() {
   const supabase = createClientServer()
   const user = (await supabase.auth.getUser()).data.user
 
@@ -34,7 +35,9 @@ export async function MenuTopBar() {
         <div className="ml-auto flex items-center space-x-3 md:space-x-4">
           <SearchBox user={user} />
           <ThemeSwitch />
-          <UserNav user={user} />
+          <Suspense fallback={<p>Loading...</p>}>
+            <UserNav user={user} />
+          </Suspense>
           <MobileMenu user={user} />
         </div>
       </div>
