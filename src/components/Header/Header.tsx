@@ -6,7 +6,7 @@ import { ThemeSwitch } from "./theme-switch"
 import { SearchBox } from "./SearchBox"
 import { MobileMenu } from "./mobile-menu"
 import { createClientServer } from "@/supabase-utils/supabase-server"
-import { LogoIcon } from "@/app/icons/logo-icons"
+import { LogoIcon } from "@/icons/logo-icons"
 
 export async function MenuTopBar() {
   const supabase = createClientServer()

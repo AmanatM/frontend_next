@@ -16,7 +16,7 @@ import { PasswordInput } from "@/components/custom/password-input"
 import { Card } from "@/components/ui/card"
 import { Apple, Github } from "lucide-react"
 import useSupabaseBrowser from "@/supabase-utils/supabase-client"
-import { AppleLogo } from "@/app/icons/custom-icons"
+import { AppleLogo } from "@/icons/custom-icons"
 
 const FormSchema = z.object({
   email: z.string().min(1, { message: "Please enter your email" }).email({ message: "Invalid email address" }),
@@ -98,9 +98,9 @@ export default function Login() {
   }
 
   return (
-    <div className="mx-auto flex justify-center items-center h-full px-3">
-      <Card className="p-6 max-w-full w-[500px]">
-        <div className="flex flex-col space-y-2 text-left mb-4">
+    <div className="mx-auto flex h-full items-center justify-center px-3">
+      <Card className="w-[500px] max-w-full p-6">
+        <div className="mb-4 flex flex-col space-y-2 text-left">
           <Link href="/" className="text-2xl font-semibold tracking-tight">
             {isSignUp ? "Create Account" : "Login"}
           </Link>
@@ -108,14 +108,14 @@ export default function Login() {
             {isSignUp ? (
               <>
                 Already have an account?{" "}
-                <span className="underline cursor-pointer text-primary" onClick={() => setIsSignUp(false)}>
+                <span className="cursor-pointer text-primary underline" onClick={() => setIsSignUp(false)}>
                   Login
                 </span>
               </>
             ) : (
               <>
                 Don&apos;t have an account?{" "}
-                <span className="underline cursor-pointer text-primary" onClick={() => setIsSignUp(true)}>
+                <span className="cursor-pointer text-primary underline" onClick={() => setIsSignUp(true)}>
                   Create Account
                 </span>
               </>
@@ -153,7 +153,7 @@ export default function Login() {
               )}
             />
             {!isSignUp && (
-              <Link className="text-left text-sm underline cursor-pointer text-primary" href="/auth/forgot-password">
+              <Link className="cursor-pointer text-left text-sm text-primary underline" href="/auth/forgot-password">
                 Forgot password?
               </Link>
             )}

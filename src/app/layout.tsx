@@ -41,7 +41,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <Providers>
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-            <MenuTopBar />
+            {/* <MenuTopBar /> */}
             <div className="grow">{children}</div>
             <Toaster
               richColors

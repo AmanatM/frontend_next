@@ -1,4 +1,4 @@
-import { LogoIcon } from "@/app/icons/logo-icons"
+import { LogoIcon } from "@/icons/logo-icons"
 import Link from "next/link"
 
 export default function Footer() {
