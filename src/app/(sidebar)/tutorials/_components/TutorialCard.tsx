@@ -8,7 +8,6 @@ import { TutorialsType } from "@/tutorials"
 import { Badge } from "@/components/ui/badge"
 
 function TutorialCard({ ...props }: TutorialsType) {
-  console.log(props)
   return (
     <Card className="hover:bg-card/90">
       <Link href={`/tutorials/${props.slug}`} className="flex h-full flex-col">

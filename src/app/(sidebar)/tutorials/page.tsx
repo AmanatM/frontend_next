@@ -20,7 +20,7 @@ export default async function Tutorials() {
         <TypographyH3>Tutorials</TypographyH3>
         <TypographyMuted>Interactive tutorials</TypographyMuted>
       </div>
-      <div className="grid gap-6 lg:grid-cols-2 align-baseline">
+      <div className="grid gap-6 align-baseline lg:grid-cols-2">
         {posts.map(tutorial => (
           <TutorialCard key={tutorial.slug} {...tutorial} />
         ))}
